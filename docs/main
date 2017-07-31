@@ -1,0 +1,21 @@
+# Notes on creating a solver for the Navier--Stokes equations
+# Arnau Prat Gasull
+
+@SysInclude { xrgb }
+@SysInclude { eq }
+@SysInclude { tbl }
+@SysInclude { diag }
+@SysInclude { graph }
+@SysInclude { pie }
+@Include { mydefs }
+
+@Report
+	@Title { Notes on creating a solver for the Navier--Stokes equations }
+	@Author { Arnau Prat Gasull }
+	@Institution { ESEIAAT }
+	@DateLine { August 2017 }
+	@Abstract { In this document the reader will find information concerning the development of a Navier--Stokes solver which uses numerical analysis. This information is collected from different sources, as part of my Final Year Aerospace Engineering Project. }
+//
+
+@Include { "contents/introduction" }
+@Include { "contents/natureofflow" }
