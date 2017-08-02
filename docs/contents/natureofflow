@@ -3,6 +3,40 @@
 @Begin
 
 @PP
-The following requires an understanding of the contents taught in Fluid Mechanics.
+The three fundamental equations of Fluid Mechanics arise from the laws of conservation of mass, conservation of momentum and conservation of energy. While the equations can be written either in differential or integral form, it is often preferred to work with the differential arrangement. In this arrangement, the equations are expressed according to elementary volumes of the fluid, as opposed to the integral form, which takes into account macroscopic volumes and the properties are expressed as averages over the entire domain. The former is extensively used, though not directly: the Finite Element Method (FEM) provides numerical solutions for the Partial Differential Equations (PDEs) referenced above in CFD.
+
+@PP
+The Reynolds' transport theorem states that the changes of an extensive magnitude @E { F } in a fluid of density @E { rho } is related to the magnitude per unit of mass @E { f } according to the equation @NumberOf { reynoldstt }.
+
+@CenteredNumberedDisplay
+    @Tag { reynoldstt }
+@Eq { dF over dt = d over dt int sub CV rho f dV + oint sub CV rho f @B { v sub r} cdot d @B S }
+
+where @E { CS } and @E { CV } are the control system and the control volume, respectively, while @E { @B { v sub r } } is the flow velocity relative to the @E { CV }.
+
+@PP
+Using the Reynold's transport theorem one can find the NS equations, being the conservation of momentum written as in equation @NumberOf { GeneralNSMomentum }.
+
+@CenteredNumberedDisplay
+    @Tag { GeneralNSMomentum }
+@Eq { { partial @B v } over { partial t } + ( @B v cdot nabla ) @B v = - nabla p + nu Delta @B v + @B f ( @B x, t ) }
+
+@PP
+Given the complexity of creating a general solver, some assumptions will be made to simplify the solver. For an incompressible Newtonian fluid, the NS equations for the conservation of mass and the conservation of linear momentum are written---in Enstein notation---as in @NumberOf { NSmasssimple } and @NumberOf { NSmomentumsimple }, respectively:
+
+@BeginAlignedDisplays
+@CenteredAlignedNumberedDisplay
+    @Tag { NSmasssimple }
+@Eq { { partial u sub i } over { partial x sub i } ^= 0 }
+@CenteredAlignedNumberedDisplay
+    @Tag { NSmomentumsimple }
+@Eq { { partial u sub i } over { partial t } + u sub j { partial u sub i } over { partial x sub j } ^= - 1 over p { partial p } over { partial x sub i } + nu { partial sup 2 u sub i } over { partial x sub j partial x sub j } }
+# @Eq { { partial u sub i } over { partial t } + u sub j { partial u sub i } over { partial x sub j } ^= - { partial p } over { partial x sub i } + 1 over @Re { partial sup 2 u sub i } over { partial x sub j partial x sub j } }
+@EndAlignedDisplays
+
+# where @E { @Re } is the Reynolds number, given by @E { { v L } over nu }. 
+
+@PP
+a 
 
 @End @Section

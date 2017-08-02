@@ -7,8 +7,10 @@ def @LaTeX
 }
 
 import @BasicSetup
-def @emph right x
-{ @I x }
+def @Re
+{ @R @Verbatim { Re } }
 
-def @arnau
-{ Arnau Prat Gasull }
+import @BasicSetup
+def @Num
+    right x
+{ @R @Verbatim { x } }
