@@ -14,3 +14,16 @@ import @BasicSetup
 def @Num
     right x
 { @R @Verbatim { x } }
+
+# Revision object
+import @BasicSetup @DocumentSetup
+def @REV
+    left y
+    right x
+{ red @Color { x }  @RightNote red @Color { REV.: y } }
+
+# Note object
+import @BasicSetup
+def @NOTE
+    right x
+{ blue @Color { x } }

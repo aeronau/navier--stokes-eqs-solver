@@ -22,21 +22,72 @@ Using the Reynold's transport theorem one can find the NS equations, being the c
 @Eq { { partial @B v } over { partial t } + ( @B v cdot nabla ) @B v = - nabla p + nu Delta @B v + @B f ( @B x, t ) }
 
 @PP
-Given the complexity of creating a general solver, some assumptions will be made to simplify the solver. For an incompressible Newtonian fluid, the NS equations for the conservation of mass and the conservation of linear momentum are written---in Enstein notation---as in @NumberOf { NSmasssimple } and @NumberOf { NSmomentumsimple }, respectively:
+Given the complexity of creating a general solver, some assumptions will be made to simplify the solver. For an incompressible Newtonian fluid, the NS equations for the conservation of mass and the conservation of linear momentum are written---in Enstein notation---as in @NumberOf { NSmasssimple } and @NumberOf { NSMomHyp }, respectively:
 
 @BeginAlignedDisplays
 @CenteredAlignedNumberedDisplay
     @Tag { NSmasssimple }
 @Eq { { partial u sub i } over { partial x sub i } ^= 0 }
 @CenteredAlignedNumberedDisplay
-    @Tag { NSmomentumsimple }
-@Eq { { partial u sub i } over { partial t } + u sub j { partial u sub i } over { partial x sub j } ^= - 1 over p { partial p } over { partial x sub i } + nu { partial sup 2 u sub i } over { partial x sub j partial x sub j } }
+    @Tag { NSMomHyp }
+{ @Eq { partial x sub j partial x sub j } on denominator? } @REV @Eq { { partial u sub i } over { partial t } + u sub j { partial u sub i } over { partial x sub j } ^= - 1 over rho { partial p } over { partial x sub i } + nu { partial sup 2 u sub i } over { partial x sub j partial x sub j } }
 # @Eq { { partial u sub i } over { partial t } + u sub j { partial u sub i } over { partial x sub j } ^= - { partial p } over { partial x sub i } + 1 over @Re { partial sup 2 u sub i } over { partial x sub j partial x sub j } }
 @EndAlignedDisplays
 
-# where @E { @Re } is the Reynolds number, given by @E { { v L } over nu }. 
+# where @E { @Re } is the Reynolds number, given by @E { { v L } over nu }.
+
+Notice that in equation @NumberOf { NSMomHyp }:
+
+@WideTaggedList
+  @TagItem { @E { { partial u sub i } over { partial t } } } { is known as the time derivative, }
+  @TagItem { @E { u sub j { partial u sub i } over { partial x sub j } } } { as the convection term, }
+  @TagItem { @E { - 1 over rho { partial p } over { partial x sub i } } } { as the pressure gradient, and }
+  @TagItem { @E { nu { partial sup 2 u sub i } over { partial x sub j partial x sub j } } } { as the diffusion term. }
+@EndList
 
 @PP
-a 
+A more general expression for @NumberOf { NSMomHyp }, with {Compare with transparency 21} @REV @E { S = nabla p } as the pressure gradient and @E { Gamma = rho nu } and taking the general variable @E { phi } as @E { u sub j }, is written as
+
+@CenteredNumberedDisplay
+  @Tag { GenNSMomHyp }
+@Eq { { partial (rho phi) } over { partial t } + nabla cdot (rho @B u phi) = nabla cdot (Gamma nabla phi) + S }
+
+Note that this expression takes almost the same form when working with energy or entropy. Modifying the variables @E { phi } and @E { S } to the corresponding desired expression will suffice when changing the paradigm. The rest of the equation may remain intact.
+
+@PP
+Earlier in this document, it was mentioned that the FEM was the go-to numerical method. By taking one general element---the E in the acronym---as a control volume, of a general volume @E { V }, the expression @NumberOf { INTGenNSMomHyp } is found.
+
+@BeginAlignedDisplays
+@CenteredAlignedNumberedDisplay
+  @Tag { INTGenNSMomHyp }
+@Eq { int sub V { partial (rho phi) } over { partial t } dV + int sub V nabla cdot (rho @B u phi) dV ^= int sub V nabla cdot (Gamma nabla phi) dV + int sub V S dV }
+With further modifications, one arrives at expression @NumberOf {INTGenNSMomHypMOD1}.
+@CenteredAlignedNumberedDisplay
+  @Tag { INTGenNSMomHypMOD1 }
+@Eq { rho V { partial phi overbar } over { partial t } + int sub V nabla cdot (rho @B u phi) dV ^= int sub V nabla cdot (Gamma nabla phi) dV + S overbar V }
+
+By applying the divergence theorem @FootNote { The divergence theorem states that for a volume @E { V } of boundary surface @E { partial V }, @CD @Eq { int sub V nabla cdot @B J dV = oint sub { partial V } @B  J cdot @B n dS } } on convection and diffusion integrals and assuming rectangular control volumes with faces North @E { n }, East @E { e }, South @E { s } and West @E { w } and sides of length @E { Delta x } and @E { Delta y } and making some approximations, it is easy to arrive at expression @NumberOf { INTGenNSMomHypMOD2 }.
+
+@CenteredAlignedNumberedDisplay
+  @Tag { INTGenNSMomHypMOD2 }
+{Break equation over multiple lines with aligned equals.} @REV @Eq {
+  rho V { partial phi overbar } over { partial t } + rho u sub n Delta x phi sub n + rho u sub e Delta y phi sub e / { + rho u sub s Delta x phi sub s + rho u sub w Delta y phi sub w } ^= Gamma sub n pmatrix { { partial phi } over { partial y } } sub n Delta x + Gamma sub e pmatrix { { partial phi } over { partial x } } sub e Delta y / { - Gamma sub s pmatrix { { partial phi } over { partial y } } sub e Delta x - Gamma sub w pmatrix { { partial phi } over { partial x } } sub w Delta y + S overbar V }
+}
+
+@EndAlignedDisplays
+
+Notice that the normal derivatives of @E { phi } at the faces are needed. The simplest way to compute the equation @NumberOf { INTGenNSMomHypMOD2 } is by using a staggered mesh and the following:
+
+@BeginSubSections
+  @SubSection
+    @Title { Convection }
+  @Begin
+  @PP
+  For the convection term @FootNote { In order to easen the work, the density @E { rho } has not been typed. } @Eq { int sub V nabla cdot (@B u u sub k ) approxequal u sub n Delta x phi sub n + u sub e Delta y phi sub e + u sub s Delta x phi sub s + u sub w Delta y phi sub w } and assuming @E { phi = u }, it is fair to assume
+  @VeryWideTaggedList
+    @TagItem { Velocity } @Eq { u sub n = { u sub { i, j + 1 } + u sub {i, j} } over 2 }, @Eq { u sub e = { u sub { i + 1, j } + u sub {i, j} } over 2 }, @Eq { u sub s = { u sub { i, j - 1 } + u sub {i, j} } over 2 } and @Eq { u sub w = { u sub { i - 1, j } + u sub {i, j} } over 2 }.
+  @EndList
+  @End @SubSection
+@EndSubSections
 
 @End @Section

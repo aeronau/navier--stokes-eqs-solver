@@ -1,6 +1,8 @@
 # Notes on creating a solver for the Navier--Stokes equations
 # Arnau Prat Gasull
 
+# Includeres
+
 @SysInclude { report }
 @SysInclude { xrgb }
 @SysInclude { eq }
@@ -8,6 +10,7 @@
 @SysInclude { diag }
 @SysInclude { graph }
 @SysInclude { pie }
+
 @Include { mydefs }
 
 @Report
