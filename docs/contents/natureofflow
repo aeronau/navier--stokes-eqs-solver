@@ -79,15 +79,53 @@ By applying the divergence theorem @FootNote { The divergence theorem states tha
 Notice that the normal derivatives of @E { phi } at the faces are needed. The simplest way to compute the equation @NumberOf { INTGenNSMomHypMOD2 } is by using a staggered mesh and the following:
 
 @BeginSubSections
+
   @SubSection
     @Title { Convection }
   @Begin
   @PP
-  For the convection term @FootNote { In order to easen the work, the density @E { rho } has not been typed. } @Eq { int sub V nabla cdot (@B u u sub k ) approxequal u sub n Delta x phi sub n + u sub e Delta y phi sub e + u sub s Delta x phi sub s + u sub w Delta y phi sub w } and assuming @E { phi = u }, it is fair to assume
+  For the convection term @FootNote { In order to easen the work, the density @E { rho } has not been typed. } in @NumberOf { ConvNotApprox } an approximation can be made.
+
+  @CenteredNumberedDisplay
+    @Tag { ConvNotApprox }
+  @Eq { int sub V nabla cdot (@B u u sub k ) dV approxequal u sub n Delta x phi sub n + u sub e Delta y phi sub e + u sub s Delta x phi sub s + u sub w Delta y phi sub w }
+
+  Assuming @E { phi = u }, it is fair to assume the following expressions for each magnitude for the situation shown in figure @NumberOf { FEMDiag }:
+
   @VeryWideTaggedList
-    @TagItem { Velocity } @Eq { u sub n = { u sub { i, j + 1 } + u sub {i, j} } over 2 }, @Eq { u sub e = { u sub { i + 1, j } + u sub {i, j} } over 2 }, @Eq { u sub s = { u sub { i, j - 1 } + u sub {i, j} } over 2 } and @Eq { u sub w = { u sub { i - 1, j } + u sub {i, j} } over 2 }.
+    @TagItem  { Velocities at faces } { @E { u sub n = { u sub { i, j + 1 } + u sub { i, j } } over 2 }, @E { u sub e = { u sub { i + 1, j } + u sub { i, j } } over 2 }, @E { u sub s = { u sub { i, j - 1 } + u sub { i, j } } over 2 } and @E { u sub w = { u sub { i - 1, j } + u sub { i, j } } over 2 } }
+    @TagItem { @Sym arrowup mass flow rates } { @E { F sub n = { v sub { i, j } Delta x sup - + v sub { i + 1, j } Delta x sup + } over 2 }, @E { F sub s = { v sub { i, j - 1} Delta x sup - + v sub { i + 1, j - 1 } Delta x sup + } over 2 } }
+    @TagItem { @Sym arrowright mass flow rates } { @E { F sub w = { u sub { i - 1, j } Delta y + u sub { i, j } Delta y } over 2 }, @E { F sub e = { u sub { i + 1, j } Delta y + u sub { i, j } Delta y } over 2 } }
+    @TagItem {Element dims.} { @E { Delta x sup - = sx sub i - sx sub { i - 1 } }, @E { sx sub { i + 1 } - sx sub i } and @E { Delta y = sy sub j - sy sub { j - 1 } } }
   @EndList
+
+  # @Figure
+  #  @Tag { FEMDiag }
+  #  @Caption { Diagram of the control volume and its surroundings. Note that @E { F sub k = u sub k Delta k } }
+  # @Begin
+  # { Check drawing } @REV 0.71 @Scale @Include { "contents/figs/element" }
+  # @End @Figure
+
   @End @SubSection
+
+  @SubSection
+    @Title { Diffusion in @E { x } direction  }
+  @Begin
+  @PP
+  The diffusion term can be analytically found by means of expression @NumberOf { DiffNotApprox }.
+
+  @CenteredNumberedDisplay
+    @Tag { DiffNotApprox }
+  @Eq { int sub Omega nabla cdot nabla u = int sub { partial Omega } nabla u cdot @B n = Delta x bmatrix { { partial u } over { partial y } } sub n + Delta y bmatrix { { partial u } over { partial x } } sub e - Delta x bmatrix { { partial u } over { partial y } } sub s - Delta y bmatrix { { partial u } over { partial x } } sub w }
+
+  By using first order approximations like for the east face in @NumberOf { DiffApprox }, a ready-to-implement expression can be deduced.
+
+  @CenteredNumberedDisplay
+    @Tag { DiffApprox }
+  @Eq { bmatrix { { partial u } over { partial x } } sub e approxequal { u sub { i + 1, j } - u sub { i , j } } over { sx sub { i + 1 } - sx sub i } }
+
+  @End @SubSection
+
 @EndSubSections
 
 @End @Section

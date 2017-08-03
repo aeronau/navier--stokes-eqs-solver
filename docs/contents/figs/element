@@ -1,0 +1,165 @@
+# Maybe redo this figure with other software
+# It took quite a bit to do the following, so proceed with caution
+
+@Diag {
+  @Box
+    margin { 0c }
+    16c @Wide
+    24c @High
+  //
+  @Box
+    margin { 0c }
+    translate { CTR to 0.5, 0.5 }
+    outlinestyle { noline }
+    paint { lightgray }
+    8c @Wide
+    8c @High
+  //
+  CTR:: @Square
+      outlinestyle { noline }
+      translate { CTR to 0.5, 0.5 }
+      { @E { u sub { i , j } }
+      / @Sym arrowright  }
+  n:: @Square
+      outlinestyle { noline }
+      translate { CTR to 0.5, 0.67 }
+      { @E { u sub n } @Sym arrowright
+        |0.2i
+        @E { F sub n } @Sym arrowdblup }
+  ne:: @Square
+      outlinestyle { noline }
+      translate { CTR to 0.75, 0.67 }
+      { @E { v sub { i + 1, j } }
+        / @Sym arrowup }
+  e:: @Square
+      outlinestyle { noline }
+      translate { CTR to 0.75, 0.5 }
+      { @E { F sub e }
+        / @Sym arrowdblright
+        /1.1f
+        @E { p sub { i + 1, j } }
+        /1.1f
+        @E { u sub e }
+        / @Sym arrowright }
+  se:: @Square
+      outlinestyle { noline }
+      translate { CTR to 0.75, 0.33 }
+      { @E { v sub { i + 1, j - 1 } }
+        / @Sym arrowup }
+  s:: @Square
+      outlinestyle { noline }
+      translate { CTR to 0.5, 0.33 }
+      { @E { u sub s } @Sym arrowright
+        |0.2i
+        @E { F sub s } @Sym arrowdblup }
+  sw:: @Square
+      outlinestyle { noline }
+      translate { CTR to 0.25, 0.33 }
+      { @E { v sub { i, j - 1 } }
+        / @Sym arrowup }
+  w:: @Square
+      outlinestyle { noline }
+      translate { CTR to 0.25, 0.5 }
+      { @E { F sub w }
+        / @Sym arrowdblright
+        /1.1f
+        @E { p sub { i, j } }
+        /1.1f
+        @E { u sub w }
+        / @Sym arrowright }
+  nw:: @Square
+      outlinestyle { noline }
+      translate { CTR to 0.25, 0.67 }
+      { @E { v sub { i, j } }
+        / @Sym arrowup }
+  N:: @Square
+      outlinestyle { noline }
+      translate { CTR to 0.5, 1 }
+      { N }
+  NE:: @Square
+      outlinestyle { noline }
+      translate { CTR to 1, 1 }
+      { NE }
+  RTOP:: @Square
+      outlinestyle { noline }
+      translate { CTR to 1, 0.67 }
+      { RTOP }
+  E:: @Square
+      outlinestyle { noline }
+      translate { CTR to 1, 0.5 }
+      { @E { u sub { i + 1, j } }
+      / @Sym arrowright  }
+  RBOT:: @Square
+      outlinestyle { noline }
+      translate { CTR to 1, 0.33 }
+      { RBOT }
+  SE:: @Square
+      outlinestyle { noline }
+      translate { CTR to 1, 0 }
+      { SE }
+  S:: @Square
+      outlinestyle { noline }
+      translate { CTR to 0.5, 0 }
+      { S }
+  SW:: @Square
+      outlinestyle { noline }
+      translate { CTR to 0, 0 }
+      { SW }
+  LBOT:: @Square
+      outlinestyle { noline }
+      translate { CTR to 0, 0.33 }
+      { LBOT }
+  W:: @Square
+      outlinestyle { noline }
+      translate { CTR to 0, 0.5 }
+      { @E { u sub { i - 1, j } }
+      / @Sym arrowright  }
+  LTOP:: @Square
+      outlinestyle { noline }
+      translate { CTR to 0, 0.67 }
+      { LTOP }
+  NW:: @Square
+      outlinestyle { noline }
+      translate { CTR to 0, 1 }
+      { NW }
+  nN:: @Square
+      outlinestyle { noline }
+      translate { CTR to .5, 0.84 }
+      { @E { u sub { i + 1, j + 1 } }
+      / @Sym arrowright  }
+  sS:: @Square
+      outlinestyle { noline }
+      translate { CTR to .5, 0.17 }
+      { @E { u sub { i, j - 1 } }
+      / @Sym arrowright  }
+  PNE:: @Square
+      outlinestyle { noline }
+      translate { CTR to .75, 0.84 }
+      { @E { p sub { i + 1, j + 1 } } }
+  PSE:: @Square
+      outlinestyle { noline }
+      translate { CTR to .75, 0.17 }
+      { @E { p sub { i + 1, j - 1 } } }
+  PSW:: @Square
+      outlinestyle { noline }
+      translate { CTR to .25, 0.17 }
+      { @E { p sub { i, j - 1 } } }
+  PNW:: @Square
+      outlinestyle { noline }
+      translate { CTR to .25, 0.84 }
+      { @E { p sub { i, j + 1 } } }
+
+  @Link
+    pathstyle { dashed }
+    from { N }
+    to { S }
+  @Link
+    pathstyle { dashed }
+    from { LTOP }
+    to { RTOP }
+  @Link
+    pathstyle { dashed }
+    from { LBOT }
+    to { RBOT }
+}
+@End @Figure

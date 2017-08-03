@@ -1,0 +1,568 @@
+{@@E {
+{ @@A { @@E {
+{ @@A { @@E {
+{ @@A { @@E {
+{ @@A { @@E {
+{ @@A { @@E {
+{ @@A { @@E {
+{ @@A { @@E {
+@@C
+}
+{@LUse @BasicSetup} } }
+}
+{@LUse @DocumentSetup} } }
+}
+{@LUse @ReportSetup} } }
+}
+{@LUse @TblSetup} } }
+}
+{@LUse @DiagSetup} } }
+}
+{@LUse @GraphSetup} } }
+}
+{@LUse @PieSetup} } }
+}
+{@Section
+  \a{"10.694.contents/natureofflow.1"}
+  \b{Understanding the nature of the fluid flow}
+{ ??? }}}
+
+{@@E {
+{ @@B { { @@A { @@E {
+{ @@A { @@E {
+{ @@A { @@E {
+{ @@A { @@E {
+@@D "7 1"
+}
+{@Section
+  \a{"10.694.contents/natureofflow.1"}
+  \b{Understanding the nature of the fluid flow}
+{ @LInput }} } }
+}
+{@@V @LargeScaleStructure
+  \a{"10.694.contents/natureofflow.1"}
+  \b{Minor}
+  \c{}
+  \d{@@V @Title}
+  \e{dft}
+  \g{Bold}
+  \h{@@V @SectionHeadingBreak}
+  \i{@Num @@V @SectionHeadingFormat @Body}
+  \k{Yes}
+  \l{@@V @SectionContentsIndent}
+  \n{Arabic}
+  \o{{@@V @SectionList&&preceding} @Tagged @@V @Tag}
+  \p{{@@V @SectionList&&{@@V @Tag}} @Open {num}}
+  \q{dft}
+  \r{}
+  \t{}
+  \u{}
+  \x{No}
+  \y{Yes}
+  \z{No}
+  intables{No}
+  infloaters{No}
+  inrunners{Yes}
+  newpage{No}
+@@V @Body} } }
+}
+{@@V @Heading} } }
+}
+{@@V @Run @@V @StartIfMajor} } }
+ }
+{@@E {
+{ @@A { @@E {
+@@D "416 30"
+}
+{?? @@V @Do ??} } }
+}
+{@@V y}} }
+}
+{@@V start @Runner
+  \g{"9.966.contents/natureofflow.1"}
+  \a{{} @@V @Dft @@V @LongNum}
+  \b{{} @@V @Dft @@V @ShortTitle}
+  \c{dft @@V @Dft @@V @LongNum}
+  \d{dft @@V @Dft @@V @ShortTitle}
+  \e{"10.694.contents/natureofflow.1"}
+  \f{{} @Join @@V @ShortNum}}}
+
+{@@E {
+{ @@B { @@D "444 32"
+ }
+{@@E {
+{ @@A { @@E {
+@@D "444 32"
+}
+{?? @@V @Do ??} } }
+}
+{@@V y}} }
+}
+{@NumberMarker
+  \a{"10.694.contents/natureofflow.1"}
+  \b{@@V @ShortNum}}}
+
+{@@E {
+@@D "444 32"
+}
+{@TitleMarker
+  \a{"10.694.contents/natureofflow.1"}
+  \b{@@V title}}}
+
+{@@E {
+{ @@B { { @@A { @@E {
+@@D "444 32"
+}
+{Yes @BeginDisplayCounter @@V @ShortNum} } }
+ }
+{@@E {
+{ @@A { @@E {
+@@D "1770 112"
+}
+{?? @@V @Do ??} } }
+}
+{@@V y}} }
+}
+{@@V @NumDispCounterMarker
+  \a{"4.1475.contents/natureofflow.1"}
+  \b{@@V prefix @Join 0}}}
+
+{@@E {
+{ @@A { @@E {
+@@D "7 1"
+}
+{@Section
+  \a{"10.694.contents/natureofflow.1"}
+  \b{Understanding the nature of the fluid flow}
+{ @LInput }} } }
+}
+{@@V @NDisp
+  \a{reynoldstt}
+???}}
+
+{@@E {
+{ @@A { @@E {
+@@D "91 7"
+}
+{@@V @NumDispCounterIncrement
+  \a{"dft"}
+reynoldstt} } }
+}
+{@@V @NumDispCounterMarker
+  \a{"4.1475.contents/natureofflow.3"}
+  \b{@@V @NumDispNum reynoldstt}
+  \c{@@V @DisplayNumber}}}
+
+{@@E {
+@@D "2207 143"
+}
+{@NumberMarker
+  \a{reynoldstt}
+  \b{@@V @DisplayNumber}}}
+
+{@@E {
+@@D "2021 130"
+}
+{@@V @NDisp
+  \a{GeneralNSMomentum}
+???}}
+
+{@@E {
+{ @@A { @@E {
+@@D "91 7"
+}
+{@@V @NumDispCounterIncrement
+  \a{"dft"}
+GeneralNSMomentum} } }
+}
+{@@V @NumDispCounterMarker
+  \a{"4.1475.contents/natureofflow.5"}
+  \b{@@V @NumDispNum GeneralNSMomentum}
+  \c{@@V @DisplayNumber}}}
+
+{@@E {
+@@D "2579 170"
+}
+{@NumberMarker
+  \a{GeneralNSMomentum}
+  \b{@@V @DisplayNumber}}}
+
+{@@E {
+@@D "2021 130"
+}
+{@@V @ANDisp
+  \a{NSmasssimple}
+???}}
+
+{@@E {
+{ @@A { @@E {
+@@D "91 7"
+}
+{@@V @NumDispCounterIncrement
+  \a{"dft"}
+NSmasssimple} } }
+}
+{@@V @NumDispCounterMarker
+  \a{"4.1475.contents/natureofflow.7"}
+  \b{@@V @NumDispNum NSmasssimple}
+  \c{@@V @DisplayNumber}}}
+
+{@@E {
+@@D "2968 197"
+}
+{@NumberMarker
+  \a{NSmasssimple}
+  \b{@@V @DisplayNumber}}}
+
+{@@E {
+@@D "2021 130"
+}
+{@@V @ANDisp
+  \a{NSMomHyp}
+???}}
+
+{@@E {
+{ @@A { @@E {
+@@D "91 7"
+}
+{@@V @NumDispCounterIncrement
+  \a{"dft"}
+NSMomHyp} } }
+}
+{@@V @NumDispCounterMarker
+  \a{"4.1475.contents/natureofflow.9"}
+  \b{@@V @NumDispNum NSMomHyp}
+  \c{@@V @DisplayNumber}}}
+
+{@@E {
+@@D "3338 224"
+}
+{@NumberMarker
+  \a{NSMomHyp}
+  \b{@@V @DisplayNumber}}}
+
+{@@E {
+{ @@A { @@E {
+{ @@A { @@E {
+{ @@A { @@E {
+@@D "2021 130"
+}
+{@RawList
+  \b{@@V @TagPlace}
+  \g{@WideIndent}} } }
+}
+{@@V @MakeList 1} } }
+}
+{@@V @NormalItem} } }
+}
+{@NumberMarker
+  \a{"4.1246.contents/natureofflow.3"}
+  \b{@@V type 1}}}
+
+{@@E {
+{ @@A { @@E {
+{ @@A { @@E {
+@@D "3665 246"
+}
+{@@V @MakeList 2} } }
+}
+{@@V @NormalItem} } }
+}
+{@NumberMarker
+  \a{"4.1246.contents/natureofflow.6"}
+  \b{@@V type 2}}}
+
+{@@E {
+{ @@A { @@E {
+{ @@A { @@E {
+@@D "3665 246"
+}
+{@@V @MakeList 3} } }
+}
+{@@V @NormalItem} } }
+}
+{@NumberMarker
+  \a{"4.1246.contents/natureofflow.9"}
+  \b{@@V type 3}}}
+
+{@@E {
+{ @@A { @@E {
+{ @@A { @@E {
+@@D "3665 246"
+}
+{@@V @MakeList 4} } }
+}
+{@@V @NormalItem} } }
+}
+{@NumberMarker
+  \a{"4.1246.contents/natureofflow.12"}
+  \b{@@V type 4}}}
+
+{@@E {
+@@D "2021 130"
+}
+{@@V @NDisp
+  \a{GenNSMomHyp}
+???}}
+
+{@@E {
+{ @@A { @@E {
+@@D "91 7"
+}
+{@@V @NumDispCounterIncrement
+  \a{"dft"}
+GenNSMomHyp} } }
+}
+{@@V @NumDispCounterMarker
+  \a{"4.1475.contents/natureofflow.11"}
+  \b{@@V @NumDispNum GenNSMomHyp}
+  \c{@@V @DisplayNumber}}}
+
+{@@E {
+@@D "4464 308"
+}
+{@NumberMarker
+  \a{GenNSMomHyp}
+  \b{@@V @DisplayNumber}}}
+
+{@@E {
+@@D "2021 130"
+}
+{@@V @ANDisp
+  \a{INTGenNSMomHyp}
+???}}
+
+{@@E {
+{ @@A { @@E {
+@@D "91 7"
+}
+{@@V @NumDispCounterIncrement
+  \a{"dft"}
+INTGenNSMomHyp} } }
+}
+{@@V @NumDispCounterMarker
+  \a{"4.1475.contents/natureofflow.13"}
+  \b{@@V @NumDispNum INTGenNSMomHyp}
+  \c{@@V @DisplayNumber}}}
+
+{@@E {
+@@D "4838 335"
+}
+{@NumberMarker
+  \a{INTGenNSMomHyp}
+  \b{@@V @DisplayNumber}}}
+
+{@@E {
+@@D "2021 130"
+}
+{@@V @ANDisp
+  \a{INTGenNSMomHypMOD1}
+???}}
+
+{@@E {
+{ @@A { @@E {
+@@D "91 7"
+}
+{@@V @NumDispCounterIncrement
+  \a{"dft"}
+INTGenNSMomHypMOD1} } }
+}
+{@@V @NumDispCounterMarker
+  \a{"4.1475.contents/natureofflow.15"}
+  \b{@@V @NumDispNum INTGenNSMomHypMOD1}
+  \c{@@V @DisplayNumber}}}
+
+{@@E {
+@@D "5225 362"
+}
+{@NumberMarker
+  \a{INTGenNSMomHypMOD1}
+  \b{@@V @DisplayNumber}}}
+
+{@@E {
+@@D "2021 130"
+}
+{@FootNote
+  \a{"9.1591.contents/natureofflow.1"}
+???}}
+
+{@@E {
+@@D "2021 130"
+}
+{@@V @ANDisp
+  \a{INTGenNSMomHypMOD2}
+???}}
+
+{@@E {
+{ @@A { @@E {
+@@D "91 7"
+}
+{@@V @NumDispCounterIncrement
+  \a{"dft"}
+INTGenNSMomHypMOD2} } }
+}
+{@@V @NumDispCounterMarker
+  \a{"4.1475.contents/natureofflow.17"}
+  \b{@@V @NumDispNum INTGenNSMomHypMOD2}
+  \c{@@V @DisplayNumber}}}
+
+{@@E {
+@@D "5705 396"
+}
+{@NumberMarker
+  \a{INTGenNSMomHypMOD2}
+  \b{@@V @DisplayNumber}}}
+
+{@@E {
+{ @@A { @@E {
+{ @@A { @@E {
+@@D "91 7"
+}
+{@LUse @DocumentSetup} } }
+}
+{@LUse @ReportSetup} } }
+}
+{@@V @SubSectionList
+  \a{"10.238.contents/natureofflow.1"}
+1}}
+
+{@@E {
+@@D "2021 130"
+}
+{@SubSection
+  \a{"10.725.contents/natureofflow.1"}
+  \b{Convection}
+{ ??? }}}
+
+{@@E {
+{ @@B { { @@A { @@E {
+{ @@A { @@E {
+@@D "2021 130"
+}
+{@SubSection
+  \a{"10.725.contents/natureofflow.1"}
+  \b{Convection}
+{ @LInput }} } }
+}
+{@@V @LargeScaleStructure
+  \a{"10.725.contents/natureofflow.1"}
+  \b{Minor}
+  \c{}
+  \d{Convection}
+  \e{dft}
+  \g{Bold}
+  \h{@@V @SubSectionHeadingBreak}
+  \i{@Num @@V @SubSectionHeadingFormat @Body}
+  \k{Yes}
+  \l{@@V @SubSectionContentsIndent}
+  \n{Arabic}
+  \o{{@@V @SubSectionList&&preceding} @Tagged @@V @Tag}
+  \p{{@@V @SubSectionList&&{@@V @Tag}} @Open {num}}
+  \q{dft}
+  \r{@@V @SectionShortNum}
+  \t{}
+  \u{}
+  \x{No}
+  \y{No}
+  \z{No}
+  intables{No}
+  infloaters{No}
+  inrunners{No}
+  newpage{No}
+@@V @Body} } }
+ }
+{@@E {
+{ @@A { @@E {
+@@D "6316 437"
+}
+{?? @@V @Do ??} } }
+}
+{@@V y}} }
+}
+{@NumberMarker
+  \a{"10.725.contents/natureofflow.1"}
+  \b{@@V @ShortNum}}}
+
+{@@E {
+@@D "91 7"
+}
+{@TitleMarker
+  \a{"10.725.contents/natureofflow.1"}
+  \b{Convection}}}
+
+{@@E {
+{ @@A { @@E {
+@@D "2021 130"
+}
+{@SubSection
+  \a{"10.725.contents/natureofflow.1"}
+  \b{Convection}
+{ @LInput }} } }
+}
+{@FootNote
+  \a{"9.1591.contents/natureofflow.2"}
+{In order to easen the work, the density @OneCol {@Eq
+  \a{0.7f}
+{ rho }} has not been typed.}}}
+
+{@@E {
+@@D "7226 493"
+}
+{@@V @NDisp
+  \a{ConvNotApprox}
+???}}
+
+{@@E {
+{ @@A { @@E {
+@@D "91 7"
+}
+{@@V @NumDispCounterIncrement
+  \a{"dft"}
+ConvNotApprox} } }
+}
+{@@V @NumDispCounterMarker
+  \a{"4.1475.contents/natureofflow.19"}
+  \b{@@V @NumDispNum ConvNotApprox}
+  \c{@@V @DisplayNumber}}}
+
+{@@E {
+@@D "7563 515"
+}
+{@NumberMarker
+  \a{ConvNotApprox}
+  \b{@@V @DisplayNumber}}}
+
+{@@E {
+{ @@A { @@E {
+@@D "6049 417"
+}
+{@@V @FootNoteCounterIncrement "9.1591.contents/natureofflow.1"} } }
+}
+{@@V @FootNoteCounterMarker
+  \a{"9.1565.contents/natureofflow.1"}
+  \b{@@V @FootNoteNum "9.1591.contents/natureofflow.1"}}}
+
+{@@E {
+@@D "7878 535"
+}
+{@NumberMarker
+  \a{"9.1591.contents/natureofflow.1"}
+  \b{Arabic @@V @Num {@@V @FootNoteNum "9.1591.contents/natureofflow.1"}}}}
+
+{@@E {
+{ @@A { @@E {
+@@D "6049 417"
+}
+{@@V @FootNoteCounterIncrement "9.1591.contents/natureofflow.2"} } }
+}
+{@@V @FootNoteCounterMarker
+  \a{"9.1565.contents/natureofflow.2"}
+  \b{@@V @FootNoteNum "9.1591.contents/natureofflow.2"}}}
+
+{@@E {
+@@D "8268 552"
+}
+{@NumberMarker
+  \a{"9.1591.contents/natureofflow.2"}
+  \b{Arabic @@V @Num {@@V @FootNoteNum "9.1591.contents/natureofflow.2"}}}}
+
