@@ -162,4 +162,3 @@
     from { LBOT }
     to { RBOT }
 }
-@End @Figure
