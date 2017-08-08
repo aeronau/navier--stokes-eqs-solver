@@ -2,5 +2,42 @@
     @Title { Pressure--velocity coupling and time integration }
 @Begin
 
+@PP
+According to the decomoposition theorem of Ladyzhenskaya, a vector field @E { @B w } defined in a bounded domain @E { Omega } with smooth boundary @E { partial Omega } satisfies equation @NumberOf { ladyzhenskaya }, in which it is also satisfied that @E { nabla cdot @B a = 0 } with @E { @B a in Omega } and @E { @B a cdot @B n = 0 } with @E { @B a in partial Omega }.
+
+@CenteredNumberedDisplay
+  @Tag { ladyzhenskaya }
+@Eq { @B w = @B a + nabla phione}
+
+Consequently, by subtracting the gradient of a suitable scalar field @E { @B p } to a discrete velocity field @E { @B { u sup p } } a divergence-free vector field @E { @B u } is obtained (see expression @NumberOf { velTransf }).
+
+
+@CenteredNumberedDisplay
+  @Tag { velTransf }
+@Eq { @B u = @B { u sup p } - nabla p}
+
+Because @E { @B u } is a divergence-free vector field, the expression @NumberOf { velTransfDiv1 } has to be satisfied:
+
+@BeginAlignedDisplays
+
+@CenteredAlignedNumberedDisplay
+  @Tag { velTransfDiv1 }
+@Eq { nabla cdot @B u ^= 0 }
+
+@NumberOf { velTransfDiv1 } otherwise written as in @NumberOf { velTransfDiv2 }
+
+@CenteredAlignedNumberedDisplay
+  @Tag { velTransfDiv2 }
+@Eq { nabla cdot @B { u sup p } - nabla cdot ( nabla p ) ^= 0 }
+
+which can be simplified to expression @NumberOf { velTransfDiv3 }
+
+@CenteredAlignedNumberedDisplay
+  @Tag { velTransfDiv3 }
+@Eq { nabla cdot @B { u sup p } ^= nabla sup 2 p }
+
+where @E { nabla sup 2 } is the Laplace operator, sometimes seen as @E { triangle }, which should not be confused with @E { Delta }.
+
+@EndAlignedDisplays
 
 @End @Section
