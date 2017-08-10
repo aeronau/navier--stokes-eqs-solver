@@ -12,7 +12,7 @@ The solver soon-to-be developed will fall under the category of numerical solver
 Because my Final Year Project (FYP) will be related to a project aimed at developing a solver for the NS equations, I must make sure that the inner workings of a basic solver are fully understood by the time I start coding for the FYP. I have written this report to summary the information gathered from different sources and document my progress. The reader must know that this document will suffer constant changes until I feel sufficiently confident to pursue the FYP. Once I devote myself to the FYP, this document will be freezed and remain as proof of the work done.
 
 @PP
-This document is typeset with and compiled using Lout. In this project, Lout is used as a document formatter similar to @LaTeX so I can test the convenience of writing the FYP using the same tools. The initial idea is to write the FYP in Lout, so I can reuse some of the parts of these document without modification.
+This document is typeset with and compiled using Lout. In this project Lout is used as a document formatter similar to @LaTeX, so I can test the convenience of writing the FYP using the former tool. The initial idea is to write the FYP in Lout, so I can reuse some of the parts of these document without modification.
 
 @PP
 It is recommended that the reader has a good understanding of Fluid Mechanics so the assumptions and the equations presented are grasped.

@@ -9,14 +9,14 @@ According to the decomoposition theorem of Ladyzhenskaya, a vector field @E { @B
   @Tag { ladyzhenskaya }
 @Eq { @B w = @B a + nabla phione}
 
-Consequently, by subtracting the gradient of a suitable scalar field @E { @B p } to a discrete velocity field @E { @B { u sup p } } a divergence-free vector field @E { @B u } is obtained (see expression @NumberOf { velTransf }).
+Consequently, by subtracting the gradient of a suitable scalar field @E { p } to a discrete velocity field @E { @B { u } sup p } a divergence-free vector field @E { @B u } is obtained (see expression @NumberOf { velTransf }).
 
 
 @CenteredNumberedDisplay
   @Tag { velTransf }
-@Eq { @B u = @B { u sup p } - nabla p}
+@Eq { @B u = @B { u } sup p - nabla p}
 
-Because @E { @B u } is a divergence-free vector field, the expression @NumberOf { velTransfDiv1 } has to be satisfied:
+Because @E { @B u } is a divergence-free vector field, the expression @NumberOf { velTransfDiv1 } has to be satisfied.
 
 @BeginAlignedDisplays
 
@@ -28,15 +28,98 @@ Because @E { @B u } is a divergence-free vector field, the expression @NumberOf 
 
 @CenteredAlignedNumberedDisplay
   @Tag { velTransfDiv2 }
-@Eq { nabla cdot @B { u sup p } - nabla cdot ( nabla p ) ^= 0 }
+@Eq { nabla cdot @B { u } sup p - nabla cdot ( nabla p ) ^= 0 }
 
 which can be simplified to expression @NumberOf { velTransfDiv3 }
 
 @CenteredAlignedNumberedDisplay
   @Tag { velTransfDiv3 }
-@Eq { nabla cdot @B { u sup p } ^= nabla sup 2 p }
+@Eq { nabla cdot @B { u } sup p ^= nabla sup 2 p }
 
 where @E { nabla sup 2 } is the Laplace operator, sometimes seen as @E { triangle }, which should not be confused with @E { Delta }.
+
+@PP
+In order to compute the solution, in section @NumberOf { femInt } it was shown that the domain needed to be discretized. On a discrete grid, instead of using the operators above, such as the Laplace operator @E { triangle }, meant for continuous domains, one may use their analogs for discretized domains, in this case, the discrete Laplace operator @E { L }. As an example, expression @NumberOf { velTransfDiv3 }---also known as the Poisson equation---is written as in @NumberOf { velTransfDiv3Mat } when the continuous domain operators are replaced by their discrete homologues.
+
+@CenteredAlignedNumberedDisplay
+  @Tag { velTransfDiv3Mat }
+@Eq { M @B { u } sup p ^= L p }
+
+where @E { M } is the divergence and @E { L }, the Laplace operator. Note that @E { L = MG }, where @E { G } is the gradient. { Is it true? } @REV { For now on, @E { p } will be assumed constant for each CV, though @E { p } is not the same value over the whole domain. }
+
+@PP
+For each CV, expression @NumberOf { velTransfDiv3Mat } must be satisfied. Note that the left hand side (LHS) of the equation is computed as in expression @NumberOf { RHSCond1 } for a single CV. Equation @NumberOf { RHSCond2 } also has to be satisfied when accounting for all the CVs.
+
+@CenteredAlignedNumberedDisplay
+  @Tag { RHSCond1 }
+@Eq { [ M @B { u } sup p ] sub i ^= int sub { Omega sub i } nabla cdot @B { u } sup p dS }
+
+@CenteredAlignedNumberedDisplay
+  @Tag { RHSCond2 }
+@Eq { sum from i [ M @B { u } sup p ] sub i ^= int sub Omega nabla cdot @B { u } sup p dS = 0 }
+
+@EndAlignedDisplays
+
+@PP
+By rearranging the Navier-Stokes equation (see equation @NumberOf { NSMomHyp }) and applying the decomoposition theorem of Ladyzhenskaya, the following can be obtained:
+
+@BeginAlignedDisplays
+
+@CenteredAlignedNumberedDisplay
+  @Tag { NSCont1 }
+@Eq { { partial u sub j } over { partial t } - nu nabla sup 2 u sub j + nabla cdot ( u sub j @B u ) + 1 over rho { partial p } over { partial x sub j } ^= 0 }
+@CenteredAlignedNumberedDisplay
+  @Tag { NSCont2 }
+@Eq { nabla cdot @B u ^= 0 }
+
+@NumberOf { NSCont1 } and @NumberOf { NSCont1 } which can be rewritten in matrix form for the discretized domain as the system of equations constituted by @NumberOf { NSDis1 } and @NumberOf { NSDis2 }
+
+@CenteredAlignedNumberedDisplay
+  @Tag { NSDis1 }
+@Eq { Omega { d u } over { d t } + C ( u ) u + D u + Omega G p ^= 0 }
+@CenteredAlignedNumberedDisplay
+  @Tag { NSDis2 }
+@Eq { M u ^= 0 }
+
+where @E { -D } equals the diffusion and @E { - Omega G } equals the pressure. { Am I right? } @REV { Note that in the last system of equations, @E { p } is the scalar matrix for the discretized scalar field, not the pressure as it was in the system of equations for a continuous domain. }
+
+@EndAlignedDisplays
+
+In this project, the integral of equation @NumberOf { NSDisFull1 } (generalization of @NumberOf { NSDis1 }) with @NumberOf { NSDisFull2 } required the use of the Adams-Bashforth method. The pressure gradient term has been computed implicitly while the time derivative has been evaluated by means of the central difference.
+
+@BeginAlignedDisplays
+
+@CenteredAlignedNumberedDisplay
+  @Tag { NSDisFull1 }
+@Eq { Omega { d u } over { d t } + C ( u ) u + D u + Omega G p ^= Omega f }
+@CenteredAlignedNumberedDisplay
+  @Tag { NSDisFull2 }
+@Eq { M u ^= 0 }
+
+@EndAlignedDisplays
+
+The solution is achieved by first rearranging the equation above, as it can be seen in @NumberOf { NSDisRea }.
+
+@CenteredNumberedDisplay
+  @Tag { NSDisRea }
+@Eq { { d u } over { d t } ^= R(u) - Gp}
+
+where
+
+@CenteredDisplay
+@Eq { R(u) ^= -Omega sup { -1 } (C(u)u + Du ) + f }
+
+and by applying the suppositions above, the solutions @NumberOf { NSsolution1 } and @NumberOf { NSsolution2 } are found.
+
+@BeginAlignedDisplays
+
+@CenteredAlignedNumberedDisplay
+  @Tag { NSsolution1 }
+@Eq { { u sup { n + 1 } - u sup n } over { Delta t } ^= 3 over 2 R sup n - 1 over 2 R sup { n - 1 } - Gp sup { n + 1 } }
+
+@CenteredAlignedNumberedDisplay
+  @Tag { NSsolution2 }
+@Eq { M u sup { n + 1 } }
 
 @EndAlignedDisplays
 
