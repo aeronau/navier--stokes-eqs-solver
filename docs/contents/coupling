@@ -119,7 +119,29 @@ and by applying the suppositions above, the solutions @NumberOf { NSsolution1 } 
 
 @CenteredAlignedNumberedDisplay
   @Tag { NSsolution2 }
-@Eq { M u sup { n + 1 } }
+@Eq { M u sup { n + 1 } ^= 0 }
+
+If the pressure gradient term and the mass conservation are ignored in @NumberOf { NSsolution1 }, it is safe to say that
+
+@CenteredAlignedNumberedDisplay
+  @Tag { NSupsolution }
+@Eq { u sup p ^= u sup n + Delta t pmatrix { 3 over 2 R sup n - 1 over 2 R sup { n - 1 } } }
+
+Then, @E { u sup { n + 1 } } is computed with
+
+@CenteredAlignedNumberedDisplay
+  @Tag { NSuppsolution1 }
+@Eq { u sup { p + 1 } ^= u sup p - G p tilde }
+
+@CenteredAlignedNumberedDisplay
+  @Tag { NSuppsolution2 }
+@Eq { M u sup { n + 1 } ^= 0 }
+
+@CenteredAlignedNumberedDisplay
+  @Tag { NSuppsolution3 }
+@Eq { L p tilde = M u sup p }
+
+The true pressure is evaluated with @E { p tilde = Delta t p sup { n + 1 } }.
 
 @EndAlignedDisplays
 
