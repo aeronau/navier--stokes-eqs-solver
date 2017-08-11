@@ -4,10 +4,10 @@
 @Begin
 
 @PP
-The three fundamental equations of Fluid Mechanics arise from the laws of conservation of mass, conservation of momentum and conservation of energy. While the equations can be written either in differential or integral form, it is often preferred to work with the differential arrangement. In this arrangement, the equations are expressed according to elementary volumes of the fluid, as opposed to the integral form, which takes into account macroscopic volumes and the properties are expressed as averages over the entire domain. The former is extensively used, though not directly: the Finite Element Method (FEM) provides numerical solutions for the Partial Differential Equations (PDEs) referenced above in CFD.
+The three fundamental equations of Fluid Mechanics arise from the laws of conservation of mass, conservation of momentum and conservation of energy. While the equations can be written either in differential or integral form, it is often preferred to work with the differential arrangement. In this arrangement, the equations are expressed according to elementary volumes of the fluid, as opposed to the integral form, which takes into account macroscopic volumes and the properties are expressed as averages over the entire domain. The former is extensively used through the Finite Element Method (FEM), which provides numerical solutions for the Partial Differential Equations (PDEs) referenced above in CFD.
 
 @PP
-The Reynolds' transport theorem states that the changes of an extensive magnitude @E { F } in a fluid of density @E { rho } is related to the magnitude per unit of mass @E { f } according to the equation @NumberOf { reynoldstt }.
+The Navier-Stokes equations cannot be understood without the Reynolds' transport theorem. This theorem links the change of an extensive magnitude @E { F } in a fluid of density @E { rho } to the same magnitude expressed per unit of mass @E { f } according to the equation @NumberOf { reynoldstt }.
 
 @CenteredNumberedDisplay
     @Tag { reynoldstt }
@@ -16,14 +16,14 @@ The Reynolds' transport theorem states that the changes of an extensive magnitud
 where @E { CS } and @E { CV } are the control system and the control volume, respectively, while @E { @B { v sub r } } is the flow velocity relative to the @E { CV }.
 
 @PP
-Using the Reynold's transport theorem one can find the NS equations, being the conservation of momentum written as in equation @NumberOf { GeneralNSMomentum }.
+Using the Reynold's transport theorem one can find the NS equations. The conservation of momentum---one of the equations---is written as in equation @NumberOf { GeneralNSMomentum }.
 
 @CenteredNumberedDisplay
     @Tag { GeneralNSMomentum }
 @Eq { { partial @B v } over { partial t } + ( @B v cdot nabla ) @B v = - nabla p + nu Delta @B v + @B f ( @B x, t ) }
 
 @PP
-Given the complexity of creating a general solver, some assumptions will be made to simplify the solver. For an incompressible Newtonian fluid, the NS equations for the conservation of mass and the conservation of linear momentum are written---in Enstein notation---as in @NumberOf { NSmasssimple } and @NumberOf { NSMomHyp }, respectively.
+Given the complexity of creating a general solver, some assumptions will be made to simplify the coding. For an incompressible Newtonian fluid, the NS equations for the conservation of mass and the conservation of linear momentum are written---in Enstein notation---as in @NumberOf { NSmasssimple } and @NumberOf { NSMomHyp }, respectively.
 
 @BeginAlignedDisplays
 
@@ -33,7 +33,7 @@ Given the complexity of creating a general solver, some assumptions will be made
 
 @CenteredAlignedNumberedDisplay
     @Tag { NSMomHyp }
-{ @Eq { partial x sub j partial x sub j } on denominator? } @REV @Eq { { partial u sub i } over { partial t } + u sub j { partial u sub i } over { partial x sub j } ^= - 1 over rho { partial p } over { partial x sub i } + nu { partial sup 2 u sub i } over { partial x sub j partial x sub j } }
+{ @Eq { partial x sub j partial x sub j != / partial x sub j sup 2  } on denominator? } @REV @Eq { { partial u sub i } over { partial t } + u sub j { partial u sub i } over { partial x sub j } ^= - 1 over rho { partial p } over { partial x sub i } + nu { partial sup 2 u sub i } over { partial x sub j partial x sub j } }
 # @Eq { { partial u sub i } over { partial t } + u sub j { partial u sub i } over { partial x sub j } ^= - { partial p } over { partial x sub i } + 1 over @Re { partial sup 2 u sub i } over { partial x sub j partial x sub j } }
 
 @EndAlignedDisplays
@@ -56,10 +56,10 @@ A more general expression for @NumberOf { NSMomHyp }, with {Compare with transpa
   @Tag { GenNSMomHyp }
 @Eq { { partial (rho phi) } over { partial t } + nabla cdot (rho @B u phi) = nabla cdot (Gamma nabla phi) + S }
 
-Note that this expression takes almost the same form when working with energy or entropy. Modifying the variables @E { phi } and @E { S } to the corresponding desired expression will suffice when changing the paradigm. The rest of the equation may remain intact.
+Note that this expression takes almost the same form when working with energy or entropy. Modifying the variables @E { phi } and @E { S } to the corresponding desired variable or expression will suffice on paradigm change. The rest of the equation may remain intact.
 
 @PP
-Earlier in this document, it was mentioned that the FEM was the go-to numerical method. By taking one general element---the E in the acronym---as a control volume (CV), of a general volume @E { V }, the expression @NumberOf { INTGenNSMomHyp } is found.
+Earlier in this document, it was mentioned that the FEM was the go-to numerical method to compute the solution of the NS equations. By taking one general element---the E in the acronym---as a control volume (CV), of a general volume @E { V }, the expression @NumberOf { INTGenNSMomHyp } is found.
 
 @BeginAlignedDisplays
 
@@ -85,57 +85,42 @@ By applying the divergence theorem @FootNote { The divergence theorem states tha
 
 Notice that the normal derivatives of @E { phi } at the faces are needed. The simplest way to compute the equation @NumberOf { INTGenNSMomHypMOD2 } is by using a staggered mesh as shown in figure @NumberOf { FEMDiag } and the following for the convection and diffusion terms.
 
-@BeginSubSections
+@PP
+For the convection term @FootNote { In order to easen the work, the density @E { rho } has not been typed. } an approximation has been made, shown in @NumberOf { ConvNotApprox }.
 
-  @SubSection
-    @Title { Convection in @E { x } direction }
-    @Tag { convection }
-  @Begin
-  @PP
-  For the convection term @FootNote { In order to easen the work, the density @E { rho } has not been typed. } in @NumberOf { ConvNotApprox } an approximation can be made.
+@CenteredNumberedDisplay
+  @Tag { ConvNotApprox }
+@Eq { int sub V nabla cdot (@B u u sub k ) dV approxequal u sub n Delta x phi sub n + u sub e Delta y phi sub e + u sub s Delta x phi sub s + u sub w Delta y phi sub w }
 
-  @CenteredNumberedDisplay
-    @Tag { ConvNotApprox }
-  @Eq { int sub V nabla cdot (@B u u sub k ) dV approxequal u sub n Delta x phi sub n + u sub e Delta y phi sub e + u sub s Delta x phi sub s + u sub w Delta y phi sub w }
+Assuming @E { phi = u }, it is fair to assume the following expressions for each magnitude at one point of the domain for the situation shown in figure @NumberOf { FEMDiag }:
 
-  Assuming @E { phi = u }, it is fair to assume the following expressions for each magnitude at one point of the domain for the situation shown in figure @NumberOf { FEMDiag }:
+@VeryWideTaggedList
+  @TagItem  { Velocities at faces } { @E { u sub n = { u sub { i, j + 1 } + u sub { i, j } } over 2 }, @E { u sub e = { u sub { i + 1, j } + u sub { i, j } } over 2 }, @E { u sub s = { u sub { i, j - 1 } + u sub { i, j } } over 2 } and @E { u sub w = { u sub { i - 1, j } + u sub { i, j } } over 2 } }
+  @TagItem { @Sym arrowup mass flow rates } { @E { F sub n = { v sub { i, j } Delta x sup - + v sub { i + 1, j } Delta x sup + } over 2 }, @E { F sub s = { v sub { i, j - 1} Delta x sup - + v sub { i + 1, j - 1 } Delta x sup + } over 2 } }
+  @TagItem { @Sym arrowright mass flow rates } { @E { F sub w = { u sub { i - 1, j } Delta y + u sub { i, j } Delta y } over 2 }, @E { F sub e = { u sub { i + 1, j } Delta y + u sub { i, j } Delta y } over 2 } }
+  @TagItem {Element dims.} { @E { Delta x sup - = sx sub i - sx sub { i - 1 } }, @E { sx sub { i + 1 } - sx sub i } and @E { Delta y = sy sub j - sy sub { j - 1 } } }
+@EndList
 
-  @VeryWideTaggedList
-    @TagItem  { Velocities at faces } { @E { u sub n = { u sub { i, j + 1 } + u sub { i, j } } over 2 }, @E { u sub e = { u sub { i + 1, j } + u sub { i, j } } over 2 }, @E { u sub s = { u sub { i, j - 1 } + u sub { i, j } } over 2 } and @E { u sub w = { u sub { i - 1, j } + u sub { i, j } } over 2 } }
-    @TagItem { @Sym arrowup mass flow rates } { @E { F sub n = { v sub { i, j } Delta x sup - + v sub { i + 1, j } Delta x sup + } over 2 }, @E { F sub s = { v sub { i, j - 1} Delta x sup - + v sub { i + 1, j - 1 } Delta x sup + } over 2 } }
-    @TagItem { @Sym arrowright mass flow rates } { @E { F sub w = { u sub { i - 1, j } Delta y + u sub { i, j } Delta y } over 2 }, @E { F sub e = { u sub { i + 1, j } Delta y + u sub { i, j } Delta y } over 2 } }
-    @TagItem {Element dims.} { @E { Delta x sup - = sx sub i - sx sub { i - 1 } }, @E { sx sub { i + 1 } - sx sub i } and @E { Delta y = sy sub j - sy sub { j - 1 } } }
-  @EndList
+@Figure
+  @Tag { FEMDiag }
+  @Caption { Diagram of the control volume and its surroundings. Note that @E { F sub k = u sub k Delta k } }
+@Begin
+# { Check drawing } @REV 0.71 @Scale @Include { "contents/figs/element" }
+@IncludeGraphic "contents/figs/element.eps"
+@End @Figure
 
-  @Figure
-    @Tag { FEMDiag }
-    @Caption { Diagram of the control volume and its surroundings. Note that @E { F sub k = u sub k Delta k } }
-  @Begin
-  # { Check drawing } @REV 0.71 @Scale @Include { "contents/figs/element" }
-  @IncludeGraphic "contents/figs/element.eps"
-  @End @Figure
+@PP
+The diffusion term has been analytically found by means of expression @NumberOf { DiffNotApprox }, where @E { Delta x } and @E { Delta y } come from the same expressions used before.
 
-  @End @SubSection
+@CenteredNumberedDisplay
+  @Tag { DiffNotApprox }
+@Eq { int sub Omega nabla cdot nabla u = int sub { partial Omega } nabla u cdot @B n = Delta x pmatrix { { partial u } over { partial y } } sub n + Delta y pmatrix { { partial u } over { partial x } } sub e - Delta x pmatrix { { partial u } over { partial y } } sub s - Delta y pmatrix { { partial u } over { partial x } } sub w }
 
-  @SubSection
-    @Title { Diffusion in @E { x } direction  }
-  @Begin
-  @PP
-  The diffusion term can be analytically found by means of expression @NumberOf { DiffNotApprox }, where @E { Delta x } and @E { Delta y } come from the same expressions used in subsection @NumberOf { convection } in page @PageOf { convection }.
+By using first order approximations as in expression @NumberOf { DiffApprox } for the east @E { e } face, a ready-to-implement expression can be deduced.
 
-  @CenteredNumberedDisplay
-    @Tag { DiffNotApprox }
-  @Eq { int sub Omega nabla cdot nabla u = int sub { partial Omega } nabla u cdot @B n = Delta x bmatrix { { partial u } over { partial y } } sub n + Delta y bmatrix { { partial u } over { partial x } } sub e - Delta x bmatrix { { partial u } over { partial y } } sub s - Delta y bmatrix { { partial u } over { partial x } } sub w }
-
-  By using first order approximations as in expression @NumberOf { DiffApprox } for the east @E { e } face, a ready-to-implement expression can be deduced.
-
-  @CenteredNumberedDisplay
-    @Tag { DiffApprox }
-  @Eq { bmatrix { { partial u } over { partial x } } sub e approxequal { u sub { i + 1, j } - u sub { i , j } } over { sx sub { i + 1 } - sx sub i } }
-
-  @End @SubSection
-
-@EndSubSections
+@CenteredNumberedDisplay
+  @Tag { DiffApprox }
+@Eq { pmatrix { { partial u } over { partial x } } sub e approxequal { u sub { i + 1, j } - u sub { i , j } } over { sx sub { i + 1 } - sx sub i } }
 
 The expressions above compute the solution for a single cell or element. By moving the element over all the points that constitute the domain, the entire map of magnitudes will be solved. The following step is to integrate over time.
 
