@@ -163,7 +163,7 @@ where @E { f } is a value between 0.2 and 0.5, and @E { Delta t sub d } and @E {
   @Tag { deltatc }
 @Eq { Delta t sub C <= 1 over 2 @R Min pmatrix { Delta over { | u | } } }
 
-The values of @E { Delta } and @E { u } can be found as in figure @NumberOf { deltatgrid }.
+The values of @E { Delta } and @E { u } can be found according to figure @NumberOf { deltatgrid }.
 
 @Figure
   @Tag { deltatgrid }
@@ -171,5 +171,7 @@ The values of @E { Delta } and @E { u } can be found as in figure @NumberOf { de
 @Begin
 @IncludeGraphic "contents/figs/deltatgrid.eps"
 @End @Figure
+
+ { Is it true? Are they valid for non regular meshes? } @REV { Notice that in figure @NumberOf { deltatgrid } the mesh is square, so the expressions above are only valid in square or quasi-square meshes. }
 
 @End @Section
