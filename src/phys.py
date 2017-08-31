@@ -43,8 +43,8 @@ def convection(u, v, sx, sy, cx, cy, N):
             vFs = ( v[i, j - 1] * Δx + v[i, j] * Δx ) / 2
             vFw = ( u[i, j - 1] * Δy⁻ + u[i, j] * Δy⁺ ) / 2
 
-            convection_x[i, j] = uFn*un + uFe*ue - uFs*us - uFw*uw / ω_x
-            convection_y[i, j] = vFn*vn + vFe*ve - vFs*vs - vFw*vw / ω_y
+            convection_x[i, j] = ( uFn*un + uFe*ue - uFs*us - uFw*uw ) / ω_x
+            convection_y[i, j] = ( vFn*vn + vFe*ve - vFs*vs - vFw*vw ) / ω_y
 
 def diffusion(u, v, sx, sy, cx, cy, N):
 
