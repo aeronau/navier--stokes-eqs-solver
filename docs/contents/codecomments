@@ -1,0 +1,27 @@
+@Section
+    @Title { Comments on the code }
+@Begin
+
+@PP
+The language chosen to write the solver prototype is Python, as it is straightforward for an average programmer and comes with solid libraries to perform most of the math operations required in this project. Its syntax makes porting mathematical reasoning to code fast without losing code readability. This characteristic is advantageous in large projects, in which mock-ups---functional or not---are often developed as guides. Python is a good choice for mock-ups and prototypes, but it is often not chosen in the core of high performance software @FootNote { Python offers tools to optimize code for compute-intensive applications, but stepping up the code usually comes with complexity and a loss of readability. }.
+
+@PP
+The code will be structured as in figure @NumberOf { structure }. The project will be developed around @F main.py in which variables will be initialized and functions will be called. The functions will be grouped according to its use, so the functions which compute convection and diffusion will be defined in @F { phys.py }, as they are related to physics phenomena. The halo update, needed to gather the already computed results on cell move, will be defined in @F { tool.py }, in which general purpose operations will be found.
+
+@Figure
+  @Tag { structure }
+  @Caption { Structure of the program }
+@Begin
+@Include { "contents/figs/structure" }
+@End @Figure
+
+@PP
+The program is based on Soria's transparencies @Cite { $soria2017navierstokes }, presented during the summer course on CFD @FootNote { Introduction to Computational Fluid Dynamics by the Turbulence and Aerodynamics in Mechanical and Aerospace Engineering Research Group (TUAREG). } at ESEIAAT's dependencies. The following is a step-by-step description on the development of the program, based on the notes in section @NumberOf { integral }.
+
+@PP
+@MARK { Convection } The program supports convection in both @E { x } and @E { y } directions. By applying the same reasoning used in convection in @E { x } direction to the @E { y } direction.
+
+@Include { "contents/code/convection" }
+
+
+@End @Section

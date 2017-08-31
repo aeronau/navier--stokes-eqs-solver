@@ -1,0 +1,30 @@
+@E { u sub n = { u sub { i, j + 1 } + u sub { i, j } } over 2 }
+@E { u sub e = { u sub { i + 1, j } + u sub { i, j } } over 2 }
+@E { u sub s = { u sub { i, j - 1 } + u sub { i, j } } over 2 }
+@E { u sub w = { u sub { i - 1, j } + u sub { i, j } } over 2 }
+
+@E { F sub n = { v sub { i, j } Delta x sup - + v sub { i + 1, j } Delta x sup + } over 2 }
+@E { F sub e = { u sub { i, j } Delta y + u sub { i + 1, j } Delta y } over 2 }
+@E { F sub s = { v sub { i, j - 1} Delta x sup - + v sub { i + 1, j - 1 } Delta x sup + } over 2 }
+@E { F sub w = { u sub { i - 1, j } Delta y + u sub { i, j } Delta y } over 2 }
+
+@E { v sub n = { v sub { i, j + 1 } + v sub { i, j } } over 2 }
+@E { v sub e = { v sub { i + 1, j } + v sub { i, j } } over 2 }
+@E { v sub s = { v sub { i, j - 1 } + v sub { i, j } } over 2 }
+@E { v sub w = { v sub { i - 1, j } + v sub { i, j } } over 2 }
+
+@E { F sub n = { v sub { i, j } Delta x + v sub { i, j + 1 } Delta x } over 2 }
+@E { F sub e = { u sub { i + 1, j } Delta y sup - + u sub { i + 1, j + 1 } Delta y sup + } over 2 }
+@E { F sub s = { v sub { i, j - 1} Delta x + v sub { i , j } Delta x } over 2 }
+@E { F sub w = { u sub { i, j } Delta y sup - + u sub { i, j + 1 } Delta y sup + } over 2 }
+
+
+convection_x[i, j] = uFn*un + uFe*ue - uFs*us - uFw*uw / ?_x
+convection_y[i, j] = vFn*vn + vFe*ve - vFs*vs - vFw*vw / ?_y
+
+@E { Delta x = sx sub i - sx sub { i - 1 } }
+@E { Delta x sup - = sx sub i - sx sub { i - 1 } }
+@E { Delta x sup + = sx sub { i + 1 } - sx sub i }
+@E { Delta y = sy sub j - sy sub { j - 1 } }
+@E { Delta y sup - = sy sub i - sy sub { i - 1 } }
+@E { Delta y sup + = sy sub { i + 1 } - sy sub i }

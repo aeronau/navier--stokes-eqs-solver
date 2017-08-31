@@ -1,0 +1,31 @@
+{ @Reference
+  @Tag {}
+  @Type {}
+  @Abstract {}
+  @Address {}
+  @Annote {}
+  @Author {}
+  @Day {}
+  @Edition {}
+  @HowPublished {}
+  @InAuthor {}
+  @InTitle {}
+  @Institution {}
+  @Journal {}
+  @Keywords {}
+  @Label {}
+  @Month {}
+  @Note {}
+  @Number {}
+  @Organization {}
+  @Page {}
+  @Pages {}
+  @Pinpoint {}
+  @Publisher {}
+  @Title {}
+  @TitleNote {}
+  @TRType {}
+  @URL {}
+  @Volume {}
+  @Year {}
+}

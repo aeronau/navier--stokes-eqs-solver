@@ -1,5 +1,6 @@
 @Section
     @Title { Pressure--velocity coupling and time integration }
+    @Tag { coupling }
 @Begin
 
 @PP
@@ -39,7 +40,7 @@ which can be simplified to expression @NumberOf { velTransfDiv3 }
 where @E { nabla sup 2 } is the Laplace operator, sometimes seen as @E { triangle }, which should not be confused with @E { Delta }.
 
 @PP
-In order to compute the solution, in section @NumberOf { femInt } it was shown that the domain needed to be discretized. On a discrete grid, instead of using the operators above, such as the Laplace operator @E { triangle }, meant for continuous domains, one may use their analogs for discretized domains, in this case, the discrete Laplace operator @E { L }. As an example, expression @NumberOf { velTransfDiv3 }---also known as the Poisson equation---is written as in @NumberOf { velTransfDiv3Mat } when the continuous domain operators are replaced by their discrete homologues.
+In order to compute the solution, in section @NumberOf { integral } it was shown that the domain needed to be discretized. On a discrete grid, instead of using the operators above, such as the Laplace operator @E { triangle }, meant for continuous domains, one may use their analogs for discretized domains, in this case, the discrete Laplace operator @E { L }. As an example, expression @NumberOf { velTransfDiv3 }---also known as the Poisson equation---is written as in @NumberOf { velTransfDiv3Mat } when the continuous domain operators are replaced by their discrete homologues.
 
 @CenteredAlignedNumberedDisplay
   @Tag { velTransfDiv3Mat }

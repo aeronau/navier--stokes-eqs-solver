@@ -1,0 +1,14 @@
+@Diag {
+  @Tree {
+    @Box { @F main.py }
+    @FirstSub {
+      @Box { @F phys.py }
+      @FirstSub @Box Convection
+      @NextSub @Box Diffusion
+    }
+    @NextSub {
+      @Box { @F tool.py }
+      @FirstSub @Box { Halo update }
+    }
+  }
+}

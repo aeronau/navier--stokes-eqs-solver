@@ -31,7 +31,7 @@
 #                                                                             #
 ###############################################################################
 
-  @Include { mydefs }
+    @Include { "files/defs" }
 
 ###############################################################################
 #                                                                             #
@@ -41,13 +41,13 @@
 #  its line and change the value between braces.                              #
 #                                                                             #
 ###############################################################################
- 
+
 @Use { @BasicSetup
-    @InitialFont	{ Times Base 12p	} # initial font
+    @InitialFont	{ Times Base 11p	} # initial font
   # @InitialBreak	{{adjust 1.2fx hyphen} @OrIfPlain {ragged 1fx nohyphen}}
   # @InitialOutdent	{ 2f @OrIfPlain 4s	} # initial outdent
   # @InitialSpace	{ lout			} # initial space style
-    @InitialLanguage	{ English		} # initial language
+    @InitialLanguage	{ Catalan		} # initial language
   # @InitialColour	{ black			} # initial colour
   # @InitialBackgroundColour { white		} # initial background colour
     @OptimizePages	{ Yes			} # optimize page breaks?
@@ -110,7 +110,7 @@
   # @ColumnNumber	{ 1			} # number of columns (1 to 10)
   # @ColumnGap		{ 1.00c	@OrIfPlain 6s	} # column gap
 
-  # @FigureLocation	{ Display		} # default figure location
+  # @FigureLocation	{ PageTop		} # default figure location
   # @FigureFormat	{ @CC @Body		} # default figure format
   # @FigureWord		{ figure		} # "Figure" word else anything
   # @FigureNumbers	{ Arabic		} # method of numbering figures
@@ -140,7 +140,7 @@
   # @FloaterCaptionFormat{ {@B { word @NumSep number. &2s }} @Insert caption }
   # @MakeFloaterContents{ No                    } # list of floaters at start
 
-  # @MakeContents	{ No			} # make contents? Yes or No
+    @MakeContents	{ Yes			} # make contents? Yes or No
   # @ContentsGap	{ 0.20v	@OrIfPlain 0f	} # extra gap above minor entry
   # @ContentsGapAbove	{ 0.80v	@OrIfPlain 1f	} # extra gap above major entry
   # @ContentsGapBelow	{ 0.00v	@OrIfPlain 0f	} # extra gap below major entry
@@ -152,7 +152,7 @@
   # @ContentsLeaderGap	{ 4s	@OrIfPlain 2s	} # gap between leaders
   # @ContentsRightWidth	{ 3f	@OrIfPlain 6s	} # page numbers column width
 
-  # @MakeReferences	{ Yes			} # make references? Yes or No
+    @MakeReferences	{ Yes			} # make references? Yes or No
   # @RefCiteStyle	{ [cite]		} # citation style
   # @RefCiteLabels	{ @RefNum		} # citation items
   # @RefNumbers		{ Arabic		} # reference numbers
@@ -260,7 +260,7 @@
   # @MarginNoteBreak	{ ragged 1.10fx		} # break style of margin notes
   # @MarginNoteHGap	{ 0.5c   		} # horizontal gap to notes
   # @MarginNoteVGap	{ @DisplayGap  		} # min vertical gap between
-  # @MarginNoteWidth	{ 1.50c  		} # width of margin notes
+  # @MarginNoteWidth	{ 2c  		} # width of margin notes
   # @EndNoteNumbers	{ Arabic		} # endnote numbers
   # @EndNoteFont	{ 0.80f			} # font of endnotes
   # @EndNoteBreak	{ 1.2fx	@OrIfPlain 1fx	} # break for endnotes
@@ -292,9 +292,9 @@
 
   # @PageHeaders	{ Simple		} # None Simple Titles NoTitles
   # @PageNumbers	{ Arabic		} # page numbers
-  # @FirstPageNumber	{ 1			} # number of first page 
+  # @FirstPageNumber	{ 1			} # number of first page
   # @IntroPageNumbers	{ Roman			} # intro page numbers
-  # @IntroFirstPageNumber{ 1			} # number of first intro page 
+  # @IntroFirstPageNumber{ 1			} # number of first intro page
   # @StructPageNums	{ No			} # make structured page numbers
   # @PageNumberFormat   { number                } # format of all page numbers
 
@@ -343,7 +343,7 @@
 
 @Use { @ReportSetup
   # @CoverSheet			{ Yes		} # make cover sheet
-  # @ContentsSeparate		{ Yes		} # contents on separate pages
+    @ContentsSeparate		{ Yes		} # contents on separate pages
   # @DateLine			{ No		} # Yes, No, or a date
   # @AboveTitleGap		{ 1i		} # space above title
   # @TitleFont			{ Bold		} # title font
@@ -503,4 +503,5 @@
 
 @SysDatabase @FontDef  { fontdefs }		  # font definitions
 @SysDatabase @RefStyle { refstyle }		  # reference printing styles
-@SysDatabase @Reference{loutrefs}
+@SysDatabase @Reference{ loutrefs }
+@Database @Reference { "files/refs" }

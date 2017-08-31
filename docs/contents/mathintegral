@@ -1,6 +1,6 @@
 @Section
     @Title { Finite control volume integration }
-    @Tag { femInt }
+    @Tag { integral }
 @Begin
 
 @PP
@@ -86,7 +86,7 @@ By applying the divergence theorem @FootNote { The divergence theorem states tha
 Notice that the normal derivatives of @E { phi } at the faces are needed. The simplest way to compute the equation @NumberOf { INTGenNSMomHypMOD2 } is by using a staggered mesh as shown in figure @NumberOf { FEMDiag } and the following for the convection and diffusion terms.
 
 @PP
-For the convection term @FootNote { In order to easen the work, the density @E { rho } has not been typed. } an approximation has been made, shown in @NumberOf { ConvNotApprox }.
+@MARK { Convection in @E { x } direction } The convection term @FootNote { In order to easen the work, the density @E { rho } has not been typed. } can be rewritten as in @NumberOf { ConvNotApprox }.
 
 @CenteredNumberedDisplay
   @Tag { ConvNotApprox }
@@ -110,7 +110,7 @@ Assuming @E { phi = u }, it is fair to assume the following expressions for each
 @End @Figure
 
 @PP
-The diffusion term has been analytically found by means of expression @NumberOf { DiffNotApprox }, where @E { Delta x } and @E { Delta y } come from the same expressions used before.
+@MARK { Diffusion in @E { x } direction } The diffusion term has been analytically found by means of expression @NumberOf { DiffNotApprox }, where @E { Delta x } and @E { Delta y } come from the same expressions used before.
 
 @CenteredNumberedDisplay
   @Tag { DiffNotApprox }
