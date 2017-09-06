@@ -1,0 +1,22 @@
+@PP
+The horizontal velocities at the boundaries of the cell are
+
+@E { u sub n = { u sub { i, j + 1 } + u sub { i, j } } over 2 },
+@E { u sub e = { u sub { i + 1, j } + u sub { i, j } } over 2 },
+@E { u sub s = { u sub { i, j - 1 } + u sub { i, j } } over 2 } and
+@E { u sub w = { u sub { i - 1, j } + u sub { i, j } } over 2 }
+
+@PP
+The volumetric flow rates @E { F } (per unit of depth) through the faces of the cell are
+
+@E { F sub n = { v sub { i, j } Delta x sup - + v sub { i + 1, j } Delta x sup + } over 2 },
+@E { F sub e = { u sub { i, j } Delta y + u sub { i + 1, j } Delta y } over 2 },
+@E { F sub s = { v sub { i, j - 1} Delta x sup - + v sub { i + 1, j - 1 } Delta x sup + } over 2 } and
+@E { F sub w = { u sub { i - 1, j } Delta y + u sub { i, j } Delta y } over 2 }
+
+@PP
+where
+
+@E { Delta x sup - = sx sub i - sx sub { i - 1 } },
+@E { Delta x sup + = sx sub { i + 1 } - sx sub i } and
+@E { Delta y = sy sub j - sy sub { j - 1 } }

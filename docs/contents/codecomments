@@ -18,10 +18,40 @@ The code will be structured as in figure @NumberOf { structure }. The project wi
 @PP
 The program is based on Soria's transparencies @Cite { $soria2017navierstokes }, presented during the summer course on CFD @FootNote { Introduction to Computational Fluid Dynamics by the Turbulence and Aerodynamics in Mechanical and Aerospace Engineering Research Group (TUAREG). } at ESEIAAT's dependencies. The following is a step-by-step description on the development of the program, based on the notes in section @NumberOf { integral }.
 
+@CD @Heading { Convection in @E { x } direction, as programmed in module @F phys.py }
+
+The first step towards developing a program supporting convection and diffusion in both @E { x } and @E { y } directions is to implement the expressions already demonstrated above, as they are.
+
+# @Include { "contents/code/convection-x" }
+
 @PP
-@MARK { Convection } The program supports convection in both @E { x } and @E { y } directions. By applying the same reasoning used in convection in @E { x } direction to the @E { y } direction.
+It was seen that for the horizontal velocities at the boundaries and for the volumetric flow rates through the faces, the velocities at every point of the domain are needed. These velocities are not needed per se, but its projections to the coordinate axes. Moreover, because the volumetric flow rates depend on the dimensions of the cell, the coordinates of the points are also needed.
 
-@Include { "contents/code/convection" }
+@PP
+This means that maps @FootNote { The reader should imagine a matrix a with information encoded so that every piece of it can be assigned to a point or group of points according to its position in the matrix. } of horizontal velocities @E { u } and vertical velocities @E { v }, and maps with the @E { x } and @E { y } coordinates of the points are needed to compute the horizontal velocities at the faces of the cell, as well as @E { Delta x sup - }, @E { Delta x sup + } and @E { Delta y }, which are ultimately used to find the volumetric flow rates.
 
+@PP
+While working with big data matrices is very convenient, if the data follows a pattern which is characterized as a mathematical function dependent on the coordinates, @I {lucky you!}. Its less compute-intensive to somehow grab the data from a call to the function by passing a pair of coordinates @E {x, y} or points @E {i, j}, than to store full matrices in the computer memory @FootNote { One could use advanced data manipulation to reduce the memory used to store these matrices or to be more compute-efficient. }. However, raw data is often discrete and rarely a function, so probably the strategy above will not be used to compute but to generate the data matrices for testing purposes. Storing the data in files and reading it piece-by-piece is the most realistic and time-efficient solution.
+
+@PP
+Because this solver is deemed to be a demonstration tool, reading data from files is not a feature regarded as useful. The solver will use matrices containing data generated from user-defined functions, in a manner similar to the explained above.
+
+@PP
+Assuming that the domain is discretized with the same number of points in @E { x } and @E { y } directions, @E { N }, the range used by both @E { i } and @E { j } iterators---these are the indexes used to access the elements in arrays and matrices---is from 1 to @E { N + 1 }, both included in the range @FootNote { Note that Python indexes arrays from 0. }. @E { N } is the number of segments in which both sides @E { L sub x } and @E { L sub y } of the rectangular domain will be divided. In figure @NumberOf { divisionside } a discretization of the domain in the @E { x } direction is presented. In bold plus italics is the numbering for the segments, while in italics is the numbering for the ends of the segments. The subindices of @E { sx } and @E { cx } are the positions of the array---here it is assumed that the values of @E { sx } and @E { cx } are stored in an array---at which the elements are accessed.
+
+@Figure
+  @Tag { divisionside }
+  @Caption { Nomenclature for one of the sides of the domain }
+@Begin
+@IncludeGraphic "contents/figs/divisionside.eps"
+@End @Figure
+
+@PP
+There are @E { N } individual segments, so arrays related to segments like @E { cx } contain @E { N } elements, whereas arrays related to segment stops such as @E { sx } are of length @E { N + 1 }. In figure @NumberOf { divisionside }, segments are numbered from 1 to @E { N + 1 } and their ends from 0 to @E { N + 1 }. 
+
+# @PP
+# @CD @Heading { Convection } The program supports convection in both @E { x } and @E { y } directions. By applying the same reasoning used in convection in @E { x } direction to the @E { y } direction.
+
+# @Include { "contents/code/convection" }
 
 @End @Section

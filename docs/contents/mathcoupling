@@ -150,7 +150,7 @@ The true pressure is finally evaluated with @E { p sup { n + 1 } = { p tilde } o
 @PP
 This procedure requires a very specific @E { Delta t } so a solution is found. By using expression @NumberOf { deltat }, some values can be found.
 
-@CenteredAlignedNumberedDisplay
+@CenteredNumberedDisplay
   @Tag { deltat }
 @Eq { Delta t = f @R Min (Delta t sub c, Delta t sub d ) }
 

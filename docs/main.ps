@@ -1,6 +1,6 @@
 %!PS-Adobe-3.0
 %%Creator: Basser Lout Version 3.40 (June 2013)
-%%CreationDate: Mon Aug 28 12:14:50 2017
+%%CreationDate: Wed Sep  6 15:31:18 2017
 %%DocumentData: Binary
 %%DocumentNeededResources: (atend)
 %%DocumentSuppliedResources: (atend)
@@ -245,155 +245,6 @@
   null
   LoutSetTexture
 } bind def
-%%EndResource
-
-%%BeginResource: procset LoutBasicSetup
-% @PrependGraphic file /home/arnau/lout.lib/include/bsf.lpg
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                                                                    %
-%  PostScript @SysPrependGraphic file for @BasicSetup                %
-%                                                                    %
-%  This file has been placed in the public domain by its author,     %
-%  Jeffrey H. Kingston                                               %
-%                                                                    %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% width height linethickness louteuro -
-% draw a Euro symbol of this width and height with this line thickness
-/louteuro {
-  20 dict begin
-    /eurothick exch def
-    /euroheight exch def
-    /eurowidth exch def
-    /eurostrokewidth euroheight 0.8 mul def
-    /eurostep eurothick 60 cos mul 60 sin div def
-    /eurotheta 40 def
-
-    % llx lly width thickness louteurobox -
-    % draw angled box starting at (llx, lly) with given width and thickness
-    /louteurobox
-    {
-      /euroboxthick exch def
-      /euroboxwidth exch def
-      newpath moveto euroboxwidth 0 rlineto
-      eurostep euroboxthick rlineto
-      euroboxwidth neg 0 rlineto closepath fill
-    } def
-
-    % lower cross stroke
-    0 euroheight 2 div eurothick 1.5 mul sub
-    eurostrokewidth eurothick louteurobox
-
-    % upper cross stroke
-    0 euroheight 2 div eurothick 0.5 mul add
-    eurostrokewidth eurostep 2 mul add eurothick louteurobox
-
-    % circular part
-    /eurohctr eurowidth euroheight 2 div eurotheta cos mul sub def
-    /eurovctr euroheight 2 div def
-    newpath
-    eurohctr eurovctr eurovctr eurotheta 350 eurotheta sub arc
-    eurohctr eurovctr eurovctr eurothick sub 365 eurotheta sub eurotheta arcn
-    closepath fill
-  end
-} def
-
-% path for @FullWidthRule symbol
-/LoutRule
-{ 0 0 moveto xsize 0 lineto
-} def
-
-% path for @Box symbol
-/LoutBox
-{ 0 0 moveto xsize 0 lineto
-  xsize ysize lineto 0 ysize lineto
-  closepath
-} def
-
-% path for @CurveBox symbol
-/LoutCurveBox
-{ xmark 0 moveto
-  xsize xmark sub xmark xmark 270 360 arc
-  xsize xmark sub ysize xmark sub xmark 0 90 arc
-  xmark ysize xmark sub xmark 90 180 arc
-  xmark xmark xmark 180 270 arc
-  closepath
-} def
-
-% path for @ShadowBox symbol
-/LoutShadowBox
-{ xmark 2 mul 0 moveto xsize 0 lineto
-  xsize ysize xmark 2 mul sub lineto
-  xsize xmark sub ysize xmark 2 mul sub lineto
-  xsize xmark sub xmark lineto
-  xmark 2 mul xmark lineto
-  closepath
-} def
-
-% set up dictionary containing margin note data: parity LoutMargSet -
-/LoutMargSet
-{ /LoutMargDict 12 dict def
-  LoutMargDict begin
-    /parity exch def
-    /matr matrix currentmatrix def
-    /rightx xsize def
-    /lefty ysize def   % highest allowable point for top of next left note
-    /righty ysize def  % highest allowable point for top of next right note
-    /max { 2 copy gt { pop } { exch pop } ifelse } def
-    /min { 2 copy lt { pop } { exch pop } ifelse } def
-  end
-} def
-
-%translate coordinate system for marginal notes:  type LoutMargShift -
-% where type 0 is left margin, 1 is right margin, 2 is outer, 3 is inner
-/LoutMargShift
-{ LoutMargDict begin
-
-    % y coordinate of top of note, in margin coords, before vertical adjust
-    0 ysize transform matr itransform exch pop
-
-    % decide whether left or right margin based on type and parity
-    exch [ 0 1 parity 1 parity sub ] exch get 0 eq
-    {
-      % left margin: adjust top of note downwards if overlaps previous note
-      lefty min
-
-      % bottom of note is new lefty position and also translate position
-      ysize sub dup /lefty exch def
-
-      % want right edge of note at coordinate zero
-      xsize neg exch
-    }
-    {
-      % right margin: adjust top of note downwards if overlaps previous note
-      righty min
-
-      % bottom of note is new righty position and also translate position
-      ysize sub dup /righty exch def
-
-      % want left edge of note at coordinate rightx
-      rightx exch
-    } ifelse
-
-    % stack now contains coord of bottom left corner in margin coordinates
-    matr setmatrix translate
-  end
-} def
-
-% create LoutPageDict with left, right, foot, top for @Place symbol users
-/LoutPageSet
-{
-  /LoutPageDict 5 dict def
-  LoutPageDict begin
-    /matr matrix currentmatrix def
-    /left 0 def
-    /right xsize def
-    /foot 0 def
-    /top ysize def
-  end
-
-} def
-
 %%EndResource
 
 %%BeginResource: procset LoutDiagPrependGraphic
@@ -5395,6 +5246,155 @@ lpiedict begin
 end
 %%EndResource
 
+%%BeginResource: procset LoutBasicSetup
+% @PrependGraphic file /home/arnau/lout.lib/include/bsf.lpg
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                    %
+%  PostScript @SysPrependGraphic file for @BasicSetup                %
+%                                                                    %
+%  This file has been placed in the public domain by its author,     %
+%  Jeffrey H. Kingston                                               %
+%                                                                    %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% width height linethickness louteuro -
+% draw a Euro symbol of this width and height with this line thickness
+/louteuro {
+  20 dict begin
+    /eurothick exch def
+    /euroheight exch def
+    /eurowidth exch def
+    /eurostrokewidth euroheight 0.8 mul def
+    /eurostep eurothick 60 cos mul 60 sin div def
+    /eurotheta 40 def
+
+    % llx lly width thickness louteurobox -
+    % draw angled box starting at (llx, lly) with given width and thickness
+    /louteurobox
+    {
+      /euroboxthick exch def
+      /euroboxwidth exch def
+      newpath moveto euroboxwidth 0 rlineto
+      eurostep euroboxthick rlineto
+      euroboxwidth neg 0 rlineto closepath fill
+    } def
+
+    % lower cross stroke
+    0 euroheight 2 div eurothick 1.5 mul sub
+    eurostrokewidth eurothick louteurobox
+
+    % upper cross stroke
+    0 euroheight 2 div eurothick 0.5 mul add
+    eurostrokewidth eurostep 2 mul add eurothick louteurobox
+
+    % circular part
+    /eurohctr eurowidth euroheight 2 div eurotheta cos mul sub def
+    /eurovctr euroheight 2 div def
+    newpath
+    eurohctr eurovctr eurovctr eurotheta 350 eurotheta sub arc
+    eurohctr eurovctr eurovctr eurothick sub 365 eurotheta sub eurotheta arcn
+    closepath fill
+  end
+} def
+
+% path for @FullWidthRule symbol
+/LoutRule
+{ 0 0 moveto xsize 0 lineto
+} def
+
+% path for @Box symbol
+/LoutBox
+{ 0 0 moveto xsize 0 lineto
+  xsize ysize lineto 0 ysize lineto
+  closepath
+} def
+
+% path for @CurveBox symbol
+/LoutCurveBox
+{ xmark 0 moveto
+  xsize xmark sub xmark xmark 270 360 arc
+  xsize xmark sub ysize xmark sub xmark 0 90 arc
+  xmark ysize xmark sub xmark 90 180 arc
+  xmark xmark xmark 180 270 arc
+  closepath
+} def
+
+% path for @ShadowBox symbol
+/LoutShadowBox
+{ xmark 2 mul 0 moveto xsize 0 lineto
+  xsize ysize xmark 2 mul sub lineto
+  xsize xmark sub ysize xmark 2 mul sub lineto
+  xsize xmark sub xmark lineto
+  xmark 2 mul xmark lineto
+  closepath
+} def
+
+% set up dictionary containing margin note data: parity LoutMargSet -
+/LoutMargSet
+{ /LoutMargDict 12 dict def
+  LoutMargDict begin
+    /parity exch def
+    /matr matrix currentmatrix def
+    /rightx xsize def
+    /lefty ysize def   % highest allowable point for top of next left note
+    /righty ysize def  % highest allowable point for top of next right note
+    /max { 2 copy gt { pop } { exch pop } ifelse } def
+    /min { 2 copy lt { pop } { exch pop } ifelse } def
+  end
+} def
+
+%translate coordinate system for marginal notes:  type LoutMargShift -
+% where type 0 is left margin, 1 is right margin, 2 is outer, 3 is inner
+/LoutMargShift
+{ LoutMargDict begin
+
+    % y coordinate of top of note, in margin coords, before vertical adjust
+    0 ysize transform matr itransform exch pop
+
+    % decide whether left or right margin based on type and parity
+    exch [ 0 1 parity 1 parity sub ] exch get 0 eq
+    {
+      % left margin: adjust top of note downwards if overlaps previous note
+      lefty min
+
+      % bottom of note is new lefty position and also translate position
+      ysize sub dup /lefty exch def
+
+      % want right edge of note at coordinate zero
+      xsize neg exch
+    }
+    {
+      % right margin: adjust top of note downwards if overlaps previous note
+      righty min
+
+      % bottom of note is new righty position and also translate position
+      ysize sub dup /righty exch def
+
+      % want left edge of note at coordinate rightx
+      rightx exch
+    } ifelse
+
+    % stack now contains coord of bottom left corner in margin coordinates
+    matr setmatrix translate
+  end
+} def
+
+% create LoutPageDict with left, right, foot, top for @Place symbol users
+/LoutPageSet
+{
+  /LoutPageDict 5 dict def
+  LoutPageDict begin
+    /matr matrix currentmatrix def
+    /left 0 def
+    /right xsize def
+    /foot 0 def
+    /top ysize def
+  end
+
+} def
+
+%%EndResource
+
 %%EndProlog
 
 %%BeginSetup
@@ -5483,14 +5483,14 @@ grestore
 4603(the)s 4947(Na)s 5(vier\211Stok)k 2(es)k 6341(equations)s
 220 fnt3 3718 11957(Arnau)m 4317(Pr)s 3(at)k 4762(Gasull)s
 220 fnt1 4090 11541(ESEIAA)m 24(T)k 3974 11126(August)m 4663(2017)s
-220 fnt2 4194 10399(Sinopsi)m 220 fnt1 0 9941(In)m 233(this)s
+220 fnt2 4125 10399(Abstract)m 220 fnt1 0 9983(In)m 233(this)s
 593(document)s 1511(the)s 1827(reader)s 2426(will)s 2815(\207nd)s
 3208(information)s 4295(concerning)s 5316(the)s 5632(de)s 5(v)k 3(elopment)k
 6810(of)s 7056(a)s 7205(Na)s 4(vier\211Stok)k 2(es)k
-8533(solv)s 3(er)k 0 9677(which)m 593(uses)s 1021(numerical)s
+8533(solv)s 3(er)k 0 9719(which)m 593(uses)s 1021(numerical)s
 1954(analysis.)s 2759(This)s 3200(information)s 4294(is)s 4490(collected)s
 5340(from)s 5827(dif)s 5(ferent)k 6636(sources,)s 7396(as)s
-7629(part)s 8029(of)s 8283(my)s 8619(Final)s 0 9413(Y)m 22(ear)k
+7629(part)s 8029(of)s 8283(my)s 8619(Final)s 0 9455(Y)m 22(ear)k
 458(Aerospace)s 1433(Engineering)s 2555(Project.)s 
 grestore
 gsave
@@ -5555,61 +5555,61 @@ grestore
 4603(the)s 4947(Na)s 5(vier\211Stok)k 2(es)k 6341(equations)s
 220 fnt3 3718 11957(Arnau)m 4317(Pr)s 3(at)k 4762(Gasull)s
 220 fnt1 4090 11541(ESEIAA)m 24(T)k 3974 11126(August)m 4663(2017)s
-220 fnt2 3622 10502(T)m 20(aula)k 4204(de)s 4475(continguts)s
-
-[ /Rect [0 9877 8406 10109] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUT10_694_contents_introduction_1 /ANN pdfmark
-220 fnt1 0 9960(1.)m 260(Introduction)s 1696(..)s 2011(..)s
-2326(..)s 2641(..)s 2956(..)s 3271(..)s 3586(..)s
-3901(..)s 4216(..)s 4531(..)s 4846(..)s 5161(..)s
-5476(..)s 5791(..)s 6106(..)s 6421(..)s 6736(..)s
-7051(..)s 7366(..)s 7681(..)s 7996(..)s 8311(..)s
-
-[ /Rect [8961 9960 9066 10108] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUT10_694_contents_introduction_1 /ANN pdfmark
-8961(2)s 
-[ /Rect [0 9561 8406 9793] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUT10_694_contents_natureofflow_1 /ANN pdfmark
-0 9644(2.)m 260(Understanding)s 1601(the)s 1920(nature)s
-2519(of)s 2768(the)s 3087(\210uid)s 3544(\210o)s 5(w)k
-4216(..)s 4531(..)s 4846(..)s 5161(..)s 5476(..)s
-5791(..)s 6106(..)s 6421(..)s 6736(..)s 7051(..)s
-7366(..)s 7681(..)s 7996(..)s 8311(..)s 
-[ /Rect [8961 9644 9066 9792] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUT10_694_contents_natureofflow_1 /ANN pdfmark
-8961(2)s
-
-[ /Rect [0 9245 8406 9477] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUTintegral /ANN pdfmark
-0 9328(3.)m 260(Finite)s 823(control)s 1496(v)s 4(olume)k
-2202(inte)s 3(gration)k 3586(..)s 3901(..)s 4216(..)s
-4531(..)s 4846(..)s 5161(..)s 5476(..)s 5791(..)s
-6106(..)s 6421(..)s 6736(..)s 7051(..)s 7366(..)s
-7681(..)s 7996(..)s 8311(..)s 
-[ /Rect [8961 9328 9066 9476] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUTintegral /ANN pdfmark
-8961(2)s 
-[ /Rect [0 8929 8406 9162] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUTcoupling /ANN pdfmark
-0 9012(4.)m
-260(Pressure\211v)s 3(elocity)k 1866(coupling)s 2684(and)s 3055(time)s
-3496(inte)s 3(gration)k 4846(..)s 5161(..)s 5476(..)s
-5791(..)s 6106(..)s 6421(..)s 6736(..)s 7051(..)s
-7366(..)s 7681(..)s 7996(..)s 8311(..)s 
-[ /Rect [8969 9009 9066 9162] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUTcoupling /ANN pdfmark
-8969(5)s
-
-[ /Rect [0 8613 8406 8846] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUT10_694_contents_codecomments_1 /ANN pdfmark
-0 8696(5.)m 260(Comments)s 1257(on)s 1529(the)s 1848(code)s
-2641(..)s 2956(..)s 3271(..)s 3586(..)s 3901(..)s
-4216(..)s 4531(..)s 4846(..)s 5161(..)s 5476(..)s
-5791(..)s 6106(..)s 6421(..)s 6736(..)s 7051(..)s
-7366(..)s 7681(..)s 7996(..)s 8311(..)s 
-[ /Rect [8967 8694 9066 8841] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUT10_694_contents_codecomments_1 /ANN pdfmark
-8967(7)s
-
-[ /Rect [0 8032 8406 8270] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUT10_385_main_1 /ANN pdfmark
-220 fnt2 0 8114(Refer)m 3(\350ncies)k 220 fnt1 1381 8115(..)m
+220 fnt2 4116 10502(Contents)m 
+[ /Rect [0 9918 8406 10150] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUT26_694_contents_introduction_1 /ANN pdfmark
+220 fnt1 0 10001(1.)m 260(Introduction)s
 1696(..)s 2011(..)s 2326(..)s 2641(..)s 2956(..)s
 3271(..)s 3586(..)s 3901(..)s 4216(..)s 4531(..)s
 4846(..)s 5161(..)s 5476(..)s 5791(..)s 6106(..)s
 6421(..)s 6736(..)s 7051(..)s 7366(..)s 7681(..)s
 7996(..)s 8311(..)s 
-[ /Rect [8965 8110 9066 8263] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUT10_385_main_1 /ANN pdfmark
-8965(9)s 
+[ /Rect [8961 10001 9066 10149] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUT26_694_contents_introduction_1 /ANN pdfmark
+8961(2)s 
+[ /Rect [0 9602 8406 9834] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUT26_694_contents_natureofflow_1 /ANN pdfmark
+0 9685(2.)m 260(Understanding)s
+1601(the)s 1920(nature)s 2519(of)s 2768(the)s 3087(\210uid)s
+3544(\210o)s 5(w)k 4216(..)s 4531(..)s 4846(..)s
+5161(..)s 5476(..)s 5791(..)s 6106(..)s 6421(..)s
+6736(..)s 7051(..)s 7366(..)s 7681(..)s 7996(..)s
+8311(..)s 
+[ /Rect [8961 9685 9066 9833] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUT26_694_contents_natureofflow_1 /ANN pdfmark
+8961(2)s 
+[ /Rect [0 9286 8406 9518] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUTintegral /ANN pdfmark
+0 9369(3.)m 260(Finite)s 823(control)s
+1496(v)s 4(olume)k 2202(inte)s 3(gration)k 3586(..)s
+3901(..)s 4216(..)s 4531(..)s 4846(..)s 5161(..)s
+5476(..)s 5791(..)s 6106(..)s 6421(..)s 6736(..)s
+7051(..)s 7366(..)s 7681(..)s 7996(..)s 8311(..)s
+
+[ /Rect [8961 9369 9066 9517] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUTintegral /ANN pdfmark
+8961(2)s 
+[ /Rect [0 8970 8406 9203] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUTcoupling /ANN pdfmark
+0 9053(4.)m 260(Pressure\211v)s 3(elocity)k 1866(coupling)s
+2684(and)s 3055(time)s 3496(inte)s 3(gration)k 4846(..)s
+5161(..)s 5476(..)s 5791(..)s 6106(..)s 6421(..)s
+6736(..)s 7051(..)s 7366(..)s 7681(..)s 7996(..)s
+8311(..)s 
+[ /Rect [8969 9050 9066 9203] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUTcoupling /ANN pdfmark
+8969(5)s 
+[ /Rect [0 8654 8406 8887] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUT26_694_contents_codecomments_1 /ANN pdfmark
+0 8737(5.)m 260(Comments)s 1257(on)s
+1529(the)s 1848(code)s 2641(..)s 2956(..)s 3271(..)s
+3586(..)s 3901(..)s 4216(..)s 4531(..)s 4846(..)s
+5161(..)s 5476(..)s 5791(..)s 6106(..)s 6421(..)s
+6736(..)s 7051(..)s 7366(..)s 7681(..)s 7996(..)s
+8311(..)s 
+[ /Rect [8968 8734 9066 8885] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUT26_694_contents_codecomments_1 /ANN pdfmark
+8968(8)s 
+[ /Rect [0 8078 8406 8311] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUT26_385_main_1 /ANN pdfmark
+220 fnt2 0 8160(Refer)m 3(ences)k
+220 fnt1 1381 8161(..)m 1696(..)s 2011(..)s 2326(..)s
+2641(..)s 2956(..)s 3271(..)s 3586(..)s 3901(..)s
+4216(..)s 4531(..)s 4846(..)s 5161(..)s 5476(..)s
+5791(..)s 6106(..)s 6421(..)s 6736(..)s 7051(..)s
+7366(..)s 7681(..)s 7996(..)s 8311(..)s 
+[ /Rect [8965 8156 9066 8309] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUT26_385_main_1 /ANN pdfmark
+8965(9)s
+
 grestore
 gsave
 1417 -15423 translate
@@ -5670,7 +5670,7 @@ gsave
 grestore
 220 fnt2 0 13282(1.)m
 267(Intr)s 3(oduction)k 
-[ /Dest /LOUT10_694_contents_introduction_1 /DEST pdfmark
+[ /Dest /LOUT26_694_contents_introduction_1 /DEST pdfmark
 220 fnt1 440 12887(The)m 851(aim)s
 1254(of)s 1522(Computational)s 2897(Fluid)s 3434(Dynamics)s 4388(\(CFD\))s
 5024(is)s 5235(to)s 5474(model)s 6093(the)s 6431(continuous)s
@@ -5730,11 +5730,11 @@ grestore
 2785(can)s 3152(test)s 3523(the)s 3853(con)s 8(v)k 3(enience)k
 5000(of)s 5261(writing)s 5955(the)s 6285(FYP)s 6750(using)s
 7287(the)s 7617(former)s 8280(tool.)s 8729(The)s 0 8426(initial)m
-561(idea)s 979(is)s 1169(to)s 1387(write)s 1886(the)s
-2203(FYP)s 2655(in)s 2876(Lout,)s 3387(so)s 3629(I)s
-3752(can)s 4106(reuse)s 4617(some)s 5129(of)s 5376(the)s
-5693(parts)s 6163(of)s 6410(these)s 6909(document)s 7828(without)s
-8551(modi-)s 0 8162(\207cation.)m 440 7819(It)m 627(is)s 817(recommended)s
+563(idea)s 984(is)s 1177(to)s 1398(write)s 1900(the)s
+2220(FYP)s 2675(in)s 2898(Lout,)s 3412(so)s 3657(I)s
+3783(can)s 4140(reuse)s 4654(some)s 5169(of)s 5418(the)s
+5738(parts)s 6211(of)s 6461(these)s 6963(document)s 7885(without)s
+8612(mod-)s 0 8162(i\207cation.)m 440 7819(It)m 627(is)s 817(recommended)s
 2111(that)s 2493(the)s 2810(reader)s 3409(has)s 3745(a)s
 3895(good)s 4386(understanding)s 5677(of)s 5924(Fluid)s 6439(Mechanics)s
 7432(so)s 7674(the)s 7990(assumptions)s 0 7555(and)m 371(the)s
@@ -5742,31 +5742,32 @@ grestore
 0 6828(2.)m 267(Understanding)s 1720(the)s 2064(natur)s 3(e)k
 2734(of)s 2984(the)s 3328(\210uid)s 3806(\210o)s 2(w)k
 
-[ /Dest /LOUT10_694_contents_natureofflow_1 /DEST pdfmark
+[ /Dest /LOUT26_694_contents_natureofflow_1 /DEST pdfmark
 220 fnt1 1.0 0.0 0.0 LoutSetRGBColor 0 6635(\(V)m 8(OID\))k gsave
 675 5870 translate
 176 fnt1
-0.0 0.0 0.0 LoutSetRGBColor 1416 893 0 814 176 193 44 LoutGraphic
+0.0 0.0 0.0 LoutSetRGBColor 1416 894 0 814 176 193 44 LoutGraphic
 gsave
 1 LoutMargShift gsave
 grestore
 1.0 0.0 0.0 LoutSetRGBColor 283 775(REV)m 22(.:)k 733(A)s
-283 582(description)m 283 389(of)m 481(the)s 736(\210uid)s 283 196(\210o)m 4(w)k
+902(de-)s 283 582(scription)m 937(of)s 283 389(the)m 538(\210uid)s
+283 196(\210o)m 4(w)k grestore
 grestore
-grestore
-220 fnt2 0.0 0.0 0.0 LoutSetRGBColor 0 5917(3.)m 267(Finite)s 867(contr)s 3(ol)k
-1584(v)s 2(olume)k 2317(integration)s 
+220 fnt2 0.0 0.0 0.0 LoutSetRGBColor 0 5917(3.)m
+267(Finite)s 867(contr)s 3(ol)k 1584(v)s 2(olume)k
+2317(integration)s 
 [ /Dest /LOUTintegral /DEST pdfmark
-220 fnt1 440 5480(The)m
-838(three)s 1334(fundamental)s 2488(equations)s 3382(of)s 3637(Fluid)s
-4162(Mechanics)s 5164(arise)s 5634(from)s 6123(the)s 6448(la)s 3(ws)k
-6899(of)s 7154(conserv)s 5(ation)k 8329(of)s 8585(mass,)s
-0 5216(conserv)m 5(ation)k 1210(of)s 1501(momentum)s 2600(and)s
-3013(conserv)s 5(ation)k 4223(of)s 4515(ener)s 3(gy)k 14(.)k
-5232(While)s 5862(the)s 6223(equations)s 7152(can)s 7551(be)s
-7851(written)s 8567(either)s 0 4952(in)m 246(dif)s 5(ferential)k
-1289(or)s 1550(inte)s 3(gral)k 2292(form,)s 2840(it)s
-3040(is)s 3255(often)s 3782(preferred)s 4662(to)s 4905(w)s 2(ork)k
+220 fnt1 440 5480(The)m 838(three)s 1334(fundamental)s
+2488(equations)s 3382(of)s 3637(Fluid)s 4162(Mechanics)s 5164(arise)s
+5634(from)s 6123(the)s 6448(la)s 3(ws)k 6899(of)s
+7154(conserv)s 5(ation)k 8329(of)s 8585(mass,)s 0 5216(conserv)m 5(ation)k
+1210(of)s 1501(momentum)s 2600(and)s 3013(conserv)s 5(ation)k
+4223(of)s 4515(ener)s 3(gy)k 14(.)k 5232(While)s
+5862(the)s 6223(equations)s 7152(can)s 7551(be)s 7851(written)s
+8567(either)s 0 4952(in)m 246(dif)s 5(ferential)k 1289(or)s
+1550(inte)s 3(gral)k 2292(form,)s 2840(it)s 3040(is)s
+3255(often)s 3782(preferred)s 4662(to)s 4905(w)s 2(ork)k
 5433(with)s 5900(the)s 6242(dif)s 5(ferential)k 7285(arrangement.)s
 8499(In)s 8758(this)s 0 4688(arrangement,)m 1189(the)s 1503(equations)s
 2385(are)s 2698(e)s 3(xpressed)k 3607(according)s 4516(to)s
@@ -5814,21 +5815,30 @@ grestore
 5159 2462(r)m 220 fnt3 5278 2469(f)m 220 fnt2 5382 2467(v)m
 154 fnt2 5474 2388(r)m 220 fnt4 5607 2462(\327)m 220 fnt3
 5711 2469(d)m 220 fnt2 5837 2467(S)m 220 fnt1 8655 2468(\(3.1\))m
-1134 0 0 0 220 264 55 0 677 LoutGr2
+0 1840(where)m 220 fnt3 577 1841(CS)m 220 fnt1 879 1840(and)m
+220 fnt3 1240 1841(CV)m 220 fnt1 1582 1840(are)m 1890(the)s
+2199(control)s 2862(system)s 3517(and)s 3878(the)s 4187(control)s
+4851(v)s 4(olume,)k 5594(respecti)s 5(v)k 3(ely)k 14(,)k
+6719(while)s 220 fnt2 7247 1839(v)m 154 fnt2 7339 1788(r)m
+220 fnt1 7452 1840(is)m 7634(the)s 7943(\210o)s 5(w)k
+8367(v)s 3(elocity)k 0 1576(relati)m 5(v)k 3(e)k
+700(to)s 920(the)s 220 fnt3 1239 1577(CV)m 220 fnt1
+1535 1576(.)m 1134 0 0 0 220 264 55 0 677 LoutGr2
 0 0 moveto xsize 0 lineto stroke
 grestore
 
 grestore
-112 fnt1 0 489(1)m 176 fnt1 54 425(If)m 223(the)s
-479(reader)s 962(is)s 1117(interested)s 1841(in)s 2020(de)s 4(v)k 2(eloping)k
-2834(an)s 3044(analytical)s 3766(solv)s 2(er)k 7(,)k
-4265(an)s 4474(obligatory)s 5236(step)s 5558(is)s 5712(to)s
-5888(solv)s 2(e)k 6299(the)s 6555(reno)s 4(wned)k
-7288(Millenium)s 8071(Prize)s 8473(Problem)s 0 214(stated)m 461(by)s
-687(the)s 953(Clay)s 1334(Mathematics)s 2285(Institute,)s 2947(which)s
-3428(challenges)s 4215(the)s 4481(fearless)s 5062(mathematician)s 6144(to)s
-6330(proof)s 6772(the)s 7037(e)s 2(xistence)k 7739(and)s
-8046(smoothness)s 8912(of)s 0 3(NS)m 257(solutions.)s 
+112 fnt1 0 489(1)m 176 fnt1 54 425(If)m
+223(the)s 479(reader)s 962(is)s 1117(interested)s 1841(in)s
+2020(de)s 4(v)k 2(eloping)k 2834(an)s 3044(analytical)s
+3766(solv)s 2(er)k 7(,)k 4265(an)s 4474(obligatory)s
+5236(step)s 5558(is)s 5712(to)s 5888(solv)s 2(e)k
+6299(the)s 6555(reno)s 4(wned)k 7288(Millenium)s 8071(Prize)s
+8473(Problem)s 0 214(stated)m 461(by)s 687(the)s 953(Clay)s
+1334(Mathematics)s 2285(Institute,)s 2947(which)s 3428(challenges)s 4215(the)s
+4481(fearless)s 5062(mathematician)s 6144(to)s 6330(proof)s 6772(the)s
+7037(e)s 2(xistence)k 7739(and)s 8046(smoothness)s 8912(of)s
+0 3(NS)m 257(solutions.)s 
 grestore
 0 0 0 0 220 264 55 1417 -15423 LoutGr2
 0 LoutMargSet
@@ -5848,21 +5858,21 @@ showpage
 %%Page: 3 4
 %%BeginPageSetup
 %%PageResources: font Times-Roman
-%%+ font Times-Italic
-%%+ font Times-Bold
 %%+ font Symbol
+%%+ font Times-Bold
+%%+ font Times-Italic
 /pgsave save def
 %%IncludeResource: font Times-Roman
 /Times-Romanfnt1 vec2 /Times-Roman LoutRecode
 /fnt1 { /Times-Romanfnt1 LoutFont } def
-%%IncludeResource: font Times-Italic
-/Times-Italicfnt3 vec2 /Times-Italic LoutRecode
-/fnt3 { /Times-Italicfnt3 LoutFont } def
+%%IncludeResource: font Symbol
+/fnt4 { /Symbol LoutFont } def
 %%IncludeResource: font Times-Bold
 /Times-Boldfnt2 vec2 /Times-Bold LoutRecode
 /fnt2 { /Times-Boldfnt2 LoutFont } def
-%%IncludeResource: font Symbol
-/fnt4 { /Symbol LoutFont } def
+%%IncludeResource: font Times-Italic
+/Times-Italicfnt3 vec2 /Times-Italic LoutRecode
+/fnt3 { /Times-Italicfnt3 LoutFont } def
 0.0500 dup scale 10 setlinewidth
 %%EndPageSetup
 gsave
@@ -5884,118 +5894,110 @@ gsave
 5784 -1565(-)m 5902(3)s 6052(-)s 9066 13430 0 13330 220 264 55 1417 -15423 LoutGr2
 1 LoutMargSet
 grestore
-0 13281(where)m 220 fnt3
-577 13282(CS)m 220 fnt1 879 13281(and)m 220 fnt3 1240 13282(CV)m
-220 fnt1 1582 13281(are)m 1890(the)s 2199(control)s 2862(system)s
-3517(and)s 3878(the)s 4187(control)s 4851(v)s 4(olume,)k
-5594(respecti)s 5(v)k 3(ely)k 14(,)k 6719(while)s
-220 fnt2 7247 13280(v)m 154 fnt2 7339 13229(r)m 220 fnt1
-7452 13281(is)m 7634(the)s 7943(\210o)s 5(w)k 8367(v)s 3(elocity)k
-0 13017(relati)m 5(v)k 3(e)k 700(to)s 920(the)s
-220 fnt3 1239 13018(CV)m 220 fnt1 1535 13017(.)m 440 12674(Using)m
-1070(the)s 1446(Re)s 3(ynold')k 12(s)k 2436(transport)s
-3328(theorem)s 4159(one)s 4584(can)s 4997(\207nd)s 5450(the)s
-5826(NS)s 6204(equations.)s 7197(The)s 7646(conserv)s 5(ation)k
-8872(of)s 0 12410(momentum\212one)m 1589(of)s 1838(the)s 2157(equations\212is)s
-3410(written)s 4083(as)s 4311(in)s 4534(equation)s 5342(3.2.)s
-
+440 13281(Using)m 1070(the)s
+1446(Re)s 3(ynold')k 12(s)k 2436(transport)s 3328(theorem)s
+4159(one)s 4584(can)s 4997(\207nd)s 5450(the)s 5826(NS)s
+6204(equations.)s 7197(The)s 7646(conserv)s 5(ation)k 8872(of)s
+0 13017(momentum\212one)m 1589(of)s 1838(the)s 2157(equations\212is)s 3410(written)s
+4083(as)s 4311(in)s 4534(equation)s 5342(3.2.)s 
 [ /Dest /LOUTGeneralNSMomentum /DEST pdfmark
-220 fnt4 2825 11934(\266)m 220 fnt2 2937 11939(v)m gsave
-2825 11886 translate
-220 fnt3
-219 0 0 0 220 264 11 LoutGraphic
+220 fnt4
+2825 12541(\266)m 220 fnt2 2937 12546(v)m gsave
+2825 12493 translate
+220 fnt3 219 0 0 0 220 264 11 LoutGraphic
 gsave
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-220 fnt4 2846 11677(\266)m 220 fnt3 2958 11684(t)m 220 fnt4
-3110 11831(+)m 3294(\()s 220 fnt2 3371 11836(v)m 220 fnt4
-3544 11831(\327)m 3648(\321)s 3808(\))s 220 fnt2 3880 11836(v)m
-220 fnt4 4064 11831(=)m 4314(-)s 4497(\321)s 220 fnt3
-4657 11838(p)m 220 fnt4 4827 11831(+)m 5011(n)s 5126(D)s
-220 fnt2 5271 11836(v)m 220 fnt4 5444 11831(+)m 220 fnt2
-5628 11836(f)m 220 fnt4 5724 11831(\()m 220 fnt2 5801 11836(x)m
-220 fnt4 5963 11831(,)m 220 fnt3 6105 11838(t)m 220 fnt4
-6180 11831(\))m 220 fnt1 8655 11837(\(3.2\))m 440 10966(Gi)m 5(v)k 3(en)k
+220 fnt4
+2846 12284(\266)m 220 fnt3 2958 12291(t)m 220 fnt4 3110 12438(+)m
+3294(\()s 220 fnt2 3371 12443(v)m 220 fnt4 3544 12438(\327)m
+3648(\321)s 3808(\))s 220 fnt2 3880 12443(v)m 220 fnt4
+4064 12438(=)m 4314(-)s 4497(\321)s 220 fnt3 4657 12445(p)m
+220 fnt4 4827 12438(+)m 5011(n)s 5126(D)s 220 fnt2
+5271 12443(v)m 220 fnt4 5444 12438(+)m 220 fnt2 5628 12443(f)m
+220 fnt4 5724 12438(\()m 220 fnt2 5801 12443(x)m 220 fnt4
+5963 12438(,)m 220 fnt3 6105 12445(t)m 220 fnt4 6180 12438(\))m
+220 fnt1 8655 12444(\(3.2\))m 440 11573(Gi)m 5(v)k 3(en)k
 1028(the)s 1356(comple)s 3(xity)k 2400(of)s 2657(creating)s
 3421(a)s 3582(general)s 4286(solv)s 3(er)k 8(,)k
 4918(some)s 5441(assumptions)s 6580(will)s 6981(be)s 7248(made)s
-7782(to)s 8011(simplify)s 8802(the)s 0 10702(coding.)m 704(F)s 3(or)k
+7782(to)s 8011(simplify)s 8802(the)s 0 11309(coding.)m 704(F)s 3(or)k
 1073(an)s 1344(incompressible)s 2734(Ne)s 5(wtonian)k 3755(\210uid,)s
 4268(the)s 4598(NS)s 4931(equations)s 5830(for)s 6152(the)s
 6483(conserv)s 5(ation)k 7663(of)s 7923(mass)s 8419(and)s
-8802(the)s 0 10438(conserv)m 5(ation)k 1168(of)s 1417(linear)s
+8802(the)s 0 11045(conserv)m 5(ation)k 1168(of)s 1417(linear)s
 1971(momentum)s 3027(are)s 3345(written\212in)s 4409(Enstein)s 5119(notation\212as)s
 6287(in)s 6510(3.3)s 6825(and)s 7196(3.4,)s 7569(respecti)s 5(v)k 3(ely)k 14(.)k
 
 [ /Dest /LOUTNSmasssimple /DEST pdfmark
-220 fnt4 3853 9962(\266)m 220 fnt3 3965 9969(u)m 154 fnt3
-4070 9918(i)m gsave
-3853 9872 translate
+220 fnt4 3853 10569(\266)m 220 fnt3 3965 10576(u)m 154 fnt3
+4070 10525(i)m gsave
+3853 10479 translate
 220 fnt3 257 0 0 0 220 264 11 LoutGraphic
 gsave
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-220 fnt4 3857 9663(\266)m 220 fnt3
-3969 9670(x)m 154 fnt3 4066 9619(i)m 220 fnt4 4198 9817(=)m
-4393(0)s 220 fnt1 8655 9823(\(3.3\))m 
+220 fnt4 3857 10270(\266)m 220 fnt3
+3969 10277(x)m 154 fnt3 4066 10226(i)m 220 fnt4 4198 10424(=)m
+4393(0)s 220 fnt1 8655 10430(\(3.3\))m 
 [ /Dest /LOUTNSMomHyp /DEST pdfmark
 220 fnt4 1.0 0.0 0.0 LoutSetRGBColor
-3188 8869(\266)m 220 fnt3 3300 8876(u)m 154 fnt3 3405 8825(i)m
+3188 9476(\266)m 220 fnt3 3300 9483(u)m 154 fnt3 3405 9432(i)m
 gsave
-3188 8779 translate
+3188 9386 translate
 220 fnt3 257 0 0 0 220 264 11 LoutGraphic
 gsave
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-220 fnt4 3228 8570(\266)m 220 fnt3 3340 8577(t)m
-220 fnt4 3511 8724(+)m 220 fnt3 3695 8731(u)m 154 fnt3
-3800 8652(j)m 220 fnt4 3853 8869(\266)m 220 fnt3 3965 8876(u)m
-154 fnt3 4070 8825(i)m gsave
-3853 8779 translate
+220 fnt4 3228 9177(\266)m 220 fnt3 3340 9184(t)m
+220 fnt4 3511 9331(+)m 220 fnt3 3695 9338(u)m 154 fnt3
+3800 9259(j)m 220 fnt4 3853 9476(\266)m 220 fnt3 3965 9483(u)m
+154 fnt3 4070 9432(i)m gsave
+3853 9386 translate
 220 fnt3 257 0 0 0 220 264 11 LoutGraphic
 gsave
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-220 fnt4 3856 8570(\266)m
-220 fnt3 3968 8577(x)m 154 fnt3 4065 8526(j)m 220 fnt4
-4198 8724(=)m 4448(-)s 4642 8823(1)m gsave
-4631 8779 translate
+220 fnt4 3856 9177(\266)m
+220 fnt3 3968 9184(x)m 154 fnt3 4065 9133(j)m 220 fnt4
+4198 9331(=)m 4448(-)s 4642 9430(1)m gsave
+4631 9386 translate
 220 fnt3 108 0 0 0 220 264 11 LoutGraphic
 gsave
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-4631 8570(r)m
-4766 8861(\266)m 220 fnt3 4878 8868(p)m 249 0 0 0 220 264 11 4750 8779 LoutGr2
+4631 9177(r)m
+4766 9468(\266)m 220 fnt3 4878 9475(p)m 249 0 0 0 220 264 11 4750 9386 LoutGr2
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-220 fnt4 4750 8570(\266)m
-220 fnt3 4862 8577(x)m 154 fnt3 4959 8526(i)m 220 fnt4
-5065 8724(+)m 5249(n)s 154 fnt4 5556 8975(2)m 220 fnt4
-5455 8869(\266)m 220 fnt3 5641 8876(u)m 154 fnt3 5746 8825(i)m
+220 fnt4 4750 9177(\266)m
+220 fnt3 4862 9184(x)m 154 fnt3 4959 9133(i)m 220 fnt4
+5065 9331(+)m 5249(n)s 154 fnt4 5556 9582(2)m 220 fnt4
+5455 9476(\266)m 220 fnt3 5641 9483(u)m 154 fnt3 5746 9432(i)m
 gsave
-5364 8779 translate
+5364 9386 translate
 220 fnt3 513 0 0 0 220 264 11 LoutGraphic
 gsave
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-220 fnt4 5364 8570(\266)m 220 fnt3 5476 8577(x)m
-154 fnt3 5573 8526(j)m 220 fnt4 5626 8570(\266)m 220 fnt3
-5738 8577(x)m 154 fnt3 5835 8526(j)m gsave
-5877 7694 translate
+220 fnt4 5364 9177(\266)m 220 fnt3 5476 9184(x)m
+154 fnt3 5573 9133(j)m 220 fnt4 5626 9177(\266)m 220 fnt3
+5738 9184(x)m 154 fnt3 5835 9133(j)m gsave
+5877 8301 translate
 176 fnt1 0.0 0.0 0.0 LoutSetRGBColor
 1416 1161 0 1085 176 193 44 LoutGraphic
 gsave
@@ -6009,52 +6011,52 @@ grestore
 944 853(on)m 283 388(denomina-)m 283 195(tor?)m grestore
 grestore
 220 fnt1 0.0 0.0 0.0 LoutSetRGBColor
-8655 8730(\(3.4\))m 0 8081(Notice)m 635(that)s 1019(in)s 1242(equation)s
-2050(3.4:)s 220 fnt4 0 7605(\266)m 220 fnt3 112 7612(u)m
-154 fnt3 217 7561(i)m gsave
-0 7515 translate
+8655 9337(\(3.4\))m 0 8688(Notice)m 635(that)s 1019(in)s 1242(equation)s
+2050(3.4:)s 220 fnt4 0 8212(\266)m 220 fnt3 112 8219(u)m
+154 fnt3 217 8168(i)m gsave
+0 8122 translate
 220 fnt3 257 0 0 0 220 264 11 LoutGraphic
 gsave
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-220 fnt4 40 7306(\266)m
-220 fnt3 152 7313(t)m 220 fnt1 880 7466(is)m 1072(kno)s 5(wn)k
+220 fnt4 40 7913(\266)m
+220 fnt3 152 7920(t)m 220 fnt1 880 8073(is)m 1072(kno)s 5(wn)k
 1717(as)s 1945(the)s 2264(time)s 2705(deri)s 5(v)k 5(ati)k 5(v)k 3(e,)k
-220 fnt3 0 6685(u)m 154 fnt3 105 6634(j)m 220 fnt4
-158 6823(\266)m 220 fnt3 270 6830(u)m 154 fnt3 375 6779(i)m
+220 fnt3 0 7292(u)m 154 fnt3 105 7241(j)m 220 fnt4
+158 7430(\266)m 220 fnt3 270 7437(u)m 154 fnt3 375 7386(i)m
 gsave
-158 6733 translate
+158 7340 translate
 220 fnt3 257 0 0 0 220 264 11 LoutGraphic
 gsave
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-220 fnt4 161 6524(\266)m 220 fnt3 273 6531(x)m
-154 fnt3 370 6480(j)m 220 fnt1 880 6684(as)m 1108(the)s
+220 fnt4 161 7131(\266)m 220 fnt3 273 7138(x)m
+154 fnt3 370 7087(j)m 220 fnt1 880 7291(as)m 1108(the)s
 1427(con)s 8(v)k 3(ection)k 2431(term,)s 220 fnt4
-55 5883(-)m 249 5982(1)m gsave
-238 5938 translate
+55 6490(-)m 249 6589(1)m gsave
+238 6545 translate
 220 fnt3 108 0 0 0 220 264 11 LoutGraphic
 gsave
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-238 5729(r)m 373 6020(\266)m
-220 fnt3 485 6027(p)m 249 0 0 0 220 264 11 357 5938 LoutGr2
+238 6336(r)m 373 6627(\266)m
+220 fnt3 485 6634(p)m 249 0 0 0 220 264 11 357 6545 LoutGr2
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-220 fnt4 357 5729(\266)m 220 fnt3
-469 5736(x)m 154 fnt3 566 5685(i)m 220 fnt1 880 5889(as)m
+220 fnt4 357 6336(\266)m 220 fnt3
+469 6343(x)m 154 fnt3 566 6292(i)m 220 fnt1 880 6496(as)m
 1108(the)s 1427(pressure)s 2208(gradient,)s 3025(and)s 220 fnt4
-0 5054(n)m 154 fnt4 307 5305(2)m 220 fnt4 206 5199(\266)m
-220 fnt3 392 5206(u)m 154 fnt3 497 5155(i)m gsave
-115 5109 translate
+0 5661(n)m 154 fnt4 307 5912(2)m 220 fnt4 206 5806(\266)m
+220 fnt3 392 5813(u)m 154 fnt3 497 5762(i)m gsave
+115 5716 translate
 220 fnt3
 513 0 0 0 220 264 11 LoutGraphic
 gsave
@@ -6062,34 +6064,34 @@ gsave
 grestore
 
 grestore
-220 fnt4 115 4900(\266)m 220 fnt3 227 4907(x)m 154 fnt3
-324 4856(j)m 220 fnt4 377 4900(\266)m 220 fnt3 489 4907(x)m
-154 fnt3 586 4856(j)m 220 fnt1 880 5060(as)m 1108(the)s
-1427(dif)s 5(fusion)k 2267(term.)s 440 4168(A)m 650(more)s
+220 fnt4 115 5507(\266)m 220 fnt3 227 5514(x)m 154 fnt3
+324 5463(j)m 220 fnt4 377 5507(\266)m 220 fnt3 489 5514(x)m
+154 fnt3 586 5463(j)m 220 fnt1 880 5667(as)m 1108(the)s
+1427(dif)s 5(fusion)k 2267(term.)s 440 4775(A)m 650(more)s
 1153(general)s 1850(e)s 3(xpression)k 2838(for)s 3150(3.4,)s
-3523(with)s 220 fnt3 1.0 0.0 0.0 LoutSetRGBColor 3967 4169(S)m 220 fnt4
-4155 4162(=)m 4350(\321)s 220 fnt3 4510 4169(p)m gsave
-4614 3368 translate
+3523(with)s 220 fnt3 1.0 0.0 0.0 LoutSetRGBColor 3967 4776(S)m 220 fnt4
+4155 4769(=)m 4350(\321)s 220 fnt3 4510 4776(p)m gsave
+4614 3975 translate
 176 fnt1
 0.0 0.0 0.0 LoutSetRGBColor 1416 928 0 849 176 193 44 LoutGraphic
 gsave
 1 LoutMargShift gsave
 grestore
 1.0 0.0 0.0 LoutSetRGBColor 283 810(REV)m 22(.:)k 733(Com-)s
-283 617(pare)m 626(with)s 283 424(transpa-)m 283 231(renc)m 2(y)k
-711(21)s grestore
+283 617(pare)m 626(with)s 283 424(transparen-)m 283 231(c)m 2(y)k
+487(21)s grestore
 grestore
-220 fnt1 0.0 0.0 0.0 LoutSetRGBColor 4670 4168(as)m 4899(the)s
-5219(pressure)s 6000(gradient)s 6775(and)s 220 fnt4 7147 4162(G)m
-7357(=)s 7552(r)s 7671(n)s 220 fnt1 7831 4168(and)m
-8203(taking)s 8802(the)s 0 3904(general)m 696(v)s 5(ariable)k
-220 fnt4 1448 3898(f)m 220 fnt1 1611 3904(as)m 220 fnt3
-1839 3905(u)m 154 fnt3 1944 3854(j)m 220 fnt1 1986 3904(,)m
+220 fnt1 0.0 0.0 0.0 LoutSetRGBColor 4670 4775(as)m 4899(the)s
+5219(pressure)s 6000(gradient)s 6775(and)s 220 fnt4 7147 4769(G)m
+7357(=)s 7552(r)s 7671(n)s 220 fnt1 7831 4775(and)m
+8203(taking)s 8802(the)s 0 4511(general)m 696(v)s 5(ariable)k
+220 fnt4 1448 4505(f)m 220 fnt1 1611 4511(as)m 220 fnt3
+1839 4512(u)m 154 fnt3 1944 4461(j)m 220 fnt1 1986 4511(,)m
 2084(is)s 2276(written)s 2949(as)s 
 [ /Dest /LOUTGenNSMomHyp /DEST pdfmark
-220 fnt4 2995 3394(\266)m
+220 fnt4 2995 4001(\266)m
 3107(\()s 3184(r)s 3303(f)s 3422(\))s gsave
-2995 3300 translate
+2995 3907 translate
 220 fnt3
 488 0 0 0 220 264 11 LoutGraphic
 gsave
@@ -6097,32 +6099,54 @@ gsave
 grestore
 
 grestore
-3151 3091(\266)m 220 fnt3 3263 3098(t)m 220 fnt4 3549 3245(+)m
+3151 3698(\266)m 220 fnt3 3263 3705(t)m 220 fnt4 3549 3852(+)m
 3733(\321)s 3948(\327)s 4052(\()s 4129(r)s 220 fnt2
-4248 3250(u)m 220 fnt4 4377 3245(f)m 4496(\))s 4634(=)s
+4248 3857(u)m 220 fnt4 4377 3852(f)m 4496(\))s 4634(=)s
 4829(\321)s 5044(\327)s 5148(\()s 5225(G)s 5369(\321)s
-5529(f)s 5648(\))s 5775(+)s 220 fnt3 5959 3252(S)m
-220 fnt1 8655 3251(\(3.5\))m 0 2623(Note)m 483(that)s 874(this)s
+5529(f)s 5648(\))s 5775(+)s 220 fnt3 5959 3859(S)m
+220 fnt1 8655 3858(\(3.5\))m 0 3230(Note)m 483(that)s 874(this)s
 1244(e)s 3(xpression)k 2238(tak)s 2(es)k 2739(almost)s
 3386(the)s 3712(same)s 4220(form)s 4709(when)s 5243(w)s 2(orking)k
 6029(with)s 6479(ener)s 3(gy)k 7130(or)s 7375(entrop)s 2(y)k 14(.)k
-8132(Modifying)s 0 2359(the)m 311(v)s 5(ariables)k 220 fnt4
-1134 2353(f)m 220 fnt1 1289 2359(and)m 220 fnt3 1651 2360(S)m
-220 fnt1 1809 2359(to)m 2020(the)s 2331(corresponding)s 3627(desired)s
+8132(Modifying)s 0 2966(the)m 311(v)s 5(ariables)k 220 fnt4
+1134 2960(f)m 220 fnt1 1289 2966(and)m 220 fnt3 1651 2967(S)m
+220 fnt1 1809 2966(to)m 2020(the)s 2331(corresponding)s 3627(desired)s
 4305(v)s 5(ariable)k 5049(or)s 5278(e)s 3(xpression)k
 6257(will)s 6640(suf\207ce)s 7267(on)s 7530(paradigm)s 8405(change.)s
-0 2095(The)m 392(rest)s 763(of)s 1012(the)s 1331(equation)s
-2139(may)s 2567(remain)s 3228(intact.)s 440 1752(Earlier)m 1082(in)s
+0 2702(The)m 392(rest)s 763(of)s 1012(the)s 1331(equation)s
+2139(may)s 2567(remain)s 3228(intact.)s 440 2359(Earlier)m 1082(in)s
 1296(this)s 1649(document,)s 2604(it)s 2772(w)s 2(as)k
 3146(mentioned)s 4118(that)s 4492(the)s 4802(FEM)s 5294(w)s 2(as)k
 5668(the)s 5978(go-to)s 6482(numerical)s 7400(method)s 8104(to)s
-8314(compute)s 0 1488(the)m 334(solution)s 1110(of)s 1374(the)s
+8314(compute)s 0 2095(the)m 334(solution)s 1110(of)s 1374(the)s
 1709(NS)s 2046(equations.)s 2997(By)s 3319(taking)s 3933(one)s
 4316(general)s 5028(element\212the)s 6276(E)s 6478(in)s 6717(the)s
-7051(acron)s 3(ym\212as)k 8280(a)s 8448(control)s 0 1224(v)m 4(olume)k
+7051(acron)s 3(ym\212as)k 8280(a)s 8448(control)s 0 1831(v)m 4(olume)k
 706(\(CV\),)s 1254(of)s 1503(a)s 1655(general)s 2351(v)s 4(olume)k
-220 fnt3 3057 1225(V)m 220 fnt1 3207 1224(,)m 3305(the)s
+220 fnt3 3057 1832(V)m 220 fnt1 3207 1831(,)m 3305(the)s
 3624(e)s 3(xpression)k 4611(3.6)s 4934(is)s 5126(found.)s
+
+[ /Dest /LOUTINTGenNSMomHyp /DEST pdfmark
+286 fnt4 1741 1146(\362)m 154 fnt3 1823 1082(V)m 220 fnt4
+1939 1355(\266)m 2051(\()s 2128(r)s 2247(f)s 2366(\))s
+gsave
+1939 1261 translate
+220 fnt3 488 0 0 0 220 264 11 LoutGraphic
+gsave
+0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
+grestore
+
+grestore
+2095 1052(\266)m 220 fnt3 2207 1059(t)m 2438 1213(dV)m
+220 fnt4 2764 1206(+)m 286 fnt4 2948 1146(\362)m 154 fnt3
+3030 1082(V)m 220 fnt4 3146 1206(\321)m 3361(\327)s 3465(\()s
+3542(r)s 220 fnt2 3661 1211(u)m 220 fnt4 3790 1206(f)m
+3909(\))s 220 fnt3 3981 1213(dV)m 220 fnt4 4329 1206(=)m
+286 fnt4 4524 1146(\362)m 154 fnt3 4606 1082(V)m 220 fnt4
+4722 1206(\321)m 4937(\327)s 5041(\()s 5118(G)s 5262(\321)s
+5422(f)s 5541(\))s 220 fnt3 5613 1213(dV)m 220 fnt4
+5939 1206(+)m 286 fnt4 6123 1146(\362)m 154 fnt3 6205 1082(V)m
+220 fnt3 6321 1213(S)m 6443(dV)s 220 fnt1 8655 1212(\(3.6\))m
 
 grestore
 0 0 0 0 220 264 55 1417 -15423 LoutGr2
@@ -6143,18 +6167,18 @@ showpage
 %%Page: 4 5
 %%BeginPageSetup
 %%PageResources: font Times-Roman
-%%+ font Times-Italic
 %%+ font Symbol
+%%+ font Times-Italic
 %%+ font Times-Bold
 /pgsave save def
 %%IncludeResource: font Times-Roman
 /Times-Romanfnt1 vec2 /Times-Roman LoutRecode
 /fnt1 { /Times-Romanfnt1 LoutFont } def
+%%IncludeResource: font Symbol
+/fnt4 { /Symbol LoutFont } def
 %%IncludeResource: font Times-Italic
 /Times-Italicfnt3 vec2 /Times-Italic LoutRecode
 /fnt3 { /Times-Italicfnt3 LoutFont } def
-%%IncludeResource: font Symbol
-/fnt4 { /Symbol LoutFont } def
 %%IncludeResource: font Times-Bold
 /Times-Boldfnt2 vec2 /Times-Bold LoutRecode
 /fnt2 { /Times-Boldfnt2 LoutFont } def
@@ -6176,140 +6200,118 @@ gsave
 0 16840 translate
 0.0000 rotate
 0.0 0.0 0.0 LoutSetRGBColor
-5780 -1565(-)m 5898(4)s 6057(-)s 9066 13433 0 13433 220 264 55 1417 -15423 LoutGr2
+5780 -1565(-)m 5898(4)s 6057(-)s 9066 13433 0 13333 220 264 55 1417 -15423 LoutGr2
 0 LoutMargSet
 grestore
-
-[ /Dest /LOUTINTGenNSMomHyp /DEST pdfmark
-286 fnt4 1741 12796(\362)m
-154 fnt3 1823 12732(V)m 220 fnt4 1939 13005(\266)m 2051(\()s
-2128(r)s 2247(f)s 2366(\))s gsave
-1939 12911 translate
-220 fnt3 488 0 0 0 220 264 11 LoutGraphic
-gsave
-0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
-grestore
-
-grestore
-2095 12702(\266)m
-220 fnt3 2207 12709(t)m 2438 12863(dV)m 220 fnt4 2764 12856(+)m
-286 fnt4 2948 12796(\362)m 154 fnt3 3030 12732(V)m 220 fnt4
-3146 12856(\321)m 3361(\327)s 3465(\()s 3542(r)s 220 fnt2
-3661 12861(u)m 220 fnt4 3790 12856(f)m 3909(\))s 220 fnt3
-3981 12863(dV)m 220 fnt4 4329 12856(=)m 286 fnt4 4524 12796(\362)m
-154 fnt3 4606 12732(V)m 220 fnt4 4722 12856(\321)m 4937(\327)s
-5041(\()s 5118(G)s 5262(\321)s 5422(f)s 5541(\))s
-220 fnt3 5613 12863(dV)m 220 fnt4 5939 12856(+)m 286 fnt4
-6123 12796(\362)m 154 fnt3 6205 12732(V)m 220 fnt3 6321 12863(S)m
-6443(dV)s 220 fnt1 8655 12862(\(3.6\))m 0 12234(W)m 8(ith)k
+0 13284(W)m 8(ith)k
 484(further)s 1136(modi\207cations,)s 2429(one)s 2797(arri)s 5(v)k 3(es)k
 3431(at)s 3644(e)s 3(xpression)k 4631(3.7.)s 
 [ /Dest /LOUTINTGenNSMomHypMOD1 /DEST pdfmark
 220 fnt4
-2198 11583(r)m 220 fnt3 2317 11590(V)m 220 fnt4 2478 11731(\266)m
+2198 12633(r)m 220 fnt3 2317 12640(V)m 220 fnt4 2478 12781(\266)m
 gsave
 2590 0 translate
 0.9231 1.0000 scale
-0 11859(-)m 
+0 12909(-)m 
 grestore
 2590(f)s gsave
-2478 11638 translate
+2478 12688 translate
 220 fnt3 220 0 0 0 220 264 11 LoutGraphic
 gsave
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-2500 11429(\266)m 220 fnt3
-2612 11436(t)m 220 fnt4 2764 11583(+)m 286 fnt4 2948 11523(\362)m
-154 fnt3 3030 11459(V)m 220 fnt4 3146 11583(\321)m 3361(\327)s
-3465(\()s 3542(r)s 220 fnt2 3661 11588(u)m 220 fnt4
-3790 11583(f)m 3909(\))s 220 fnt3 3981 11590(dV)m 220 fnt4
-4329 11583(=)m 286 fnt4 4524 11523(\362)m 154 fnt3 4606 11459(V)m
-220 fnt4 4722 11583(\321)m 4937(\327)s 5041(\()s 5118(G)s
-5262(\321)s 5422(f)s 5541(\))s 220 fnt3 5613 11590(dV)m
-220 fnt4 5939 11583(+)m gsave
+2500 12479(\266)m 220 fnt3
+2612 12486(t)m 220 fnt4 2764 12633(+)m 286 fnt4 2948 12573(\362)m
+154 fnt3 3030 12509(V)m 220 fnt4 3146 12633(\321)m 3361(\327)s
+3465(\()s 3542(r)s 220 fnt2 3661 12638(u)m 220 fnt4
+3790 12633(f)m 3909(\))s 220 fnt3 3981 12640(dV)m 220 fnt4
+4329 12633(=)m 286 fnt4 4524 12573(\362)m 154 fnt3 4606 12509(V)m
+220 fnt4 4722 12633(\321)m 4937(\327)s 5041(\()s 5118(G)s
+5262(\321)s 5422(f)s 5541(\))s 220 fnt3 5613 12640(dV)m
+220 fnt4 5939 12633(+)m gsave
 6123 0 translate
 0.9487 1.0000 scale
-0 11717(-)m 
+0 12767(-)m 
 grestore
-220 fnt3 6123 11590(S)m
-6245(V)s 220 fnt1 8655 11589(\(3.7\))m 0 10935(By)m 328(applying)s
+220 fnt3 6123 12640(S)m
+6245(V)s 220 fnt1 8655 12639(\(3.7\))m 0 11985(By)m 328(applying)s
 1169(the)s 1510(di)s 5(v)k 3(er)k 3(gence)k
-2535(theorem)s 140 fnt1 3254 11016(1)m 220 fnt1 3387 10935(on)m
+2535(theorem)s 140 fnt1 3254 12066(1)m 220 fnt1 3387 11985(on)m
 3682(con)s 8(v)k 3(ection)k 4709(and)s 5102(dif)s 5(fusion)k
 5965(inte)s 3(grals)k 6785(and)s 7179(assuming)s 8080(rectangular)s
-0 10671(control)m 666(v)s 4(olumes)k 1444(with)s 1879(f)s 2(aces)k
-2364(North)s 220 fnt3 2921 10672(n)m 220 fnt1 3026 10671(,)m
-3116(East)s 220 fnt3 3540 10672(e)m 220 fnt1 3630 10671(,)m
-3720(South)s 220 fnt3 4278 10672(s)m 220 fnt1 4405 10671(and)m
-4769(W)s 17(est)k 220 fnt3 5249 10672(w)m 220 fnt1
-5438 10671(and)m 5801(sides)s 6277(of)s 6518(length)s 220 fnt4
-7112 10665(D)m 220 fnt3 7257 10672(x)m 220 fnt1 7401 10671(and)m
-220 fnt4 7764 10665(D)m 220 fnt3 7909 10672(y)m 220 fnt1
-8050 10671(and)m 8413(making)s 0 10407(some)m 514(approximations,)s 1978(it)s
+0 11721(control)m 666(v)s 4(olumes)k 1444(with)s 1879(f)s 2(aces)k
+2364(North)s 220 fnt3 2921 11722(n)m 220 fnt1 3026 11721(,)m
+3116(East)s 220 fnt3 3540 11722(e)m 220 fnt1 3630 11721(,)m
+3720(South)s 220 fnt3 4278 11722(s)m 220 fnt1 4405 11721(and)m
+4769(W)s 17(est)k 220 fnt3 5249 11722(w)m 220 fnt1
+5438 11721(and)m 5801(sides)s 6277(of)s 6518(length)s 220 fnt4
+7112 11715(D)m 220 fnt3 7257 11722(x)m 220 fnt1 7401 11721(and)m
+220 fnt4 7764 11715(D)m 220 fnt3 7909 11722(y)m 220 fnt1
+8050 11721(and)m 8413(making)s 0 11457(some)m 514(approximations,)s 1978(it)s
 2155(is)s 2347(easy)s 2786(to)s 3006(arri)s 5(v)k 3(e)k
 3560(at)s 3773(e)s 3(xpression)k 4760(3.8.)s 
 [ /Dest /LOUTINTGenNSMomHypMOD2 /DEST pdfmark
 220 fnt4
-1.0 0.0 0.0 LoutSetRGBColor 4252 9756(r)m 220 fnt3 4371 9763(V)m 220 fnt4
-4532 9904(\266)m gsave
+1.0 0.0 0.0 LoutSetRGBColor 4252 10806(r)m 220 fnt3 4371 10813(V)m 220 fnt4
+4532 10954(\266)m gsave
 4644 0 translate
 0.9231 1.0000 scale
-0 10032(-)m 
+0 11082(-)m 
 grestore
 4644(f)s gsave
-4532 9811 translate
+4532 10861 translate
 220 fnt3 220 0 0 0 220 264 11 LoutGraphic
 gsave
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-4554 9602(\266)m
-220 fnt3 4666 9609(t)m 220 fnt4 4818 9756(+)m 5002(r)s
-220 fnt3 5121 9763(u)m 154 fnt3 5226 9684(n)m 220 fnt4
-5310 9756(D)m 220 fnt3 5455 9763(x)m 220 fnt4 5563 9756(f)m
-154 fnt3 5671 9674(n)m 220 fnt4 5810 9756(+)m 5994(r)s
-220 fnt3 6113 9763(u)m 154 fnt3 6218 9684(e)m 220 fnt4
-6293 9756(D)m 220 fnt3 6438 9763(y)m 220 fnt4 6543 9756(f)m
-154 fnt3 6651 9674(e)m 220 fnt4 2306 9188(+)m 2490(r)s
-220 fnt3 2609 9195(u)m 154 fnt3 2714 9116(s)m 220 fnt4
-2781 9188(D)m 220 fnt3 2926 9195(x)m 220 fnt4 3034 9188(f)m
-154 fnt3 3142 9106(s)m 220 fnt4 3264 9188(+)m 3448(r)s
-220 fnt3 3567 9195(u)m 154 fnt3 3672 9116(w)m 220 fnt4
-3783 9188(D)m 220 fnt3 3928 9195(y)m 220 fnt4 4033 9188(f)m
-154 fnt3 4141 9106(w)m 220 fnt4 4329 9188(=)m 4524(G)s
-154 fnt3 4657 9116(n)m gsave
-0 9249 translate
+4554 10652(\266)m
+220 fnt3 4666 10659(t)m 220 fnt4 4818 10806(+)m 5002(r)s
+220 fnt3 5121 10813(u)m 154 fnt3 5226 10734(n)m 220 fnt4
+5310 10806(D)m 220 fnt3 5455 10813(x)m 220 fnt4 5563 10806(f)m
+154 fnt3 5671 10724(n)m 220 fnt4 5810 10806(+)m 5994(r)s
+220 fnt3 6113 10813(u)m 154 fnt3 6218 10734(e)m 220 fnt4
+6293 10806(D)m 220 fnt3 6438 10813(y)m 220 fnt4 6543 10806(f)m
+154 fnt3 6651 10724(e)m 220 fnt4 2306 10238(+)m 2490(r)s
+220 fnt3 2609 10245(u)m 154 fnt3 2714 10166(s)m 220 fnt4
+2781 10238(D)m 220 fnt3 2926 10245(x)m 220 fnt4 3034 10238(f)m
+154 fnt3 3142 10156(s)m 220 fnt4 3264 10238(+)m 3448(r)s
+220 fnt3 3567 10245(u)m 154 fnt3 3672 10166(w)m 220 fnt4
+3783 10238(D)m 220 fnt3 3928 10245(y)m 220 fnt4 4033 10238(f)m
+154 fnt3 4141 10156(w)m 220 fnt4 4329 10238(=)m 4524(G)s
+154 fnt3 4657 10166(n)m gsave
+0 10299 translate
 1.0000 2.1444 scale
 330 fnt4 4741 -82(\()m 
 grestore
 220 fnt4
-4873 9339(\266)m 4985(f)s gsave
-4873 9246 translate
+4873 10389(\266)m 4985(f)s gsave
+4873 10296 translate
 220 fnt3 220 0 0 0 220 264 11 LoutGraphic
 gsave
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-4880 9037(\266)m 220 fnt3
-4992 9044(y)m gsave
-0 9249 translate
+4880 10087(\266)m 220 fnt3
+4992 10094(y)m gsave
+0 10299 translate
 1.0000 2.1444 scale
 330 fnt4 5126 -82(\))m 
 grestore
-154 fnt3 5217 8905(n)m
-220 fnt4 5301 9188(D)m 220 fnt3 5446 9195(x)m 220 fnt4
-5609 9188(+)m 5793(G)s 154 fnt3 5926 9116(e)m gsave
-0 9249 translate
+154 fnt3 5217 9955(n)m
+220 fnt4 5301 10238(D)m 220 fnt3 5446 10245(x)m 220 fnt4
+5609 10238(+)m 5793(G)s 154 fnt3 5926 10166(e)m gsave
+0 10299 translate
 1.0000 2.1444 scale
 330 fnt4
 6001 -82(\()m 
 grestore
-220 fnt4 6133 9339(\266)m 6245(f)s gsave
-6133 9246 translate
+220 fnt4 6133 10389(\266)m 6245(f)s gsave
+6133 10296 translate
 220 fnt3
 220 0 0 0 220 264 11 LoutGraphic
 gsave
@@ -6317,127 +6319,123 @@ gsave
 grestore
 
 grestore
-6138 9037(\266)m 220 fnt3 6250 9044(x)m gsave
-0 9249 translate
+6138 10087(\266)m 220 fnt3 6250 10094(x)m gsave
+0 10299 translate
 1.0000 2.1444 scale
 330 fnt4 6386 -82(\))m
 
 grestore
-154 fnt3 6477 8905(e)m 220 fnt4 6552 9188(D)m 220 fnt3
-6697 9195(y)m 220 fnt4 4307 8544(-)m 4490(G)s 154 fnt3
-4623 8472(s)m gsave
-0 8605 translate
+154 fnt3 6477 9955(e)m 220 fnt4 6552 10238(D)m 220 fnt3
+6697 10245(y)m 220 fnt4 4307 9594(-)m 4490(G)s 154 fnt3
+4623 9522(s)m gsave
+0 9655 translate
 1.0000 2.1444 scale
 330 fnt4 4690 -82(\()m 
 grestore
-220 fnt4 4822 8695(\266)m
+220 fnt4 4822 9745(\266)m
 4934(f)s gsave
-4822 8602 translate
+4822 9652 translate
 220 fnt3 220 0 0 0 220 264 11 LoutGraphic
 gsave
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-4829 8393(\266)m 220 fnt3 4941 8400(y)m
+4829 9443(\266)m 220 fnt3 4941 9450(y)m
 gsave
-0 8605 translate
+0 9655 translate
 1.0000 2.1444 scale
 330 fnt4 5075 -82(\))m 
 grestore
-154 fnt3 5166 8261(e)m 220 fnt4
-5241 8544(D)m 220 fnt3 5386 8551(x)m 220 fnt4 5549 8544(-)m
-5732(G)s 154 fnt3 5865 8472(w)m gsave
-0 8605 translate
+154 fnt3 5166 9311(e)m 220 fnt4
+5241 9594(D)m 220 fnt3 5386 9601(x)m 220 fnt4 5549 9594(-)m
+5732(G)s 154 fnt3 5865 9522(w)m gsave
+0 9655 translate
 1.0000 2.1444 scale
 330 fnt4 5976 -82(\()m
 
 grestore
-220 fnt4 6108 8695(\266)m 6220(f)s gsave
-6108 8602 translate
+220 fnt4 6108 9745(\266)m 6220(f)s gsave
+6108 9652 translate
 220 fnt3 220 0 0 0 220 264 11 LoutGraphic
 gsave
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-6113 8393(\266)m
-220 fnt3 6225 8400(x)m gsave
-0 8605 translate
+6113 9443(\266)m
+220 fnt3 6225 9450(x)m gsave
+0 9655 translate
 1.0000 2.1444 scale
 330 fnt4 6361 -82(\))m 
 grestore
 154 fnt3
-6452 8261(w)m 220 fnt4 6563 8544(D)m 220 fnt3 6708 8551(y)m
-220 fnt4 6868 8544(+)m gsave
+6452 9311(w)m 220 fnt4 6563 9594(D)m 220 fnt3 6708 9601(y)m
+220 fnt4 6868 9594(+)m gsave
 7052 0 translate
 0.9487 1.0000 scale
-0 8678(-)m 
+0 9728(-)m 
 grestore
-220 fnt3 7052 8551(S)m
+220 fnt3 7052 9601(S)m
 7174(V)s gsave
-7324 8576 translate
-176 fnt1 0.0 0.0 0.0 LoutSetRGBColor 1416 1311 0 1235 176 193 44 LoutGraphic
+7324 9433 translate
+176 fnt1 0.0 0.0 0.0 LoutSetRGBColor 1416 1504 0 1428 176 193 44 LoutGraphic
 gsave
 1 LoutMargShift gsave
 grestore
-1.0 0.0 0.0 LoutSetRGBColor 283 1196(REV)m 22(.:)k
-733(Bre-)s 283 1003(ak)m 493(equation)s 283 810(o)m 2(v)k 2(er)k
-635(mul-)s 283 617(tiple)m 634(lines)s 283 424(with)m 636(alig-)s
-283 231(ned)m 580(equals.)s grestore
+1.0 0.0 0.0 LoutSetRGBColor 283 1389(REV)m 22(.:)k
+283 1196(Break)m 746(equa-)s 283 1003(tion)m 597(o)s 2(v)k 2(er)k
+283 810(multiple)m 283 617(lines)m 650(with)s 283 424(aligned)m 283 231(equals.)m
 grestore
-220 fnt1 0.0 0.0 0.0 LoutSetRGBColor 8655 9762(\(3.8\))m
-0 7845(Notice)m 676(that)s 1102(the)s 1463(normal)s 2178(deri)s 5(v)k 5(ati)k 5(v)k 3(es)k
-3210(of)s 220 fnt4 3501 7839(f)m 220 fnt1 3706 7845(at)m
+grestore
+220 fnt1 0.0 0.0 0.0 LoutSetRGBColor 8655 10812(\(3.8\))m 0 8895(Notice)m 676(that)s
+1102(the)s 1463(normal)s 2178(deri)s 5(v)k 5(ati)k 5(v)k 3(es)k
+3210(of)s 220 fnt4 3501 8889(f)m 220 fnt1 3706 8895(at)m
 3961(the)s 4321(f)s 2(aces)k 4856(are)s 5216(needed.)s
 5974(The)s 6408(simplest)s 7236(w)s 2(ay)k 7691(to)s
-7953(compute)s 8802(the)s 0 7581(equation)m 812(3.8)s 1134(is)s
+7953(compute)s 8802(the)s 0 8631(equation)m 812(3.8)s 1134(is)s
 1330(by)s 1604(using)s 2133(a)s 2289(staggered)s 3187(mesh)s
 3707(as)s 3939(sho)s 5(wn)k 4563(in)s 4790(\207gure)s
 5357(1)s 5503(and)s 5878(the)s 6201(follo)s 5(wing)k
 7103(for)s 7418(the)s 7741(con)s 8(v)k 3(ection)k
-8750(and)s 0 7317(dif)m 5(fusion)k 840(terms.)s 2337 284 66 118 220 264 55 440 6905 LoutGr2
-LoutCurveBox  stroke
-grestore
-66 69(Con)m 8(v)k 3(ection)k
-1119(in)s 220 fnt3 1342 70(x)m 220 fnt1 1494 69(direction)m
-
-grestore
-2832 6974(The)m 3224(con)s 8(v)k 3(ection)k 4228(term)s
-140 fnt1 4630 7055(2)m 220 fnt1 4752 6974(can)m 5108(be)s
-5366(re)s 5(written)k 6204(as)s 6432(in)s 6655(3.9.)s
+8750(and)s 0 8367(dif)m 5(fusion)k 840(terms.)s 220 fnt2
+3371 7950(Con)m 8(v)k 2(ection)k 4473(in)s 220 fnt3
+4708 7952(x)m 220 fnt2 4860 7950(dir)m 3(ection)k 220 fnt1
+0 7507(The)m 392(con)s 8(v)k 3(ection)k 1396(term)s
+140 fnt1 1798 7588(2)m 220 fnt1 1920 7507(can)m 2276(be)s
+2534(re)s 5(written)k 3372(as)s 3600(in)s 3823(3.9.)s
 
 [ /Dest /LOUTConvNotApprox /DEST pdfmark
-286 fnt4 2224 6380(\362)m 154 fnt3 2306 6316(V)m 220 fnt4
-2422 6440(\321)m 2637(\327)s 2741(\()s 220 fnt2 2818 6445(u)m
-220 fnt3 2947 6447(u)m 154 fnt3 3052 6368(k)m 220 fnt4
-3133 6440(\))m 220 fnt3 3205 6447(dV)m 220 fnt4 3476 6440(\273)m
-220 fnt3 3603 6447(u)m 154 fnt3 3708 6368(n)m 220 fnt4
-3792 6440(D)m 220 fnt3 3937 6447(x)m 220 fnt4 4045 6440(f)m
-154 fnt3 4153 6358(n)m 220 fnt4 4292 6440(+)m 220 fnt3
-4476 6447(u)m 154 fnt3 4581 6368(e)m 220 fnt4 4656 6440(D)m
-220 fnt3 4801 6447(y)m 220 fnt4 4906 6440(f)m 154 fnt3
-5014 6358(e)m 220 fnt4 5144 6440(+)m 220 fnt3 5328 6447(u)m
-154 fnt3 5433 6368(s)m 220 fnt4 5500 6440(D)m 220 fnt3
-5645 6447(x)m 220 fnt4 5753 6440(f)m 154 fnt3 5861 6358(s)m
-220 fnt4 5983 6440(+)m 220 fnt3 6167 6447(u)m 154 fnt3
-6272 6368(w)m 220 fnt4 6383 6440(D)m 220 fnt3 6528 6447(y)m
-220 fnt4 6633 6440(f)m 154 fnt3 6741 6358(w)m 220 fnt1
-8655 6446(\(3.9\))m 0 5900(Assuming)m 220 fnt4 955 5894(f)m 1140(=)s
-220 fnt3 1335 5901(u)m 220 fnt1 1440 5900(,)m 1554(it)s
+286 fnt4 2224 6977(\362)m 154 fnt3 2306 6913(V)m 220 fnt4
+2422 7037(\321)m 2637(\327)s 2741(\()s 220 fnt2 2818 7042(u)m
+220 fnt3 2947 7044(u)m 154 fnt3 3052 6965(k)m 220 fnt4
+3133 7037(\))m 220 fnt3 3205 7044(dV)m 220 fnt4 3476 7037(\273)m
+220 fnt3 3603 7044(u)m 154 fnt3 3708 6965(n)m 220 fnt4
+3792 7037(D)m 220 fnt3 3937 7044(x)m 220 fnt4 4045 7037(f)m
+154 fnt3 4153 6955(n)m 220 fnt4 4292 7037(+)m 220 fnt3
+4476 7044(u)m 154 fnt3 4581 6965(e)m 220 fnt4 4656 7037(D)m
+220 fnt3 4801 7044(y)m 220 fnt4 4906 7037(f)m 154 fnt3
+5014 6955(e)m 220 fnt4 5144 7037(+)m 220 fnt3 5328 7044(u)m
+154 fnt3 5433 6965(s)m 220 fnt4 5500 7037(D)m 220 fnt3
+5645 7044(x)m 220 fnt4 5753 7037(f)m 154 fnt3 5861 6955(s)m
+220 fnt4 5983 7037(+)m 220 fnt3 6167 7044(u)m 154 fnt3
+6272 6965(w)m 220 fnt4 6383 7037(D)m 220 fnt3 6528 7044(y)m
+220 fnt4 6633 7037(f)m 154 fnt3 6741 6955(w)m 220 fnt1
+8655 7043(\(3.9\))m 0 6497(Assuming)m 220 fnt4 955 6491(f)m 1140(=)s
+220 fnt3 1335 6498(u)m 220 fnt1 1440 6497(,)m 1554(it)s
 1747(is)s 1955(f)s 2(air)k 2328(to)s 2565(assume)s
 3277(the)s 3612(follo)s 5(wing)k 4526(e)s 3(xpressions)k
 5608(for)s 5935(each)s 6406(magnitude)s 7400(at)s 7629(one)s
-8013(point)s 8536(of)s 8802(the)s 0 5636(domain)m 711(for)s
+8013(point)s 8536(of)s 8802(the)s 0 6233(domain)m 711(for)s
 1022(the)s 1341(situation)s 2149(sho)s 5(wn)k 2769(in)s
-2992(\207gure)s 3555(1:)s 0 5038(V)m 24(elocities)k 910(at)s
-1123(f)s 2(aces)k 220 fnt3 1760 5039(u)m 154 fnt3
-1865 4988(n)m 220 fnt4 2015 5032(=)m 220 fnt3 2210 5214(u)m
-154 fnt3 2315 5163(i)m 154 fnt4 2362 5158(,)m 154 fnt3
-2410 5163(j)m 154 fnt4 2472 5158(+)m 2575(1)s 220 fnt4
-2702 5207(+)m 220 fnt3 2886 5214(u)m 154 fnt3 2991 5163(i)m
-154 fnt4 3038 5158(,)m 154 fnt3 3086 5163(j)m gsave
-2210 5087 translate
+2992(\207gure)s 3555(1:)s 0 5635(V)m 24(elocities)k 910(at)s
+1123(f)s 2(aces)k 220 fnt3 1760 5636(u)m 154 fnt3
+1865 5585(n)m 220 fnt4 2015 5629(=)m 220 fnt3 2210 5811(u)m
+154 fnt3 2315 5760(i)m 154 fnt4 2362 5755(,)m 154 fnt3
+2410 5760(j)m 154 fnt4 2472 5755(+)m 2575(1)s 220 fnt4
+2702 5804(+)m 220 fnt3 2886 5811(u)m 154 fnt3 2991 5760(i)m
+154 fnt4 3038 5755(,)m 154 fnt3 3086 5760(j)m gsave
+2210 5684 translate
 220 fnt3
 918 0 0 0 220 264 11 LoutGraphic
 gsave
@@ -6445,42 +6443,42 @@ gsave
 grestore
 
 grestore
-220 fnt4 2616 4878(2)m 220 fnt1 3128 5038(,)m 220 fnt3
-3226 5039(u)m 154 fnt3 3331 4988(e)m 220 fnt4 3472 5032(=)m
-220 fnt3 3667 5214(u)m 154 fnt3 3772 5163(i)m 154 fnt4
-3832 5158(+)m 3935(1)s 4003(,)s 154 fnt3 4051 5163(j)m
-220 fnt4 4159 5207(+)m 220 fnt3 4343 5214(u)m 154 fnt3
-4448 5163(i)m 154 fnt4 4495 5158(,)m 154 fnt3 4543 5163(j)m
+220 fnt4 2616 5475(2)m 220 fnt1 3128 5635(,)m 220 fnt3
+3226 5636(u)m 154 fnt3 3331 5585(e)m 220 fnt4 3472 5629(=)m
+220 fnt3 3667 5811(u)m 154 fnt3 3772 5760(i)m 154 fnt4
+3832 5755(+)m 3935(1)s 4003(,)s 154 fnt3 4051 5760(j)m
+220 fnt4 4159 5804(+)m 220 fnt3 4343 5811(u)m 154 fnt3
+4448 5760(i)m 154 fnt4 4495 5755(,)m 154 fnt3 4543 5760(j)m
 gsave
-3667 5087 translate
+3667 5684 translate
 220 fnt3 918 0 0 0 220 264 11 LoutGraphic
 gsave
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-220 fnt4 4073 4878(2)m 220 fnt1 4585 5038(,)m
-220 fnt3 4683 5039(u)m 154 fnt3 4788 4988(s)m 220 fnt4
-4921 5032(=)m 220 fnt3 5116 5214(u)m 154 fnt3 5221 5163(i)m
-154 fnt4 5268 5158(,)m 154 fnt3 5316 5163(j)m 154 fnt4
-5378 5158(-)m 5480(1)s 220 fnt4 5607 5207(+)m 220 fnt3
-5791 5214(u)m 154 fnt3 5896 5163(i)m 154 fnt4 5943 5158(,)m
-154 fnt3 5991 5163(j)m gsave
-5116 5087 translate
+220 fnt4 4073 5475(2)m 220 fnt1 4585 5635(,)m
+220 fnt3 4683 5636(u)m 154 fnt3 4788 5585(s)m 220 fnt4
+4921 5629(=)m 220 fnt3 5116 5811(u)m 154 fnt3 5221 5760(i)m
+154 fnt4 5268 5755(,)m 154 fnt3 5316 5760(j)m 154 fnt4
+5378 5755(-)m 5480(1)s 220 fnt4 5607 5804(+)m 220 fnt3
+5791 5811(u)m 154 fnt3 5896 5760(i)m 154 fnt4 5943 5755(,)m
+154 fnt3 5991 5760(j)m gsave
+5116 5684 translate
 220 fnt3 917 0 0 0 220 264 11 LoutGraphic
 gsave
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-220 fnt4 5522 4878(2)m
-220 fnt1 6088 5038(and)m 220 fnt3 6459 5039(u)m 154 fnt3
-6564 4988(w)m 220 fnt4 6741 5032(=)m 220 fnt3 6936 5214(u)m
-154 fnt3 7041 5163(i)m 154 fnt4 7101 5158(-)m 7203(1)s
-7271(,)s 154 fnt3 7319 5163(j)m 220 fnt4 7427 5207(+)m
-220 fnt3 7611 5214(u)m 154 fnt3 7716 5163(i)m 154 fnt4
-7763 5158(,)m 154 fnt3 7811 5163(j)m gsave
-6936 5087 translate
+220 fnt4 5522 5475(2)m
+220 fnt1 6088 5635(and)m 220 fnt3 6459 5636(u)m 154 fnt3
+6564 5585(w)m 220 fnt4 6741 5629(=)m 220 fnt3 6936 5811(u)m
+154 fnt3 7041 5760(i)m 154 fnt4 7101 5755(-)m 7203(1)s
+7271(,)s 154 fnt3 7319 5760(j)m 220 fnt4 7427 5804(+)m
+220 fnt3 7611 5811(u)m 154 fnt3 7716 5760(i)m 154 fnt4
+7763 5755(,)m 154 fnt3 7811 5760(j)m gsave
+6936 5684 translate
 220 fnt3 917 0 0 0 220 264 11 LoutGraphic
 gsave
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
@@ -6488,107 +6486,111 @@ grestore
 
 grestore
 220 fnt4
-7342 4878(2)m 0 4227(\255)m 220 fnt1 180 4233(mass)m 664(\210o)s 5(w)k
-1098(rates)s 220 fnt3 1760 4234(F)m 154 fnt3 1872 4183(n)m
-220 fnt4 2022 4227(=)m 220 fnt3 2217 4409(v)m 154 fnt3
-2295 4358(i)m 154 fnt4 2342 4353(,)m 154 fnt3 2390 4358(j)m
-220 fnt4 2443 4402(D)m 154 fnt4 2698 4483(-)m 220 fnt3
-2588 4409(x)m 220 fnt4 2859 4402(+)m 220 fnt3 3043 4409(v)m
-154 fnt3 3121 4358(i)m 154 fnt4 3181 4353(+)m 3284(1)s
-3352(,)s 154 fnt3 3400 4358(j)m 220 fnt4 3453 4402(D)m
-154 fnt4 3708 4478(+)m 220 fnt3 3598 4409(x)m 1587 0 0 0 220 264 11 2217 4282 LoutGr2
+7342 5475(2)m 0 4824(\255)m 220 fnt1 180 4830(v)m 4(ol.)k
+552(\210o)s 5(w)k 986(rates)s 220 fnt3 1760 4831(F)m
+154 fnt3 1872 4780(n)m 220 fnt4 2022 4824(=)m 220 fnt3
+2217 5006(v)m 154 fnt3 2295 4955(i)m 154 fnt4 2342 4950(,)m
+154 fnt3 2390 4955(j)m 220 fnt4 2443 4999(D)m 154 fnt4
+2698 5080(-)m 220 fnt3 2588 5006(x)m 220 fnt4 2859 4999(+)m
+220 fnt3 3043 5006(v)m 154 fnt3 3121 4955(i)m 154 fnt4
+3181 4950(+)m 3284(1)s 3352(,)s 154 fnt3 3400 4955(j)m
+220 fnt4 3453 4999(D)m 154 fnt4 3708 5075(+)m 220 fnt3
+3598 5006(x)m 1587 0 0 0 220 264 11 2217 4879 LoutGr2
+0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
+grestore
+
+grestore
+220 fnt4 2958 4670(2)m 220 fnt1 3804 4830(,)m
+220 fnt3 3902 4831(F)m 154 fnt3 4014 4780(s)m 220 fnt4
+4147 4824(=)m 220 fnt3 4342 5006(v)m 154 fnt3 4420 4955(i)m
+154 fnt4 4467 4950(,)m 154 fnt3 4515 4955(j)m 154 fnt4
+4577 4950(-)m 4679(1)s 220 fnt4 4751 4999(D)m 154 fnt4
+5006 5080(-)m 220 fnt3 4896 5006(x)m 220 fnt4 5167 4999(+)m
+220 fnt3 5351 5006(v)m 154 fnt3 5429 4955(i)m 154 fnt4
+5489 4950(+)m 5592(1)s 5660(,)s 154 fnt3 5708 4955(j)m
+154 fnt4 5770 4950(-)m 5872(1)s 220 fnt4 5944 4999(D)m
+154 fnt4 6199 5075(+)m 220 fnt3 6089 5006(x)m 1953 0 0 0 220 264 11 4342 4879 LoutGr2
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
 220 fnt4
-2958 4073(2)m 220 fnt1 3804 4233(,)m 220 fnt3 3902 4234(F)m
-154 fnt3 4014 4183(s)m 220 fnt4 4147 4227(=)m 220 fnt3
-4342 4409(v)m 154 fnt3 4420 4358(i)m 154 fnt4 4467 4353(,)m
-154 fnt3 4515 4358(j)m 154 fnt4 4577 4353(-)m 4679(1)s
-220 fnt4 4751 4402(D)m 154 fnt4 5006 4483(-)m 220 fnt3
-4896 4409(x)m 220 fnt4 5167 4402(+)m 220 fnt3 5351 4409(v)m
-154 fnt3 5429 4358(i)m 154 fnt4 5489 4353(+)m 5592(1)s
-5660(,)s 154 fnt3 5708 4358(j)m 154 fnt4 5770 4353(-)m
-5872(1)s 220 fnt4 5944 4402(D)m 154 fnt4 6199 4478(+)m
-220 fnt3 6089 4409(x)m 1953 0 0 0 220 264 11 4342 4282 LoutGr2
+5266 4670(2)m 0 4025(\256)m 220 fnt1 266 4031(v)m 4(ol.)k
+638(\210o)s 5(w)k 1072(rates)s 220 fnt3 1760 4032(F)m
+154 fnt3 1872 3981(w)m 220 fnt4 2049 4025(=)m 220 fnt3
+2244 4207(u)m 154 fnt3 2349 4156(i)m 154 fnt4 2409 4151(-)m
+2511(1)s 2579(,)s 154 fnt3 2627 4156(j)m 220 fnt4
+2680 4200(D)m 220 fnt3 2825 4207(y)m 220 fnt4 2985 4200(+)m
+220 fnt3 3169 4207(u)m 154 fnt3 3274 4156(i)m 154 fnt4
+3321 4151(,)m 154 fnt3 3369 4156(j)m 220 fnt4 3422 4200(D)m
+220 fnt3 3567 4207(y)m 1417 0 0 0 220 264 11 2244 4080 LoutGr2
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-220 fnt4 5266 4073(2)m 0 3428(\256)m
-220 fnt1 266 3434(mass)m 750(\210o)s 5(w)k 1184(rates)s
-220 fnt3 1760 3435(F)m 154 fnt3 1872 3384(w)m 220 fnt4
-2049 3428(=)m 220 fnt3 2244 3610(u)m 154 fnt3 2349 3559(i)m
-154 fnt4 2409 3554(-)m 2511(1)s 2579(,)s 154 fnt3
-2627 3559(j)m 220 fnt4 2680 3603(D)m 220 fnt3 2825 3610(y)m
-220 fnt4 2985 3603(+)m 220 fnt3 3169 3610(u)m 154 fnt3
-3274 3559(i)m 154 fnt4 3321 3554(,)m 154 fnt3 3369 3559(j)m
-220 fnt4 3422 3603(D)m 220 fnt3 3567 3610(y)m 1417 0 0 0 220 264 11 2244 3483 LoutGr2
+220 fnt4 2900 3871(2)m 220 fnt1
+3661 4031(,)m 220 fnt3 3759 4032(F)m 154 fnt3 3871 3981(e)m
+220 fnt4 4012 4025(=)m 220 fnt3 4207 4207(u)m 154 fnt3
+4312 4156(i)m 154 fnt4 4359 4151(,)m 154 fnt3 4407 4156(j)m
+220 fnt4 4460 4200(D)m 220 fnt3 4605 4207(y)m 220 fnt4
+4765 4200(+)m 220 fnt3 4949 4207(u)m 154 fnt3 5054 4156(i)m
+154 fnt4 5114 4151(+)m 5217(1)s 5285(,)s 154 fnt3
+5333 4156(j)m 220 fnt4 5386 4200(D)m 220 fnt3 5531 4207(y)m
+1418 0 0 0 220 264 11 4207 4080 LoutGr2
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-220 fnt4
-2900 3274(2)m 220 fnt1 3661 3434(,)m 220 fnt3 3759 3435(F)m
-154 fnt3 3871 3384(e)m 220 fnt4 4012 3428(=)m 220 fnt3
-4207 3610(u)m 154 fnt3 4312 3559(i)m 154 fnt4 4359 3554(,)m
-154 fnt3 4407 3559(j)m 220 fnt4 4460 3603(D)m 220 fnt3
-4605 3610(y)m 220 fnt4 4765 3603(+)m 220 fnt3 4949 3610(u)m
-154 fnt3 5054 3559(i)m 154 fnt4 5114 3554(+)m 5217(1)s
-5285(,)s 154 fnt3 5333 3559(j)m 220 fnt4 5386 3603(D)m
-220 fnt3 5531 3610(y)m 1418 0 0 0 220 264 11 4207 3483 LoutGr2
-0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
-grestore
-
-grestore
-220 fnt4 4863 3274(2)m 220 fnt1
-0 2804(Element)m 786(dims.)s 220 fnt4 1760 2798(D)m 154 fnt4
-2015 2879(-)m 220 fnt3 1905 2805(x)m 220 fnt4 2187 2798(=)m
-220 fnt3 2382 2805(sx)m 154 fnt3 2564 2754(i)m 220 fnt4
-2670 2798(-)m 220 fnt3 2853 2805(sx)m 154 fnt3 3035 2754(i)m
-154 fnt4 3095 2749(-)m 3197(1)s 220 fnt1 3258 2804(,)m
-220 fnt4 3356 2798(D)m 154 fnt4 3611 2874(+)m 220 fnt3
-3501 2805(x)m 220 fnt4 3784 2798(=)m 220 fnt3 3979 2805(sx)m
-154 fnt3 4161 2754(i)m 154 fnt4 4221 2749(+)m 4324(1)s
-220 fnt4 4451 2798(-)m 220 fnt3 4634 2805(sx)m 154 fnt3
-4816 2754(i)m 220 fnt1 4911 2804(and)m 220 fnt4 5282 2798(D)m
-220 fnt3 5427 2805(y)m 220 fnt4 5598 2798(=)m 220 fnt3
-5793 2805(sy)m 154 fnt3 5960 2727(j)m 220 fnt4 6068 2798(-)m
-220 fnt3 6251 2805(sy)m 154 fnt3 6418 2727(j)m 154 fnt4
-6480 2722(-)m 6582(1)s gsave
-440 2235 translate
-220 fnt1 2172 283 66 117 220 264 55 LoutGraphic
+220 fnt4 4863 3871(2)m 220 fnt1 0 3401(Element)m 786(dims.)s
+220 fnt4 1760 3395(D)m 154 fnt4 2015 3476(-)m 220 fnt3
+1905 3402(x)m 220 fnt4 2187 3395(=)m 220 fnt3 2382 3402(sx)m
+154 fnt3 2564 3351(i)m 220 fnt4 2670 3395(-)m 220 fnt3
+2853 3402(sx)m 154 fnt3 3035 3351(i)m 154 fnt4 3095 3346(-)m
+3197(1)s 220 fnt1 3258 3401(,)m 220 fnt4 3356 3395(D)m
+154 fnt4 3611 3471(+)m 220 fnt3 3501 3402(x)m 220 fnt4
+3784 3395(=)m 220 fnt3 3979 3402(sx)m 154 fnt3 4161 3351(i)m
+154 fnt4 4221 3346(+)m 4324(1)s 220 fnt4 4451 3395(-)m
+220 fnt3 4634 3402(sx)m 154 fnt3 4816 3351(i)m 220 fnt1
+4911 3401(and)m 220 fnt4 5282 3395(D)m 220 fnt3 5427 3402(y)m
+220 fnt4 5598 3395(=)m 220 fnt3 5793 3402(sy)m 154 fnt3
+5960 3324(j)m 220 fnt4 6068 3395(-)m 220 fnt3 6251 3402(sy)m
+154 fnt3 6418 3324(j)m 154 fnt4 6480 3319(-)m 6582(1)s
+220 fnt1 0 2879(Notice)m 642(that)s 1034(in)s 1265(order)s
+1790(to)s 2018(compute)s 2833(either)s 3394(v)s 3(elocities)k
+4285(at)s 4506(the)s 4832(f)s 2(aces)k 5333(or)s
+5579(boundaries)s 6595(of)s 6852(the)s 7179(cell)s 7553(or)s
+7799(the)s 8126(v)s 4(olumetric)k 0 2615(\210o)m 5(w)k
+443(rates,)s 963(both)s 1416(the)s 1744(horizontal)s 2695(and)s
+3075(v)s 3(ertical)k 3789(v)s 3(elocities)k 4681(at)s
+4904(the)s 5232(points)s 5824(that)s 6217(mak)s 2(e)k
+6751(up)s 7029(the)s 7357(domain)s 8077(are)s 8405(needed.)s
+0 2351(Furthermore,)m 1195(the)s 1514(latter)s 2019(also)s 2421(require)s
+3093(that)s 3477(the)s 3796(coordinates)s 4853(of)s 5102(these)s
+5603(are)s 5921(kno)s 5(wn.)k 220 fnt2 3464 1888(Diffusion)m
+4381(in)s 220 fnt3 4616 1890(x)m 220 fnt2 4768 1888(dir)m 3(ection)k
 gsave
-LoutCurveBox  stroke
-grestore
-66 68(Dif)m 5(fusion)k
-954(in)s 220 fnt3 1177 69(x)m 220 fnt1 1329 68(direction)m
-
-grestore
-220 fnt1 2686 2303(The)m 3097(dif)s 5(fusion)k 3956(term)s
-4432(has)s 4789(been)s 5274(analytically)s 6366(found)s 6952(by)s
-7241(means)s 7866(of)s 8134(e)s 3(xpression)k 1134 0 0 0 220 264 55 0 1274 LoutGr2
+0 1274 translate
+220 fnt1 1134 0 0 0 220 264 55 LoutGraphic
+gsave
 0 0 moveto xsize 0 lineto stroke
 grestore
 
 grestore
-112 fnt1
-0 1086(1)m 176 fnt1 53 1022(The)m 367(di)s 4(v)k 2(er)k 3(gence)k
-1169(theorem)s 1787(states)s 2212(that)s 2518(for)s 2766(a)s
-2888(v)s 3(olume)k 176 fnt3 3452 1023(V)m 176 fnt1
-3616 1022(of)m 3814(boundary)s 4518(surf)s 1(ace)k 176 fnt4
-5064 1017(\266)m 176 fnt3 5153 1023(V)m 176 fnt1 5273 1022(,)m
-228 fnt4 3711 565(\362)m 123 fnt3 3776 514(V)m 176 fnt4
-3868 613(\321)m 4039(\327)s 176 fnt2 4120 617(J)m 176 fnt3
-4213 619(dV)m 176 fnt4 4481 613(=)m 4635 575(\260)m 228 fnt4
-4637 565(\362)m 123 fnt4 4702 511(\266)m 123 fnt3 4765 514(V)m
-176 fnt2 4857 617(J)m 176 fnt4 4993 613(\327)m 176 fnt2
-5074 617(n)m 176 fnt3 5177 619(dS)m 112 fnt1 0 109(2)m
-176 fnt1 62 45(In)m 250(order)s 664(to)s 839(easen)s
-1271(the)s 1526(w)s 1(ork,)k 1965(the)s 2220(density)s
-176 fnt4 2766 40(r)m 176 fnt1 2896 45(has)m 3167(not)s
-3435(been)s 3809(typed.)s 
+112 fnt1 0 1086(1)m 176 fnt1 53 1022(The)m
+367(di)s 4(v)k 2(er)k 3(gence)k 1169(theorem)s
+1787(states)s 2212(that)s 2518(for)s 2766(a)s 2888(v)s 3(olume)k
+176 fnt3 3452 1023(V)m 176 fnt1 3616 1022(of)m 3814(boundary)s
+4518(surf)s 1(ace)k 176 fnt4 5064 1017(\266)m 176 fnt3
+5153 1023(V)m 176 fnt1 5273 1022(,)m 228 fnt4 3711 565(\362)m
+123 fnt3 3776 514(V)m 176 fnt4 3868 613(\321)m 4039(\327)s
+176 fnt2 4120 617(J)m 176 fnt3 4213 619(dV)m 176 fnt4
+4481 613(=)m 4635 575(\260)m 228 fnt4 4637 565(\362)m 123 fnt4
+4702 511(\266)m 123 fnt3 4765 514(V)m 176 fnt2 4857 617(J)m
+176 fnt4 4993 613(\327)m 176 fnt2 5074 617(n)m 176 fnt3
+5177 619(dS)m 112 fnt1 0 109(2)m 176 fnt1 62 45(In)m
+250(order)s 664(to)s 839(easen)s 1271(the)s 1526(w)s 1(ork,)k
+1965(the)s 2220(density)s 176 fnt4 2766 40(r)m 176 fnt1
+2896 45(has)m 3167(not)s 3435(been)s 3809(typed.)s 
 grestore
 0 0 0 0 220 264 55 1417 -15423 LoutGr2
 0 LoutMargSet
@@ -7709,186 +7711,189 @@ end restore
 LoutEPSFCleanUp
 
 [ /Dest /LOUTFEMDiag /DEST pdfmark
-180 fnt2 1535 8279(Figura)m 2096(1.)s 180 fnt1 2314 8280(Diagram)m
-2985(of)s 3188(the)s 3449(control)s 3999(v)s 3(olume)k
-4577(and)s 4880(its)s 5088(surroundings.)s 6104(Note)s 6494(that)s
-180 fnt3 6808 8281(F)m 126 fnt3 6899 8235(k)m 180 fnt4
-7019 8275(=)m 180 fnt3 7178 8281(u)m 126 fnt3 7264 8235(k)m
-180 fnt4 7330 8275(D)m 180 fnt3 7449 8281(k)m 220 fnt1
-0 7659(3.10,)m 483(where)s 220 fnt4 1069 7653(D)m 220 fnt3
-1214 7660(x)m 220 fnt1 1366 7659(and)m 220 fnt4 1737 7653(D)m
-220 fnt3 1882 7660(y)m 220 fnt1 2031 7659(come)m 2557(from)s
-3039(the)s 3358(same)s 3859(e)s 3(xpressions)k 4925(used)s
-5381(before.)s 
+180 fnt2 1542 8279(Figur)m 3(e)k 2088(1.)s 180 fnt1
+2306 8280(Diagram)m 2977(of)s 3180(the)s 3441(control)s 3991(v)s 3(olume)k
+4569(and)s 4872(its)s 5080(surroundings.)s 6096(Note)s 6486(that)s
+180 fnt3 6800 8281(F)m 126 fnt3 6891 8235(k)m 180 fnt4
+7011 8275(=)m 180 fnt3 7170 8281(u)m 126 fnt3 7256 8235(k)m
+180 fnt4 7322 8275(D)m 180 fnt3 7441 8281(k)m 220 fnt1
+0 7659(The)m 383(dif)s 5(fusion)k 1213(term)s 1661(has)s
+1989(been)s 2446(analytically)s 3509(found)s 4066(by)s 4327(means)s
+4923(of)s 5163(e)s 3(xpression)k 6140(3.10,)s 6613(where)s
+220 fnt4 7190 7653(D)m 220 fnt3 7335 7660(x)m 220 fnt1
+7477 7659(and)m 220 fnt4 7839 7653(D)m 220 fnt3 7984 7660(y)m
+220 fnt1 8123 7659(come)m 8639(from)s 0 7395(the)m 319(same)s
+820(e)s 3(xpressions)k 1886(used)s 2342(before.)s 
 [ /Dest /LOUTDiffNotApprox /DEST pdfmark
-286 fnt4 1476 6950(\362)m 154 fnt4 1558 6881(W)m
-220 fnt4 1683 7010(\321)m 1898(\327)s 2002(\321)s 220 fnt3
-2162 7017(u)m 220 fnt4 2344 7010(=)m 286 fnt4 2539 6950(\362)m
-154 fnt4 2621 6881(\266)m 2700(W)s 220 fnt4 2825 7010(\321)m
-220 fnt3 2985 7017(u)m 220 fnt4 3156 7010(\327)m 220 fnt2
-3260 7015(n)m 220 fnt4 3456 7010(=)m 3651(D)s 220 fnt3
-3796 7017(x)m gsave
-0 7071 translate
-1.0000 1.9859 scale
-330 fnt4 3904 -82(\()m 
-grestore
-220 fnt4 4036 7139(\266)m
-220 fnt3 4148 7146(u)m 217 0 0 0 220 264 11 4036 7091 LoutGr2
-0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
-grestore
-
-grestore
-220 fnt4 4041 6882(\266)m 220 fnt3
-4153 6889(y)m gsave
-0 7071 translate
-1.0000 1.9859 scale
-330 fnt4 4286 -82(\))m 
-grestore
-154 fnt3 4377 6750(n)m
-220 fnt4 4516 7010(+)m 4700(D)s 220 fnt3 4845 7017(y)m
-gsave
-0 7071 translate
-1.0000 1.9859 scale
-330 fnt4 4950 -82(\()m 
-grestore
-220 fnt4 5082 7139(\266)m 220 fnt3
-5194 7146(u)m 217 0 0 0 220 264 11 5082 7091 LoutGr2
-0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
-grestore
-
-grestore
-220 fnt4 5086 6882(\266)m 220 fnt3 5198 6889(x)m
-gsave
-0 7071 translate
-1.0000 1.9859 scale
-330 fnt4 5332 -82(\))m 
-grestore
-154 fnt3 5423 6750(e)m 220 fnt4
-5553 7010(-)m 5736(D)s 220 fnt3 5881 7017(x)m gsave
-0 7071 translate
+286 fnt4
+1476 6686(\362)m 154 fnt4 1558 6617(W)m 220 fnt4 1683 6746(\321)m
+1898(\327)s 2002(\321)s 220 fnt3 2162 6753(u)m 220 fnt4
+2344 6746(=)m 286 fnt4 2539 6686(\362)m 154 fnt4 2621 6617(\266)m
+2700(W)s 220 fnt4 2825 6746(\321)m 220 fnt3 2985 6753(u)m
+220 fnt4 3156 6746(\327)m 220 fnt2 3260 6751(n)m 220 fnt4
+3456 6746(=)m 3651(D)s 220 fnt3 3796 6753(x)m gsave
+0 6807 translate
 1.0000 1.9859 scale
 330 fnt4
-5989 -82(\()m 
+3904 -82(\()m 
 grestore
-220 fnt4 6121 7139(\266)m 220 fnt3 6233 7146(u)m
-217 0 0 0 220 264 11 6121 7091 LoutGr2
+220 fnt4 4036 6875(\266)m 220 fnt3 4148 6882(u)m
+217 0 0 0 220 264 11 4036 6827 LoutGr2
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-220 fnt4 6126 6882(\266)m 220 fnt3 6238 6889(y)m gsave
-0 7071 translate
+220 fnt4 4041 6618(\266)m 220 fnt3 4153 6625(y)m gsave
+0 6807 translate
 1.0000 1.9859 scale
 330 fnt4
-6371 -82(\))m 
+4286 -82(\))m 
 grestore
-154 fnt3 6462 6750(s)m 220 fnt4 6584 7010(-)m
-6767(D)s 220 fnt3 6912 7017(y)m gsave
-0 7071 translate
+154 fnt3 4377 6486(n)m 220 fnt4 4516 6746(+)m
+4700(D)s 220 fnt3 4845 6753(y)m gsave
+0 6807 translate
 1.0000 1.9859 scale
-330 fnt4 7017 -82(\()m
+330 fnt4 4950 -82(\()m
 
 grestore
-220 fnt4 7149 7139(\266)m 220 fnt3 7261 7146(u)m 217 0 0 0 220 264 11 7149 7091 LoutGr2
+220 fnt4 5082 6875(\266)m 220 fnt3 5194 6882(u)m 217 0 0 0 220 264 11 5082 6827 LoutGr2
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
 220 fnt4
-7153 6882(\266)m 220 fnt3 7265 6889(x)m gsave
-0 7071 translate
+5086 6618(\266)m 220 fnt3 5198 6625(x)m gsave
+0 6807 translate
 1.0000 1.9859 scale
-330 fnt4 7399 -82(\))m
+330 fnt4 5332 -82(\))m
 
 grestore
-154 fnt3 7490 6750(w)m 220 fnt1 8545 7016(\(3.10\))m 0 6334(By)m
-341(using)s 901(\207rst)s 1332(order)s 1886(approximations)s 3333(as)s
-3596(in)s 3854(e)s 3(xpression)k 4877(3.11)s 5329(for)s
-5675(the)s 6029(east)s 220 fnt3 6460 6335(e)m 220 fnt1
-6640 6334(f)m 2(ace,)k 7135(a)s 7323(ready-to-implement)s 0 6070(e)m 3(xpression)k
-987(can)s 1343(be)s 1601(deduced.)s 
+154 fnt3 5423 6486(e)m 220 fnt4 5553 6746(-)m 5736(D)s
+220 fnt3 5881 6753(x)m gsave
+0 6807 translate
+1.0000 1.9859 scale
+330 fnt4 5989 -82(\()m 
+grestore
+220 fnt4
+6121 6875(\266)m 220 fnt3 6233 6882(u)m 217 0 0 0 220 264 11 6121 6827 LoutGr2
+0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
+grestore
+
+grestore
+220 fnt4 6126 6618(\266)m
+220 fnt3 6238 6625(y)m gsave
+0 6807 translate
+1.0000 1.9859 scale
+330 fnt4 6371 -82(\))m 
+grestore
+154 fnt3
+6462 6486(s)m 220 fnt4 6584 6746(-)m 6767(D)s 220 fnt3
+6912 6753(y)m gsave
+0 6807 translate
+1.0000 1.9859 scale
+330 fnt4 7017 -82(\()m 
+grestore
+220 fnt4 7149 6875(\266)m
+220 fnt3 7261 6882(u)m 217 0 0 0 220 264 11 7149 6827 LoutGr2
+0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
+grestore
+
+grestore
+220 fnt4 7153 6618(\266)m 220 fnt3
+7265 6625(x)m gsave
+0 6807 translate
+1.0000 1.9859 scale
+330 fnt4 7399 -82(\))m 
+grestore
+154 fnt3 7490 6486(w)m
+220 fnt1 8545 6752(\(3.10\))m 0 6070(By)m 341(using)s 901(\207rst)s
+1332(order)s 1886(approximations)s 3333(as)s 3596(in)s 3854(e)s 3(xpression)k
+4877(3.11)s 5329(for)s 5675(the)s 6029(east)s 220 fnt3
+6460 6071(e)m 220 fnt1 6640 6070(f)m 2(ace,)k 7135(a)s
+7323(ready-to-implement)s 0 5806(e)m 3(xpression)k 987(can)s 1343(be)s
+1601(deduced.)s 
 [ /Dest /LOUTDiffApprox /DEST pdfmark
 gsave
-0 5482 translate
+0 5218 translate
 1.0000 1.9859 scale
-330 fnt4 3737 -82(\()m
-
+330 fnt4 3737 -82(\()m 
 grestore
-220 fnt4 3869 5550(\266)m 220 fnt3 3981 5557(u)m 217 0 0 0 220 264 11 3869 5502 LoutGr2
+220 fnt4 3869 5286(\266)m
+220 fnt3 3981 5293(u)m 217 0 0 0 220 264 11 3869 5238 LoutGr2
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-220 fnt4
-3873 5293(\266)m 220 fnt3 3985 5300(x)m gsave
-0 5482 translate
+220 fnt4 3873 5029(\266)m 220 fnt3
+3985 5036(x)m gsave
+0 5218 translate
 1.0000 1.9859 scale
-330 fnt4 4119 -82(\))m
-
+330 fnt4 4119 -82(\))m 
 grestore
-154 fnt3 4210 5161(e)m 220 fnt4 4285 5421(\273)m 220 fnt3
-4412 5603(u)m 154 fnt3 4517 5552(i)m 154 fnt4 4577 5547(+)m
-4680(1)s 4748(,)s 154 fnt3 4796 5552(j)m 220 fnt4
-4904 5596(-)m 220 fnt3 5087 5603(u)m 154 fnt3 5192 5552(i)m
-154 fnt4 5239 5547(,)m 154 fnt3 5287 5552(j)m gsave
-4412 5476 translate
-220 fnt3
-917 0 0 0 220 264 11 LoutGraphic
+154 fnt3 4210 4897(e)m
+220 fnt4 4285 5157(\273)m 220 fnt3 4412 5339(u)m 154 fnt3
+4517 5288(i)m 154 fnt4 4577 5283(+)m 4680(1)s 4748(,)s
+154 fnt3 4796 5288(j)m 220 fnt4 4904 5332(-)m 220 fnt3
+5087 5339(u)m 154 fnt3 5192 5288(i)m 154 fnt4 5239 5283(,)m
+154 fnt3 5287 5288(j)m gsave
+4412 5212 translate
+220 fnt3 917 0 0 0 220 264 11 LoutGraphic
 gsave
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-220 fnt3 4432 5274(sx)m 154 fnt3 4614 5223(i)m 154 fnt4
-4674 5218(+)m 4777(1)s 220 fnt4 4904 5267(-)m 220 fnt3
-5087 5274(sx)m 154 fnt3 5269 5223(i)m 220 fnt1 8545 5427(\(3.11\))m
-0 4746(The)m 391(e)s 3(xpressions)k 1456(abo)s 3(v)k 3(e)k
-2023(compute)s 2829(the)s 3146(solution)s 3905(for)s 4214(a)s
-4365(single)s 4938(cell)s 5304(or)s 5540(element.)s 6328(By)s
-6632(mo)s 3(ving)k 7349(the)s 7666(element)s 8414(o)s 3(v)k 3(er)k
-8851(all)s 0 4482(the)m 322(points)s 908(that)s 1295(constitute)s
+220 fnt3 4432 5010(sx)m
+154 fnt3 4614 4959(i)m 154 fnt4 4674 4954(+)m 4777(1)s
+220 fnt4 4904 5003(-)m 220 fnt3 5087 5010(sx)m 154 fnt3
+5269 4959(i)m 220 fnt1 8545 5163(\(3.11\))m 0 4482(The)m 391(e)s 3(xpressions)k
+1456(abo)s 3(v)k 3(e)k 2023(compute)s 2829(the)s
+3146(solution)s 3905(for)s 4214(a)s 4365(single)s 4938(cell)s
+5304(or)s 5540(element.)s 6328(By)s 6632(mo)s 3(ving)k
+7349(the)s 7666(element)s 8414(o)s 3(v)k 3(er)k
+8851(all)s 0 4218(the)m 322(points)s 908(that)s 1295(constitute)s
 2202(the)s 2524(domain,)s 3284(the)s 3606(entire)s 4159(map)s
 4590(of)s 4842(magnitudes)s 5903(will)s 6298(be)s 6559(solv)s 3(ed.)k
 7227(The)s 7622(follo)s 5(wing)k 8523(step)s 8929(is)s
-0 4218(to)m 220(inte)s 3(grate)k 1035(o)s 3(v)k 3(er)k
-1474(time.)s 220 fnt2 0 3491(4.)m 267(Pr)s 3(essur)k 3(e\211v)k 2(elocity)k
+0 3954(to)m 220(inte)s 3(grate)k 1035(o)s 3(v)k 3(er)k
+1474(time.)s 220 fnt2 0 3227(4.)m 267(Pr)s 3(essur)k 3(e\211v)k 2(elocity)k
 1953(coupling)s 2810(and)s 3215(time)s 3681(integration)s 
 [ /Dest /LOUTcoupling /DEST pdfmark
 220 fnt1
-440 3054(According)m 1411(to)s 1626(the)s 1941(decomoposition)s 3391(theorem)s
+440 2790(According)m 1411(to)s 1626(the)s 1941(decomoposition)s 3391(theorem)s
 4160(of)s 4405(Ladyzhenskaya,)s 5862(a)s 6009(v)s 3(ector)k
-6605(\207eld)s 220 fnt2 7044 3053(w)m 220 fnt1 7249 3054(de\207ned)m
-7945(in)s 8163(a)s 8310(bounded)s 0 2790(domain)m 220 fnt4
-705 2784(W)m 220 fnt1 914 2790(with)m 1350(smooth)s 2043(boundary)s
-220 fnt4 2916 2784(\266)m 3028(W)s 220 fnt1 3237 2790(satis\207es)m
+6605(\207eld)s 220 fnt2 7044 2789(w)m 220 fnt1 7249 2790(de\207ned)m
+7945(in)s 8163(a)s 8310(bounded)s 0 2526(domain)m 220 fnt4
+705 2520(W)m 220 fnt1 914 2526(with)m 1350(smooth)s 2043(boundary)s
+220 fnt4 2916 2520(\266)m 3028(W)s 220 fnt1 3237 2526(satis\207es)m
 3969(equation)s 4770(4.1,)s 5137(in)s 5353(which)s 5935(it)s
 6105(is)s 6290(also)s 6685(satis\207ed)s 7450(that)s 220 fnt4
-7827 2784(\321)m 8042(\327)s 220 fnt2 8146 2789(a)m 220 fnt4
-8331 2784(=)m 8526(0)s 220 fnt1 8678 2790(with)m 220 fnt2
-0 2525(a)m 220 fnt4 185 2520(\316)m 373(W)s 220 fnt1
-589 2526(and)m 220 fnt2 960 2525(a)m 220 fnt4 1134 2520(\327)m
-220 fnt2 1238 2525(n)m 220 fnt4 1434 2520(=)m 1629(0)s
-220 fnt1 1788 2526(with)m 220 fnt2 2231 2525(a)m 220 fnt4
-2416 2520(\316)m 2604(\266)s 2716(W)s 220 fnt1 2877 2526(.)m
+7827 2520(\321)m 8042(\327)s 220 fnt2 8146 2525(a)m 220 fnt4
+8331 2520(=)m 8526(0)s 220 fnt1 8678 2526(with)m 220 fnt2
+0 2261(a)m 220 fnt4 185 2256(\316)m 373(W)s 220 fnt1
+589 2262(and)m 220 fnt2 960 2261(a)m 220 fnt4 1134 2256(\327)m
+220 fnt2 1238 2261(n)m 220 fnt4 1434 2256(=)m 1629(0)s
+220 fnt1 1788 2262(with)m 220 fnt2 2231 2261(a)m 220 fnt4
+2416 2256(\316)m 2604(\266)s 2716(W)s 220 fnt1 2877 2262(.)m
 
 [ /Dest /LOUTladyzhenskaya /DEST pdfmark
-220 fnt2 3996 2100(w)m 220 fnt4 4228 2095(=)m 220 fnt2
-4423 2100(a)m 220 fnt4 4597 2095(+)m 4781(\321)s 4941(j)s
-220 fnt1 8655 2101(\(4.1\))m 0 1623(Consequently)m 14(,)k 1316(by)s
+220 fnt2 3996 1836(w)m 220 fnt4 4228 1831(=)m 220 fnt2
+4423 1836(a)m 220 fnt4 4597 1831(+)m 4781(\321)s 4941(j)s
+220 fnt1 8655 1837(\(4.1\))m 0 1359(Consequently)m 14(,)k 1316(by)s
 1612(subtracting)s 2662(the)s 3007(gradient)s 3807(of)s 4082(a)s
-4260(suitable)s 5019(scalar)s 5610(\207eld)s 220 fnt3 6080 1624(p)m
-220 fnt1 6265 1623(to)m 6511(a)s 6689(discrete)s 7447(v)s 3(elocity)k
-8227(\207eld)s 154 fnt3 8815 1715(p)m 220 fnt2 8697 1622(u)m
-220 fnt1 8969 1623(a)m 0 1359(di)m 5(v)k 3(er)k 3(gence-free)k
-1415(v)s 3(ector)k 2015(\207eld)s 220 fnt2 2459 1358(u)m
-220 fnt1 2632 1359(is)m 2824(obtained)s 3634(\(see)s 4037(e)s 3(xpression)k
+4260(suitable)s 5019(scalar)s 5610(\207eld)s 220 fnt3 6080 1360(p)m
+220 fnt1 6265 1359(to)m 6511(a)s 6689(discrete)s 7447(v)s 3(elocity)k
+8227(\207eld)s 154 fnt3 8815 1451(p)m 220 fnt2 8697 1358(u)m
+220 fnt1 8969 1359(a)m 0 1095(di)m 5(v)k 3(er)k 3(gence-free)k
+1415(v)s 3(ector)k 2015(\207eld)s 220 fnt2 2459 1094(u)m
+220 fnt1 2632 1095(is)m 2824(obtained)s 3634(\(see)s 4037(e)s 3(xpression)k
 5024(4.2\).)s 
 [ /Dest /LOUTvelTransf /DEST pdfmark
-220 fnt2 3986 859(u)m 220 fnt4 4181 854(=)m
-154 fnt3 4494 980(p)m 220 fnt2 4376 859(u)m 220 fnt4
-4633 854(-)m 4816(\321)s 220 fnt3 4976 861(p)m 220 fnt1
-8655 860(\(4.2\))m 0 403(Because)m 220 fnt2 780 402(u)m 220 fnt1
-953 403(is)m 1145(a)s 1297(di)s 5(v)k 3(er)k 3(gence-free)k
+220 fnt2 3986 595(u)m 220 fnt4 4181 590(=)m
+154 fnt3 4494 716(p)m 220 fnt2 4376 595(u)m 220 fnt4
+4633 590(-)m 4816(\321)s 220 fnt3 4976 597(p)m 220 fnt1
+8655 596(\(4.2\))m 0 139(Because)m 220 fnt2 780 138(u)m 220 fnt1
+953 139(is)m 1145(a)s 1297(di)s 5(v)k 3(er)k 3(gence-free)k
 2712(v)s 3(ector)k 3312(\207eld,)s 3800(the)s 4119(e)s 3(xpression)k
 5106(4.3)s 5421(has)s 5759(to)s 5979(be)s 6237(satis\207ed.)s
 
@@ -8068,18 +8073,78 @@ grestore
 3535(equation)s 4373(\(see)s 4806(equation)s 5644(3.4\))s 6067(and)s
 6468(applying)s 7316(the)s 7666(decomoposition)s 0 4660(theorem)m 774(of)s
 1023(Ladyzhenskaya,)s 2485(the)s 2804(follo)s 5(wing)k 3702(can)s
-4058(be)s 4316(obtained:)s 8655 4200(\(4.9\))m 8545 3485(\(4.10\))m 0 3033(e)m 3(xpressions)k
-1102(??)s 1381(and)s 1788(??)s 2067(can)s 2459(be)s
-2753(re)s 5(written)k 3627(in)s 3886(matrix)s 4546(form)s
-5064(for)s 5411(the)s 5766(discretized)s 6805(domain)s 7552(as)s
-7816(the)s 8171(system)s 8872(of)s 0 2769(equations)m 887(constituted)s
-1904(by)s 2174(??)s 2417(and)s 2788(??)s 8545 2309(\(4.11\))m
-8545 1594(\(4.12\))m 0 1142(where)m 220 fnt4 639 1136(-)m 220 fnt3
-822 1143(D)m 220 fnt1 1029 1142(equals)m 1633(the)s 1950(dif)s 5(fusion)k
-2788(and)s 220 fnt4 3212 1136(-)m 3395(W)s 220 fnt3
-3567 1143(G)m 220 fnt1 3778 1142(equals)m 4382(the)s 4699(pressure.)s
-1.0 0.0 0.0 LoutSetRGBColor 5522(Note)s 5997(that)s 6379(in)s 6600(the)s
-6917(last)s 7274(system)s 7936(of)s 8182(equations,)s 
+4058(be)s 4316(obtained:)s 
+[ /Dest /LOUTNSCont1 /DEST pdfmark
+220 fnt4 2950 4184(\266)m 220 fnt3
+3062 4191(u)m 154 fnt3 3167 4140(j)m gsave
+2950 4064 translate
+220 fnt3 259 0 0 0 220 264 11 LoutGraphic
+gsave
+0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
+grestore
+
+grestore
+220 fnt4
+2991 3855(\266)m 220 fnt3 3103 3862(t)m 220 fnt4 3275 4009(-)m
+3458(n)s 154 fnt4 3722 4108(2)m 220 fnt4 3573 4009(\321)m
+220 fnt3 3807 4016(u)m 154 fnt3 3912 3937(j)m 220 fnt4
+4020 4009(+)m 4204(\321)s 4419(\327)s 4523(\()s 220 fnt3
+4600 4016(u)m 154 fnt3 4705 3937(j)m 220 fnt2 4758 4014(u)m
+220 fnt4 4887 4009(\))m 5014(+)s 5209 4108(1)m gsave
+5198 4064 translate
+220 fnt3
+108 0 0 0 220 264 11 LoutGraphic
+gsave
+0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
+grestore
+
+grestore
+5198 3855(r)m 5334 4146(\266)m 220 fnt3 5446 4153(p)m 251 0 0 0 220 264 11 5317 4064 LoutGr2
+0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
+grestore
+
+grestore
+220 fnt4
+5317 3855(\266)m 220 fnt3 5429 3862(x)m 154 fnt3 5526 3811(j)m
+220 fnt4 5656 4009(=)m 5851(0)s 220 fnt1 8655 4015(\(4.9\))m
+
+[ /Dest /LOUTNSCont2 /DEST pdfmark
+220 fnt4 5131 3094(\321)m 5346(\327)s 220 fnt2 5450 3099(u)m
+220 fnt4 5656 3094(=)m 5851(0)s 220 fnt1 8545 3100(\(4.10\))m
+0 2648(e)m 3(xpressions)k 1086(4.9)s 1427(and)s 1818(4.10)s
+2273(can)s 2649(be)s 2928(re)s 5(written)k 3786(in)s
+4029(matrix)s 4673(form)s 5175(for)s 5506(the)s 5846(discretized)s
+6869(domain)s 7600(as)s 7848(the)s 8187(system)s 8872(of)s
+0 2384(equations)m 887(constituted)s 1904(by)s 2174(4.11)s 2591(and)s
+2962(4.12)s 
+[ /Dest /LOUTNSDis1 /DEST pdfmark
+220 fnt4 3169 1821(W)m 220 fnt3 3341 1923(d)m
+3467(u)s 231 0 0 0 220 264 11 3341 1876 LoutGr2
+0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
+grestore
+
+grestore
+3361 1674(d)m 3487(t)s 220 fnt4 3638 1821(+)m
+220 fnt3 3822 1828(C)m 220 fnt4 3983 1821(\()m 220 fnt3
+4060 1828(u)m 220 fnt4 4176 1821(\))m 220 fnt3 4248 1828(u)m
+220 fnt4 4419 1821(+)m 220 fnt3 4603 1828(D)m 4768(u)s
+220 fnt4 4939 1821(+)m 5123(W)s 220 fnt3 5295 1828(G)m
+5464(p)s 220 fnt4 5656 1821(=)m 5851(0)s 220 fnt1
+8545 1827(\(4.11\))m 
+[ /Dest /LOUTNSDis2 /DEST pdfmark
+220 fnt3 5261 937(M)m 5463(u)s 220 fnt4
+5656 930(=)m 5851(0)s 220 fnt1 8545 936(\(4.12\))m 0 484(where)m
+220 fnt4 639 478(-)m 220 fnt3 822 485(D)m 220 fnt1
+1029 484(equals)m 1633(the)s 1950(dif)s 5(fusion)k 2788(and)s
+220 fnt4 3212 478(-)m 3395(W)s 220 fnt3 3567 485(G)m
+220 fnt1 3778 484(equals)m 4382(the)s 4699(pressure.)s 1.0 0.0 0.0 LoutSetRGBColor
+5522(Note)s 5997(that)s 6379(in)s 6600(the)s 6917(last)s
+7274(system)s 7936(of)s 8182(equations,)s 220 fnt3 0 221(p)m
+220 fnt1 159 220(is)m 351(the)s 671(scalar)s 1236(matrix)s
+1861(for)s 2172(the)s 2492(discretized)s 3495(scalar)s 4061(\207eld,)s
+4549(not)s 4885(the)s 5205(pressure)s 5986(as)s 6215(it)s
+6392(w)s 2(as)k 6777(in)s 7000(the)s 7320(system)s
+7984(of)s 8234(equations)s 
 grestore
 0 0 0 0 220 264 55 1417 -15423 LoutGr2
 0 LoutMargSet
@@ -8099,21 +8164,17 @@ showpage
 %%Page: 7 8
 %%BeginPageSetup
 %%PageResources: font Times-Roman
-%%+ font Times-Italic
 %%+ font Symbol
-%%+ font Times-Bold
+%%+ font Times-Italic
 /pgsave save def
 %%IncludeResource: font Times-Roman
 /Times-Romanfnt1 vec2 /Times-Roman LoutRecode
 /fnt1 { /Times-Romanfnt1 LoutFont } def
+%%IncludeResource: font Symbol
+/fnt4 { /Symbol LoutFont } def
 %%IncludeResource: font Times-Italic
 /Times-Italicfnt3 vec2 /Times-Italic LoutRecode
 /fnt3 { /Times-Italicfnt3 LoutFont } def
-%%IncludeResource: font Symbol
-/fnt4 { /Symbol LoutFont } def
-%%IncludeResource: font Times-Bold
-/Times-Boldfnt2 vec2 /Times-Bold LoutRecode
-/fnt2 { /Times-Boldfnt2 LoutFont } def
 0.0500 dup scale 10 setlinewidth
 %%EndPageSetup
 gsave
@@ -8135,77 +8196,127 @@ gsave
 5782 -1562(-)m 5900(7)s 6054(-)s 9066 13434 0 13334 220 264 55 1417 -15423 LoutGr2
 1 LoutMargSet
 grestore
-220 fnt3 1.0 0.0 0.0 LoutSetRGBColor
-0 13286(p)m 220 fnt1 159 13285(is)m 351(the)s 671(scalar)s
-1236(matrix)s 1861(for)s 2172(the)s 2492(discretized)s 3495(scalar)s
-4061(\207eld,)s 4549(not)s 4885(the)s 5205(pressure)s 5986(as)s
-6215(it)s 6392(w)s 2(as)k 6777(in)s 7000(the)s
-7320(system)s 7984(of)s 8234(equations)s 0 13021(for)m 300(a)s
-440(continuous)s 1438(domain.)s gsave
-2137 12607 translate
-176 fnt1 0.0 0.0 0.0 LoutSetRGBColor 1416 542 0 463 176 193 44 LoutGraphic
+1.0 0.0 0.0 LoutSetRGBColor 0 13285(for)m
+341(a)s 523(continuous)s 1563(domain.)s gsave
+2262 12871 translate
+176 fnt1 0.0 0.0 0.0 LoutSetRGBColor
+1416 542 0 463 176 193 44 LoutGraphic
 gsave
 1 LoutMargShift gsave
 grestore
-1.0 0.0 0.0 LoutSetRGBColor
-283 424(REV)m 22(.:)k 733(Am)s 1040(I)s 283 231(right?)m
+1.0 0.0 0.0 LoutSetRGBColor 283 424(REV)m 22(.:)k 733(Am)s 1040(I)s
+283 231(right?)m grestore
 grestore
-grestore
-0.0 0.0 0.0 LoutSetRGBColor 2235(In)s 2458(this)s 2809(project,)s 3504(the)s
-3811(inte)s 3(gral)k 4518(of)s 4755(equation)s 5551(??)s
-5782(\(generalization)s 7137(of)s 7374(??\))s 7674(with)s 8105(??)s
-8336(required)s 0 12757(the)m 316(use)s 656(of)s 902(the)s
-1218(Adams-Bashforth)s 2826(method.)s 3577(The)s 3966(pressure)s 4744(gradient)s
-5515(term)s 5968(has)s 6303(been)s 6766(computed)s 7683(implicitly)s
-8583(while)s 0 12493(the)m 319(time)s 760(deri)s 5(v)k 5(ati)k 5(v)k 3(e)k
-1670(has)s 2008(been)s 2474(e)s 5(v)k 5(aluated)k
-3358(by)s 3628(means)s 4234(of)s 4483(the)s 4802(central)s
-5449(dif)s 5(ference.)k 8545 12033(\(4.12\))m 8545 11318(\(4.12\))m 0 10866(The)m
-392(solution)s 1152(is)s 1344(achie)s 5(v)k 3(ed)k
-2169(by)s 2439(\207rst)s 2835(rearranging)s 3895(the)s 4214(equation)s
-5022(abo)s 3(v)k 3(e,)k 5638(as)s 5866(it)s
-6043(can)s 6399(be)s 6657(seen)s 7098(in)s 7321(4.13.)s
-
-[ /Dest /LOUTNSDisRea /DEST pdfmark
-220 fnt3 3823 10405(d)m 3949(u)s 231 0 0 0 220 264 11 3823 10358 LoutGr2
+0.0 0.0 0.0 LoutSetRGBColor 2402(In)s 2668(this)s 3061(project,)s
+3798(the)s 4147(inte)s 3(gral)k 4895(of)s 5175(equation)s
+6013(4.13)s 6468(\(generalization)s 7865(of)s 8144(4.11\))s 8678(with)s
+0 13021(4.14)m 446(required)s 1244(the)s 1576(use)s 1931(of)s
+2193(the)s 2525(Adams-Bashforth)s 4150(method.)s 4916(The)s 5321(pressure)s
+6115(gradient)s 6901(term)s 7371(has)s 7722(been)s 8201(computed)s
+0 12757(implicitly)m 904(while)s 1442(the)s 1761(time)s 2202(deri)s 5(v)k 5(ati)k 5(v)k 3(e)k
+3112(has)s 3450(been)s 3916(e)s 5(v)k 5(aluated)k
+4800(by)s 5070(means)s 5676(of)s 5925(the)s 6244(central)s
+6891(dif)s 5(ference.)k 
+[ /Dest /LOUTNSDisFull1 /DEST pdfmark
+220 fnt4 3169 12194(W)m 220 fnt3
+3341 12296(d)m 3467(u)s 231 0 0 0 220 264 11 3341 12249 LoutGr2
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-3843 10156(d)m 3969(t)s
-220 fnt4 4142 10303(=)m 220 fnt3 4337 10310(R)m 220 fnt4
-4477 10303(\()m 220 fnt3 4554 10310(u)m 220 fnt4 4670 10303(\))m
-4797(-)s 220 fnt3 4980 10310(Gp)m 220 fnt1 8545 10309(\(4.13\))m
-0 9681(where)m 220 fnt3 586 9682(R)m 220 fnt4 726 9675(\()m
-220 fnt3 803 9682(u)m 220 fnt4 919 9675(\))m 220 fnt1
-1035 9681(is)m 
+3361 12047(d)m 3487(t)s 220 fnt4
+3638 12194(+)m 220 fnt3 3822 12201(C)m 220 fnt4 3983 12194(\()m
+220 fnt3 4060 12201(u)m 220 fnt4 4176 12194(\))m 220 fnt3
+4248 12201(u)m 220 fnt4 4419 12194(+)m 220 fnt3 4603 12201(D)m
+4768(u)s 220 fnt4 4939 12194(+)m 5123(W)s 220 fnt3
+5295 12201(G)m 5464(p)s 220 fnt4 5656 12194(=)m 5851(W)s
+220 fnt3 6023 12201(f)m 220 fnt1 8545 12200(\(4.13\))m 
+[ /Dest /LOUTNSDisFull2 /DEST pdfmark
+220 fnt3
+5261 11310(M)m 5463(u)s 220 fnt4 5656 11303(=)m 5851(0)s
+220 fnt1 8545 11309(\(4.14\))m 0 10856(The)m 392(solution)s 1152(is)s
+1344(achie)s 5(v)k 3(ed)k 2169(by)s 2439(\207rst)s
+2835(rearranging)s 3895(the)s 4214(equation)s 5022(abo)s 3(v)k 3(e,)k
+5638(as)s 5866(it)s 6043(can)s 6399(be)s 6657(seen)s
+7098(in)s 7321(4.15.)s 
+[ /Dest /LOUTNSDisRea /DEST pdfmark
+220 fnt3 3823 10395(d)m 3949(u)s
+231 0 0 0 220 264 11 3823 10348 LoutGr2
+0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
+grestore
+
+grestore
+3843 10146(d)m 3969(t)s 220 fnt4 4142 10293(=)m 220 fnt3
+4337 10300(R)m 220 fnt4 4477 10293(\()m 220 fnt3 4554 10300(u)m
+220 fnt4 4670 10293(\))m 4797(-)s 220 fnt3 4980 10300(Gp)m
+220 fnt1 8545 10299(\(4.15\))m 0 9671(where)m 220 fnt3 586 9672(R)m
+220 fnt4 726 9665(\()m 220 fnt3 803 9672(u)m 220 fnt4
+919 9665(\))m 220 fnt1 1035 9671(is)m 
 [ /Dest /LOUTRfromNS /DEST pdfmark
-220 fnt3 3133 9179(R)m 220 fnt4 3273 9172(\()m
-220 fnt3 3350 9179(u)m 220 fnt4 3466 9172(\))m 3615(=)s
-154 fnt4 4222 9266(-)m 4324(1)s 220 fnt4 3865 9172(-)m
-4048(W)s 4396(\()s 220 fnt3 4473 9179(C)m 220 fnt4
-4634 9172(\()m 220 fnt3 4711 9179(u)m 220 fnt4 4827 9172(\))m
-220 fnt3 4899 9179(u)m 220 fnt4 5070 9172(+)m 220 fnt3
-5254 9179(Du)m 220 fnt4 5528 9172(\))m 5655(+)s 220 fnt3
-5839 9179(f)m 220 fnt1 8545 9178(\(4.14\))m 0 8717(and)m 371(by)s
-641(applying)s 1459(the)s 1778(suppositions)s 2922(abo)s 3(v)k 3(e,)k
-3538(it)s 3715(is)s 3907(deduced)s 4692(that)s 8545 8160(\(4.14\))m
-8545 7445(\(4.14\))m 0 6993(If)m 212(the)s 531(pressure)s 1312(gradient)s
-2086(term)s 2543(and)s 2914(the)s 3233(mass)s 3717(conserv)s 5(ation)k
-4885(are)s 5203(ignored)s 5928(in)s 6151(??,)s 6443(it)s
-6620(is)s 6812(safe)s 7215(to)s 7435(say)s 7777(that)s
+220 fnt3 3133 9169(R)m
+220 fnt4 3273 9162(\()m 220 fnt3 3350 9169(u)m 220 fnt4
+3466 9162(\))m 3615(=)s 154 fnt4 4222 9256(-)m 4324(1)s
+220 fnt4 3865 9162(-)m 4048(W)s 4396(\()s 220 fnt3
+4473 9169(C)m 220 fnt4 4634 9162(\()m 220 fnt3 4711 9169(u)m
+220 fnt4 4827 9162(\))m 220 fnt3 4899 9169(u)m 220 fnt4
+5070 9162(+)m 220 fnt3 5254 9169(Du)m 220 fnt4 5528 9162(\))m
+5655(+)s 220 fnt3 5839 9169(f)m 220 fnt1 8545 9168(\(4.16\))m
+0 8707(and)m 371(by)s 641(applying)s 1459(the)s 1778(suppositions)s
+2922(abo)s 3(v)k 3(e,)k 3538(it)s 3715(is)s
+3907(deduced)s 4692(that)s 
+[ /Dest /LOUTNSsolution1 /DEST pdfmark
+154 fnt3 3184 8297(n)m 154 fnt4
+3277 8292(+)m 3380(1)s 220 fnt3 3079 8235(u)m 220 fnt4
+3507 8228(-)m 154 fnt3 3795 8313(n)m 220 fnt3 3690 8235(u)m
+789 0 0 0 220 264 11 3079 8189 LoutGr2
+0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
+grestore
+
+grestore
+220 fnt4 3369 7980(D)m 220 fnt3 3514 7987(t)m 220 fnt4
+3956 8134(=)m 4155 8236(3)m gsave
+4151 8189 translate
+220 fnt3 105 0 0 0 220 264 11 LoutGraphic
+gsave
+0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
+grestore
+
+grestore
+4151 7980(2)m 154 fnt3
+4396 8248(n)m 220 fnt3 4267 8141(R)m 220 fnt4 4535 8134(-)m
+4727 8233(1)m gsave
+4718 8189 translate
+220 fnt3 105 0 0 0 220 264 11 LoutGraphic
+gsave
+0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
+grestore
+
+grestore
+4718 7980(2)m 154 fnt3 4963 8232(n)m
+154 fnt4 5056 8227(-)m 5158(1)s 220 fnt3 4834 8141(R)m
+220 fnt4 5285 8134(-)m 154 fnt3 5730 8235(n)m 154 fnt4
+5823 8230(+)m 5926(1)s 220 fnt3 5468 8141(Gp)m 220 fnt1
+8545 8140(\(4.17\))m 
+[ /Dest /LOUTNSsolution2 /DEST pdfmark
+220 fnt3 3304 7209(M)m 154 fnt3 3611 7299(n)m
+154 fnt4 3704 7294(+)m 3807(1)s 220 fnt3 3506 7209(u)m
+220 fnt4 3956 7202(=)m 4151(0)s 220 fnt1 8545 7208(\(4.18\))m
+0 6756(If)m 212(the)s 531(pressure)s 1312(gradient)s 2086(term)s
+2543(and)s 2914(the)s 3233(mass)s 3717(conserv)s 5(ation)k
+4885(are)s 5203(ignored)s 5928(in)s 6151(4.17,)s 6634(it)s
+6811(is)s 7003(safe)s 7406(to)s 7626(say)s 7968(that)s
 
 [ /Dest /LOUTNSupsolution /DEST pdfmark
-154 fnt3 3421 6478(p)m 220 fnt3 3316 6359(u)m 220 fnt4
-3582 6352(=)m 154 fnt3 3882 6465(n)m 220 fnt3 3777 6359(u)m
-220 fnt4 4021 6352(+)m 4205(D)s 220 fnt3 4350 6359(t)m
+154 fnt3 3421 6241(p)m 220 fnt3 3316 6122(u)m 220 fnt4
+3582 6115(=)m 154 fnt3 3882 6228(n)m 220 fnt3 3777 6122(u)m
+220 fnt4 4021 6115(+)m 4205(D)s 220 fnt3 4350 6122(t)m
 gsave
-0 6413 translate
+0 6176 translate
 1.0000 1.9331 scale
 330 fnt4 4425 -82(\()m 
 grestore
-220 fnt4 4561 6487(3)m gsave
-4557 6440 translate
+220 fnt4 4561 6250(3)m gsave
+4557 6203 translate
 220 fnt3
 105 0 0 0 220 264 11 LoutGraphic
 gsave
@@ -8213,122 +8324,111 @@ gsave
 grestore
 
 grestore
-4557 6231(2)m 154 fnt3 4802 6499(n)m 220 fnt3 4673 6392(R)m
-220 fnt4 4941 6385(-)m 5133 6484(1)m gsave
-5124 6440 translate
+4557 5994(2)m 154 fnt3 4802 6262(n)m 220 fnt3 4673 6155(R)m
+220 fnt4 4941 6148(-)m 5133 6247(1)m gsave
+5124 6203 translate
 220 fnt3 105 0 0 0 220 264 11 LoutGraphic
 gsave
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-5124 6231(2)m
-154 fnt3 5369 6483(n)m 154 fnt4 5462 6478(-)m 5564(1)s
-220 fnt3 5240 6392(R)m gsave
-0 6413 translate
+5124 5994(2)m
+154 fnt3 5369 6246(n)m 154 fnt4 5462 6241(-)m 5564(1)s
+220 fnt3 5240 6155(R)m gsave
+0 6176 translate
 1.0000 1.9331 scale
 330 fnt4 5658 -82(\))m 
 grestore
 220 fnt1
-8545 6358(\(4.15\))m 0 5709(Note)m 494(that)s 895(the)s 1231(e)s 3(xpression)k
-2235(4.15)s 2680(abo)s 3(v)k 3(e)k 3266(is)s
-3475(an)s 3751(e)s 3(xplicit)k 4479(de\207nition)s 5390(of)s
-154 fnt3 5761 5801(p)m 220 fnt3 5656 5710(u)m 220 fnt1
-5834 5709(.)m 5946(Then,)s 154 fnt1 6531 5811(~)m 220 fnt3
-6512 5710(p)m 220 fnt1 6689 5709(is)m 6898(computed)s 7835(with)s
-8295(the)s 8632(three)s 0 5445(e)m 3(xpressions)k 1066(belo)s 5(w)k 14(.)k
+8545 6121(\(4.19\))m 0 5472(Note)m 494(that)s 895(the)s 1231(e)s 3(xpression)k
+2235(4.19)s 2683(abo)s 3(v)k 3(e)k 3269(is)s
+3478(an)s 3754(e)s 3(xplicit)k 4481(de\207nition)s 5392(of)s
+154 fnt3 5763 5564(p)m 220 fnt3 5658 5473(u)m 220 fnt1
+5836 5472(.)m 5948(Then,)s 154 fnt1 6533 5574(~)m 220 fnt3
+6514 5473(p)m 220 fnt1 6690 5472(is)m 6899(computed)s 7836(with)s
+8296(the)s 8632(three)s 0 5208(e)m 3(xpressions)k 1066(belo)s 5(w)k 14(.)k
 
-[ /Dest /LOUTNSCont1 /DEST pdfmark
-220 fnt4 0 5233(\266)m 220 fnt3 112 5240(u)m 154 fnt3
-217 5189(j)m gsave
-0 5113 translate
-220 fnt3 259 0 0 0 220 264 11 LoutGraphic
-gsave
-0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
-grestore
-
-grestore
-220 fnt4 41 4904(\266)m 220 fnt3
-153 4911(t)m 220 fnt4 325 5058(-)m 508(n)s 154 fnt4
-772 5157(2)m 220 fnt4 623 5058(\321)m 220 fnt3 857 5065(u)m
-154 fnt3 962 4986(j)m 220 fnt4 1070 5058(+)m 1254(\321)s
-1469(\327)s 1573(\()s 220 fnt3 1650 5065(u)m 154 fnt3
-1755 4986(j)m 220 fnt2 1808 5063(u)m 220 fnt4 1937 5058(\))m
-2064(+)s 2259 5157(1)m gsave
-2248 5113 translate
-220 fnt3 108 0 0 0 220 264 11 LoutGraphic
-gsave
-0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
-grestore
-
-grestore
-2248 4904(r)m 2384 5195(\266)m
-220 fnt3 2496 5202(p)m 251 0 0 0 220 264 11 2367 5113 LoutGr2
-0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
-grestore
-
-grestore
-220 fnt4 2367 4904(\266)m 220 fnt3
-2479 4911(x)m 154 fnt3 2576 4860(j)m 220 fnt4 2706 5058(=)m
-2901(0)s 
-[ /Dest /LOUTNSCont2 /DEST pdfmark
-5131 4407(\321)m 5346(\327)s 220 fnt2 5450 4412(u)m
-220 fnt4 5656 4407(=)m 5851(0)s 220 fnt1 8545 4413(\(4.15\))m
-
-[ /Dest /LOUTNSDis1 /DEST pdfmark
-220 fnt4 3169 3595(W)m 220 fnt3 3341 3697(d)m 3467(u)s
-231 0 0 0 220 264 11 3341 3650 LoutGr2
-0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
-grestore
-
-grestore
-3361 3448(d)m 3487(t)s 220 fnt4 3638 3595(+)m 220 fnt3
-3822 3602(C)m 220 fnt4 3983 3595(\()m 220 fnt3 4060 3602(u)m
-220 fnt4 4176 3595(\))m 220 fnt3 4248 3602(u)m 220 fnt4
-4419 3595(+)m 220 fnt3 4603 3602(D)m 4768(u)s 220 fnt4
-4939 3595(+)m 5123(W)s 220 fnt3 5295 3602(G)m 5464(p)s
-220 fnt4 5656 3595(=)m 5851(0)s 220 fnt1 8545 3601(\(4.15\))m
-
-[ /Dest /LOUTNSDis2 /DEST pdfmark
-220 fnt3 5261 2709(M)m 5463(u)s 220 fnt4 5656 2702(=)m
-5851(0)s 220 fnt1 8545 2708(\(4.15\))m 0 2117(The)m 392(true)s
+[ /Dest /LOUTNSuppsolution1 /DEST pdfmark
+154 fnt3 4066 4798(n)m 154 fnt4 4159 4793(+)m 4262(1)s
+220 fnt3 3961 4708(u)m 220 fnt4 4411 4701(=)m 154 fnt3
+4711 4827(p)m 220 fnt3 4606 4708(u)m 220 fnt4 4850 4701(-)m
+220 fnt3 5033 4708(G)m 154 fnt1 5221 4809(~)m 220 fnt3
+5202 4708(p)m 220 fnt1 8545 4707(\(4.20\))m 
+[ /Dest /LOUTNSuppsolution2 /DEST pdfmark
+220 fnt3 3759 3947(M)m
+154 fnt3 4066 4037(n)m 154 fnt4 4159 4032(+)m 4262(1)s
+220 fnt3 3961 3947(u)m 220 fnt4 4411 3940(=)m 4606(0)s
+220 fnt1 8545 3946(\(4.21\))m 
+[ /Dest /LOUTNSuppsolution3 /DEST pdfmark
+220 fnt3 3943 3193(M)m 154 fnt3
+4250 3312(p)m 220 fnt3 4145 3193(u)m 220 fnt4 4411 3186(=)m
+220 fnt3 4606 3193(L)m 154 fnt1 4758 3294(~)m 220 fnt3
+4739 3193(p)m 220 fnt1 8545 3192(\(4.22\))m 0 2596(The)m 392(true)s
 784(pressure)s 1565(is)s 1757(\207nally)s 2368(e)s 5(v)k 5(aluated)k
-3252(with)s 154 fnt3 3799 2180(n)m 154 fnt4 3892 2175(+)m
-3995(1)s 220 fnt3 3695 2118(p)m 220 fnt4 4133 2111(=)m
-154 fnt1 4399 2356(~)m 220 fnt3 4380 2255(p)m 209 0 0 0 220 264 11 4328 2166 LoutGr2
+3252(with)s 154 fnt3 3799 2659(n)m 154 fnt4 3892 2654(+)m
+3995(1)s 220 fnt3 3695 2597(p)m 220 fnt4 4133 2590(=)m
+154 fnt1 4399 2835(~)m 220 fnt3 4380 2734(p)m 209 0 0 0 220 264 11 4328 2645 LoutGr2
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
 220 fnt4
-4328 1957(D)m 220 fnt3 4473 1964(t)m 220 fnt1 4537 2117(.)m
-440 1719(This)m 890(procedure)s 1832(requires)s 2598(a)s 2764(v)s 3(ery)k
-3215(speci\207c)s 220 fnt4 3946 1713(D)m 220 fnt3 4091 1720(t)m
-220 fnt1 4224 1719(so)m 4482(a)s 4648(solution)s 5422(is)s
+4328 2436(D)m 220 fnt3 4473 2443(t)m 220 fnt1 4537 2596(.)m
+440 2198(This)m 890(procedure)s 1832(requires)s 2598(a)s 2764(v)s 3(ery)k
+3215(speci\207c)s 220 fnt4 3946 2192(D)m 220 fnt3 4091 2199(t)m
+220 fnt1 4224 2198(so)m 4482(a)s 4648(solution)s 5422(is)s
 5628(found.)s 6250(By)s 6570(using)s 7109(e)s 3(xpression)k
-8110(4.12,)s 8607(some)s 0 1455(v)m 5(alues)k 601(can)s
+8110(4.23,)s 8607(some)s 0 1934(v)m 5(alues)k 601(can)s
 957(be)s 1215(found.)s 
-[ /Dest /LOUTNSDisFull1 /DEST pdfmark
-220 fnt4 3169 937(W)m 220 fnt3
-3341 1039(d)m 3467(u)s 231 0 0 0 220 264 11 3341 992 LoutGr2
+[ /Dest /LOUTdeltat /DEST pdfmark
+220 fnt4 3667 1512(D)m 220 fnt3
+3812 1519(t)m 220 fnt4 3953 1512(=)m 220 fnt3 4148 1519(f)m
+220 fnt1 4252 1518(Min)m 220 fnt4 4626 1512(\()m 4703(D)s
+220 fnt3 4848 1519(t)m 154 fnt3 4912 1440(c)m 154 fnt4
+4985 1435(,)m 220 fnt4 5037 1512(D)m 220 fnt3 5182 1519(t)m
+154 fnt3 5246 1440(d)m 220 fnt4 5338 1512(\))m 220 fnt1
+8545 1518(\(4.23\))m 0 998(where)m 220 fnt3 586 999(f)m 220 fnt1
+734 998(is)m 926(a)s 1078(v)s 5(alue)k 1599(between)s
+2381(0.2)s 2706(and)s 3077(0.5,)s 3450(and)s 220 fnt4
+3821 992(D)m 220 fnt3 3966 999(t)m 154 fnt3 4030 943(d)m
+220 fnt1 4166 998(and)m 220 fnt4 4537 992(D)m 220 fnt3
+4682 999(t)m 154 fnt3 4746 948(c)m 220 fnt1 4867 998(are)m
+5185(gi)s 5(v)k 3(en)k 5717(by)s 5987(4.24)s
+6421(and)s 6792(4.25,)s 7275(respecti)s 5(v)k 3(ely)k 14(.)k
+
+[ /Dest /LOUTdeltatd /DEST pdfmark
+220 fnt4 3776 325(D)m 220 fnt3 3921 332(t)m 154 fnt3
+3985 253(d)m 220 fnt4 4143 325(\243)m 4344 424(1)m gsave
+4335 380 translate
+220 fnt3
+105 0 0 0 220 264 11 LoutGraphic
+gsave
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-3361 790(d)m 3487(t)s 220 fnt4
-3638 937(+)m 220 fnt3 3822 944(C)m 220 fnt4 3983 937(\()m
-220 fnt3 4060 944(u)m 220 fnt4 4176 937(\))m 220 fnt3
-4248 944(u)m 220 fnt4 4419 937(+)m 220 fnt3 4603 944(D)m
-4768(u)s 220 fnt4 4939 937(+)m 5123(W)s 220 fnt3
-5295 944(G)m 5464(p)s 220 fnt4 5656 937(=)m 5851(W)s
-220 fnt3 6023 944(f)m 220 fnt1 8545 943(\(4.15\))m 0 314(where)m
-220 fnt3 586 315(f)m 220 fnt1 734 314(is)m 926(a)s
-1078(v)s 5(alue)k 1599(between)s 2381(0.2)s 2706(and)s
-3077(0.5,)s 3450(and)s 220 fnt4 3821 308(D)m 220 fnt3
-3966 315(t)m 154 fnt3 4030 259(d)m 220 fnt1 4166 314(and)m
-220 fnt4 4537 308(D)m 220 fnt3 4682 315(t)m 154 fnt3
-4746 264(c)m 220 fnt1 4867 314(are)m 5185(gi)s 5(v)k 3(en)k
-5717(by)s 5987(4.16)s 6420(and)s 6791(4.17,)s 7274(respecti)s 5(v)k 3(ely)k 14(.)k
+4335 171(2)m 220 fnt1 4451 331(Min)m gsave
+0 387 translate
+1.0000 2.0915 scale
+330 fnt4 4825 -82(\()m
+
+grestore
+154 fnt4 5091 528(2)m 220 fnt4 4957 435(D)m gsave
+4957 391 translate
+220 fnt3
+208 0 0 0 220 264 11 LoutGraphic
+gsave
+0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
+grestore
+
+grestore
+5009 182(n)m gsave
+0 387 translate
+1.0000 2.0915 scale
+330 fnt4 5198 -82(\))m 
+grestore
+220 fnt1 8545 331(\(4.24\))m
 
 grestore
 0 0 0 0 220 264 55 1417 -15423 LoutGr2
@@ -8386,85 +8486,52 @@ gsave
 0 16840 translate
 0.0000 rotate
 0.0 0.0 0.0 LoutSetRGBColor
-5783 -1565(-)m 5901(8)s 6054(-)s 9066 13430 0 13133 220 264 55 1417 -15423 LoutGr2
+5783 -1565(-)m 5901(8)s 6054(-)s 9066 13430 0 13430 220 264 55 1417 -15423 LoutGr2
 0 LoutMargSet
 grestore
 
-[ /Dest /LOUTdeltatd /DEST pdfmark
-220 fnt4 3776 13078(D)m
-220 fnt3 3921 13085(t)m 154 fnt3 3985 13006(d)m 220 fnt4
-4143 13078(\243)m 4344 13177(1)m gsave
-4335 13133 translate
-220 fnt3 105 0 0 0 220 264 11 LoutGraphic
-gsave
-0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
-grestore
-
-grestore
-4335 12924(2)m 220 fnt1
-4451 13084(Min)m gsave
-0 13140 translate
-1.0000 2.0915 scale
-330 fnt4 4825 -82(\()m 
-grestore
-154 fnt4 5091 13281(2)m
-220 fnt4 4957 13188(D)m gsave
-4957 13144 translate
-220 fnt3 208 0 0 0 220 264 11 LoutGraphic
-gsave
-0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
-grestore
-
-grestore
-5009 12935(n)m gsave
-0 13140 translate
-1.0000 2.0915 scale
-330 fnt4
-5198 -82(\))m 
-grestore
-220 fnt1 8545 13084(\(4.16\))m 
 [ /Dest /LOUTdeltatc /DEST pdfmark
-220 fnt4 3801 11980(D)m
-220 fnt3 3946 11987(t)m 154 fnt3 4010 11908(C)m 220 fnt4
-4192 11980(\243)m 4393 12079(1)m gsave
-4384 12035 translate
+220 fnt4 3801 12838(D)m
+220 fnt3 3946 12845(t)m 154 fnt3 4010 12766(C)m 220 fnt4
+4192 12838(\243)m 4393 12937(1)m gsave
+4384 12893 translate
 220 fnt3 105 0 0 0 220 264 11 LoutGraphic
 gsave
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-4384 11826(2)m 220 fnt1
-4500 11986(Min)m gsave
-0 12041 translate
+4384 12684(2)m 220 fnt1
+4500 12844(Min)m gsave
+0 12899 translate
 1.0000 1.9261 scale
 330 fnt4 4874 -82(\()m 
 grestore
-220 fnt4 5006 12113(D)m
+220 fnt4 5006 12971(D)m
 gsave
-5006 12069 translate
+5006 12927 translate
 220 fnt3 134 0 0 0 220 264 11 LoutGraphic
 gsave
 0 0 moveto xsize 0 lineto 0.05 ft setlinewidth stroke
 grestore
 
 grestore
-220 fnt3 5020 11867(u)m gsave
-0 12041 translate
+220 fnt3 5020 12725(u)m gsave
+0 12899 translate
 1.0000 1.9261 scale
 330 fnt4 5173 -82(\))m
 
 grestore
-220 fnt1 8545 11986(\(4.17\))m 0 11348(The)m 394(v)s 5(alues)k
-998(of)s 220 fnt4 1250 11342(D)m 220 fnt1 1441 11348(and)m
-220 fnt3 1815 11349(u)m 220 fnt1 1978 11348(can)m 2337(be)s
+220 fnt1 8545 12844(\(4.25\))m 0 12206(The)m 394(v)s 5(alues)k
+998(of)s 220 fnt4 1250 12200(D)m 220 fnt1 1441 12206(and)m
+220 fnt3 1815 12207(u)m 220 fnt1 1978 12206(can)m 2337(be)s
 2597(found)s 3167(according)s 4084(to)s 4307(\207gure)s 4872(2.)s
 1.0 0.0 0.0 LoutSetRGBColor 5190(Notice)s 5828(that)s 6214(in)s 6440(\207gure)s
 7006(2)s 7169(the)s 7490(mesh)s 8009(is)s 8204(square,)s
-8877(so)s 0 11084(the)m 319(e)s 3(xpressions)k 1385(abo)s 3(v)k 3(e)k
+8877(so)s 0 11942(the)m 319(e)s 3(xpressions)k 1385(abo)s 3(v)k 3(e)k
 1954(are)s 2272(only)s 2713(v)s 5(alid)k 3201(in)s
 3424(square)s 4047(or)s 4285(quasi-square)s 5444(meshes.)s gsave
-6129 9934 translate
+6129 10792 translate
 176 fnt1
 0.0 0.0 0.0 LoutSetRGBColor 1416 1279 0 1199 176 193 44 LoutGraphic
 gsave
@@ -8472,80 +8539,166 @@ gsave
 grestore
 1.0 0.0 0.0 LoutSetRGBColor 283 1160(REV)m 22(.:)k 733(Is)s
 896(it)s 283 967(true?)m 672(Are)s 283 774(the)m 2(y)k
-623(v)s 4(alid)k 283 581(for)m 531(non)s 837(re-)s
-283 388(gular)m 687(mes-)s 283 195(hes?)m grestore
+623(v)s 4(alid)k 283 581(for)m 531(non)s 837(re)s 2(g-)k
+283 388(ular)m 599(mesh-)s 283 195(es?)m grestore
 grestore
 220 fnt2 0.0 0.0 0.0 LoutSetRGBColor
-0 10357(5.)m 267(Comments)s 1327(on)s 1611(the)s 1955(code)s
+0 11215(5.)m 267(Comments)s 1327(on)s 1611(the)s 1955(code)s
 
-[ /Dest /LOUT10_694_contents_codecomments_1 /DEST pdfmark
-220 fnt1 440 9961(The)m 835(language)s 1681(chosen)s 2346(to)s
+[ /Dest /LOUT26_694_contents_codecomments_1 /DEST pdfmark
+220 fnt1 440 10819(The)m 835(language)s 1681(chosen)s 2346(to)s
 2569(write)s 3074(the)s 3396(solv)s 3(er)k 3988(prototype)s
 4884(is)s 5079(Python,)s 5804(as)s 6035(it)s 6216(is)s
 6411(straightforw)s 2(ard)k 7819(for)s 8133(an)s 8396(a)s 4(v)k 3(erage)k
-0 9697(programmer)m 1170(and)s 1572(comes)s 2209(with)s 2682(solid)s
+0 10555(programmer)m 1170(and)s 1572(comes)s 2209(with)s 2682(solid)s
 3194(libraries)s 3989(to)s 4240(perform)s 5032(most)s 5545(of)s
 5825(the)s 6175(math)s 6697(operations)s 7688(required)s 8504(in)s
-8758(this)s 0 9433(project.)m 723(Its)s 1008(syntax)s 1652(mak)s 2(es)k
+8758(this)s 0 10291(project.)m 723(Its)s 1008(syntax)s 1652(mak)s 2(es)k
 2275(porting)s 2979(mathematical)s 4231(reasoning)s 5152(to)s 5392(code)s
 5877(f)s 2(ast)k 6265(without)s 7011(losing)s 7617(code)s
-8102(readability)s 14(.)k 0 9169(This)m 447(characteristic)s 1674(is)s
+8102(readability)s 14(.)k 0 10027(This)m 447(characteristic)s 1674(is)s
 1878(adv)s 5(antageous)k 3125(in)s 3360(lar)s 3(ge)k
 3858(projects,)s 4662(in)s 4897(which)s 5498(mock-ups\212functional)s 7537(or)s
-7787(not\212are)s 8618(often)s 0 8905(de)m 5(v)k 3(eloped)k
+7787(not\212are)s 8618(often)s 0 9763(de)m 5(v)k 3(eloped)k
 953(as)s 1186(guides.)s 1860(Python)s 2540(is)s 2738(a)s
 2895(good)s 3395(choice)s 4023(for)s 4340(mock-ups)s 5257(and)s
 5633(prototypes,)s 6664(b)s 4(ut)k 7001(it)s 7184(is)s
-7381(often)s 7890(not)s 8231(chosen)s 8898(in)s 0 8641(the)m
+7381(often)s 7890(not)s 8231(chosen)s 8898(in)s 0 9499(the)m
 319(core)s 747(of)s 996(high)s 1440(performance)s 2599(softw)s 2(are)k
-140 fnt1 3347 8722(1)m 220 fnt1 3403 8641(.)m 440 8298(The)m
+140 fnt1 3347 9580(1)m 220 fnt1 3403 9499(.)m 440 9156(The)m
 832(code)s 1297(will)s 1689(be)s 1947(structured)s 2878(as)s
 3106(in)s 3329(\207gure)s 3892(3.)s 4097(The)s 4489(project)s
 5153(will)s 5545(be)s 5803(de)s 5(v)k 3(eloped)k
-6751(around)s 200 fnt5 7415 8305(main.py)m 220 fnt1 8310 8298(in)m
-8532(which)s 0 8034(v)m 5(ariables)k 840(will)s 1241(be)s
+6751(around)s 200 fnt5 7415 9163(main.py)m 220 fnt1 8310 9156(in)m
+8532(which)s 0 8892(v)m 5(ariables)k 840(will)s 1241(be)s
 1508(initialized)s 2448(and)s 2827(functions)s 3699(will)s 4100(be)s
 4367(called.)s 4993(The)s 5394(functions)s 6266(will)s 6667(be)s
-6933(grouped)s 7716(according)s 8639(to)s 8868(its)s 0 7770(use,)m
+6933(grouped)s 7716(according)s 8639(to)s 8868(its)s 0 8628(use,)m
 403(so)s 660(the)s 992(functions)s 1869(which)s 2471(compute)s
 3291(con)s 8(v)k 3(ection)k 4308(and)s 4693(dif)s 5(fusion)k
 5546(will)s 5951(be)s 6222(de\207ned)s 6936(in)s 200 fnt5
-7172 7777(phys.py)m 220 fnt1 8012 7770(,)m 8123(as)s 8364(the)s 3(y)k
-8803(are)s 0 7506(related)m 666(to)s 903(ph)s 1(ysics)k
+7172 8635(phys.py)m 220 fnt1 8012 8628(,)m 8123(as)s 8364(the)s 3(y)k
+8803(are)s 0 8364(related)m 666(to)s 903(ph)s 1(ysics)k
 1623(phenomena.)s 2746(The)s 3155(halo)s 3599(update,)s 4299(needed)s
 4990(to)s 5227(g)s 1(ather)k 5846(the)s 6182(already)s
-6893(computed)s 7830(results)s 8465(on)s 8754(cell)s 0 7242(mo)m 3(v)k 3(e,)k
+6893(computed)s 7830(results)s 8465(on)s 8754(cell)s 0 8100(mo)m 3(v)k 3(e,)k
 580(will)s 972(be)s 1230(de\207ned)s 1930(in)s 200 fnt5
-2153 7249(tool.py)m 220 fnt1 2993 7242(,)m 3091(in)s 3314(which)s
+2153 8107(tool.py)m 220 fnt1 2993 8100(,)m 3091(in)s 3314(which)s
 3903(general)s 4599(purpose)s 5345(operations)s 6305(will)s 6697(be)s
-6955(found.)s 440 6899(The)m 843(program)s 1654(is)s 1857(based)s
+6955(found.)s 440 7757(The)m 843(program)s 1654(is)s 1857(based)s
 2422(on)s 2705(Soria')s 12(s)k 3372(transparencies)s 4683([)s
 
-[ /Rect [4749 6899 4836 7047] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUTsoria2017navierstokes /ANN pdfmark
+[ /Rect [4749 7757 4836 7905] /Border [0 0 0] /View [ /XYZ null null null ] /Subtype /Link /Dest /LOUTsoria2017navierstokes /ANN pdfmark
 4749(1)s 4836(],)s 5018(presented)s 5924(during)s 6558(the)s
 6889(summer)s 7662(course)s 8297(on)s 8581(CFD)s 140 fnt1
-8999 6980(2)m 220 fnt1 0 6635(at)m 246(ESEIAA)s 24(T')k 12(s)k
+8999 7838(2)m 220 fnt1 0 7493(at)m 246(ESEIAA)s 24(T')k 12(s)k
 1360(dependencies.)s 2669(The)s 3094(follo)s 5(wing)k 4025(is)s
 4250(a)s 4435(step-by-step)s 5589(description)s 6649(on)s 6954(the)s
 7306(de)s 5(v)k 3(elopment)k 8520(of)s 8802(the)s
-0 6371(program,)m 842(based)s 1395(on)s 1667(the)s 1986(notes)s
-2495(in)s 2718(section)s 3391(3.)s 1134 0 0 0 220 264 55 0 1002 LoutGr2
+0 7229(program,)m 842(based)s 1395(on)s 1667(the)s 1986(notes)s
+2495(in)s 2718(section)s 3391(3.)s 220 fnt2 1645 6766(Con)m 8(v)k 2(ection)k
+2747(in)s 220 fnt3 2982 6768(x)m 220 fnt2 3134 6766(dir)m 3(ection,)k
+4076(as)s 4320(pr)s 3(ogrammed)k 5599(in)s 5834(module)s
+200 fnt5 6581 6774(phys.py)m 220 fnt1 0 6308(The)m 437(\207rst)s
+879(step)s 1327(to)s 5(w)k 2(ards)k 2106(de)s 5(v)k 3(eloping)k
+3169(a)s 3366(program)s 4211(supporting)s 5246(con)s 8(v)k 3(ection)k
+6296(and)s 6713(dif)s 5(fusion)k 7598(in)s 7867(both)s
+220 fnt3 8357 6309(x)m 220 fnt1 8555 6308(and)m 220 fnt3
+8972 6309(y)m 220 fnt1 0 6044(directions)m 911(is)s 1103(to)s
+1323(implement)s 2317(the)s 2636(e)s 3(xpressions)k 3702(already)s
+4397(demonstrated)s 5633(abo)s 3(v)k 3(e,)k 6249(as)s
+6477(the)s 3(y)k 6902(are.)s 440 5701(It)m 653(w)s 2(as)k
+1062(seen)s 1528(that)s 1937(for)s 2273(the)s 2617(horizontal)s
+3583(v)s 3(elocities)k 4491(at)s 4729(the)s 5073(boundaries)s
+6107(and)s 6503(for)s 6839(the)s 7183(v)s 4(olumetric)k
+8203(\210o)s 5(w)k 8662(rates)s 0 5437(through)m 736(the)s
+1053(f)s 2(aces,)k 1596(the)s 1913(v)s 3(elocities)k
+2795(at)s 3006(e)s 5(v)k 3(ery)k 3533(point)s
+4038(of)s 4286(the)s 4603(domain)s 5312(are)s 5628(needed.)s
+6343(These)s 6915(v)s 3(elocities)k 7796(are)s 8112(not)s
+8446(needed)s 0 5173(per)m 337(se,)s 620(b)s 4(ut)k
+955(its)s 1210(projections)s 2234(to)s 2457(the)s 2778(coordinate)s
+3758(ax)s 3(es.)k 4242(Moreo)s 3(v)k 3(er)k 8(,)k
+5193(because)s 5940(the)s 6262(v)s 4(olumetric)k 7259(\210o)s 5(w)k
+7696(rates)s 8158(depend)s 8849(on)s 0 4909(the)m 319(dimensions)s
+1365(of)s 1614(the)s 1933(cell,)s 2347(the)s 2666(coordinates)s
+3723(of)s 3972(the)s 4291(points)s 4874(are)s 5192(also)s
+5594(needed.)s 440 4566(This)m 884(means)s 1498(that)s 1890(maps)s
+140 fnt1 2344 4647(3)m 220 fnt1 2468 4566(of)m 2725(horizontal)s
+3674(v)s 3(elocities)k 220 fnt3 4565 4567(u)m 220 fnt1
+4733 4566(and)m 5112(v)s 3(ertical)k 5825(v)s 3(elocities)k
+220 fnt3 6716 4567(v)m 220 fnt1 6810 4566(,)m 6916(and)s
+7295(maps)s 7812(with)s 8263(the)s 220 fnt3 8590 4567(x)m
+220 fnt1 8750 4566(and)m 220 fnt3 0 4303(y)m 220 fnt1
+146 4302(coordinates)m 1200(of)s 1446(the)s 1761(points)s 2341(are)s
+2656(needed)s 3328(to)s 3544(compute)s 4348(the)s 4664(horizontal)s
+5602(v)s 3(elocities)k 6481(at)s 6691(the)s 7007(f)s 2(aces)k
+7497(of)s 7742(the)s 8058(cell,)s 8469(as)s 8693(well)s
+0 4038(as)m 220 fnt4 228 4032(D)m 154 fnt4 483 4113(-)m
+220 fnt3 373 4039(x)m 220 fnt1 578 4038(,)m 220 fnt4
+676 4032(D)m 154 fnt4 931 4108(+)m 220 fnt3 821 4039(x)m
+220 fnt1 1082 4038(and)m 220 fnt4 1453 4032(D)m 220 fnt3
+1598 4039(y)m 220 fnt1 1692 4038(,)m 1790(which)s 2379(are)s
+2697(ultimately)s 3637(used)s 4093(to)s 4313(\207nd)s 4709(the)s
+5028(v)s 4(olumetric)k 6023(\210o)s 5(w)k 6457(rates.)s
+440 3695(While)m 1023(w)s 2(orking)k 1798(with)s 2237(big)s
+2563(data)s 2979(matrices)s 3763(is)s 3951(v)s 3(ery)k
+4384(con)s 8(v)k 3(enient,)k 5430(if)s 5626(the)s
+5941(data)s 6357(follo)s 5(ws)k 7052(a)s 7200(pattern)s
+7857(which)s 8442(is)s 8630(char)s 4(-)k 0 3431(acterized)m
+840(as)s 1064(a)s 1212(mathematical)s 2439(function)s 3219(dependent)s
+4172(on)s 4439(the)s 4754(coordinates,)s 220 fnt3 5859 3432(luc)m 4(k)k 2(y)k
+6362(you!)s 220 fnt1 6746 3431(.)m 6837(Its)s 7098(less)s
+7467(compute-)s 8286(intensi)s 5(v)k 3(e)k 0 3167(to)m
+209(someho)s 5(w)k 1082(grab)s 1508(the)s 1815(data)s
+2223(from)s 2694(a)s 2834(call)s 3189(to)s 3397(the)s
+3704(function)s 4477(by)s 4735(passing)s 5430(a)s 5570(pair)s
+5954(of)s 6192(coordinates)s 220 fnt3 7237 3168(x)m 220 fnt4
+7345 3161(,)m 220 fnt3 7443 3168(y)m 220 fnt1 7580 3167(or)m
+7806(points)s 220 fnt3 8377 3168(i)m 220 fnt4 8446 3161(,)m
+220 fnt3 8544 3168(j)m 220 fnt1 8605 3167(,)m 8691(than)s
+0 2903(to)m 218(store)s 692(full)s 1045(matrices)s 1830(in)s
+2050(the)s 2366(computer)s 3247(memory)s 140 fnt1 3974 2984(4)m
+220 fnt1 4041 2903(.)m 4133(Ho)s 5(we)k 5(v)k 3(er)k 8(,)k
+5010(ra)s 3(w)k 5381(data)s 5798(is)s 5987(often)s
+6487(discrete)s 7216(and)s 7584(rarely)s 8142(a)s 8291(function,)s
+0 2639(so)m 251(probably)s 1089(the)s 1415(strate)s 3(gy)k
+2164(abo)s 3(v)k 3(e)k 2740(will)s 3139(not)s
+3482(be)s 3748(used)s 4211(to)s 4438(compute)s 5253(b)s 4(ut)k
+5592(to)s 5819(generate)s 6619(the)s 6946(data)s 7373(matrices)s
+8168(for)s 8487(testing)s 0 2375(purposes.)m 893(Storing)s 1607(the)s
+1944(data)s 2382(in)s 2623(\207les)s 3052(and)s 3441(reading)s
+4166(it)s 4361(piece-)s 4886(by-)s 5169(piece)s 5700(is)s
+5910(the)s 6247(most)s 6747(realistic)s 7506(and)s 7895(time-)s
+8348(ef\207cient)s 0 2111(solution.)m 1134 0 0 0 220 264 55 0 1793 LoutGr2
 0 0 moveto xsize 0 lineto stroke
 grestore
 
 grestore
-112 fnt1 0 814(1)m
-176 fnt1 55 750(Python)m 597(of)s 4(fers)k 1040(tools)s
-1420(to)s 1597(optimize)s 2253(code)s 2628(for)s 2879(compute-intensi)s 4(v)k 2(e)k
+112 fnt1 0 1605(1)m 176 fnt1
+55 1541(Python)m 597(of)s 4(fers)k 1040(tools)s 1420(to)s
+1597(optimize)s 2253(code)s 2628(for)s 2879(compute-intensi)s 4(v)k 2(e)k
 4211(applications,)s 5138(b)s 3(ut)k 5406(stepping)s 6041(up)s
 6259(the)s 6516(code)s 6892(usually)s 7440(comes)s 7928(with)s
-8284(comple)s 2(xity)k 0 539(and)m 297(a)s 419(loss)s
-728(of)s 926(readability)s 11(.)k 112 fnt1 0 313(2)m
-176 fnt1 65 249(Introduction)m 977(to)s 1155(Computational)s 2241(Fluid)s
+8284(comple)s 2(xity)k 0 1330(and)m 297(a)s 419(loss)s
+728(of)s 926(readability)s 11(.)k 112 fnt1 0 1104(2)m
+176 fnt1 65 1040(Introduction)m 977(to)s 1155(Computational)s 2241(Fluid)s
 2656(Dynamics)s 3408(by)s 3627(the)s 3886(T)s 7(urb)k 3(ulence)k
 4719(and)s 5020(Aerodynamics)s 6083(in)s 6265(Mechanical)s 7127(and)s
-7428(Aerospace)s 8214(Engineering)s 0 38(Research)m 685(Group)s 1173(\(TU)s 7(AREG\).)k
-
+7428(Aerospace)s 8214(Engineering)s 0 829(Research)m 685(Group)s 1173(\(TU)s 7(AREG\).)k
+112 fnt1 0 603(3)m 176 fnt1 64 539(The)m 386(reader)s
+876(should)s 1395(imagine)s 2008(a)s 2138(matrix)s 2643(a)s
+2773(with)s 3134(information)s 4010(encoded)s 4647(so)s 4850(that)s
+5163(e)s 4(v)k 2(ery)k 5595(piece)s 6014(of)s
+6220(it)s 6368(can)s 6662(be)s 6877(assigned)s 7532(to)s
+7715(a)s 7845(point)s 8257(or)s 8455(group)s 8912(of)s
+0 328(points)m 465(according)s 1196(to)s 1371(its)s 1572(position)s
+2178(in)s 2356(the)s 2611(matrix.)s 112 fnt1 0 102(4)m
+176 fnt1 61 38(One)m 395(could)s 828(use)s 1103(adv)s 4(anced)k
+1806(data)s 2142(manipulation)s 3108(to)s 3283(reduce)s 3792(the)s
+4047(memory)s 4671(used)s 5036(to)s 5211(store)s 5592(these)s
+5993(matrices)s 6622(or)s 6812(to)s 6987(be)s 7194(more)s
+7595(compute-ef\207cient.)s 
 grestore
 0 0 0 0 220 264 55 1417 -15423 LoutGr2
 0 LoutMargSet
@@ -8568,6 +8721,7 @@ showpage
 %%+ font Times-Bold
 %%+ font Courier
 %%+ font Times-Italic
+%%+ font Symbol
 /pgsave save def
 %%IncludeResource: font Times-Roman
 /Times-Romanfnt1 vec2 /Times-Roman LoutRecode
@@ -8581,6 +8735,8 @@ showpage
 %%IncludeResource: font Times-Italic
 /Times-Italicfnt3 vec2 /Times-Italic LoutRecode
 /fnt3 { /Times-Italicfnt3 LoutFont } def
+%%IncludeResource: font Symbol
+/fnt4 { /Symbol LoutFont } def
 0.0500 dup scale 10 setlinewidth
 %%EndPageSetup
 gsave
@@ -9174,9 +9330,9 @@ end restore
 LoutEPSFCleanUp
 
 [ /Dest /LOUTdeltatgrid /DEST pdfmark
-180 fnt2 2647 8240(Figura)m 3208(2.)s 180 fnt1 3426 8241(Representation)m
-4544(of)s 4747(the)s 5008(v)s 4(ariables)k 5688(of)s
-5891(interest)s gsave
+180 fnt2 2655 8240(Figur)m 3(e)k 3201(2.)s 180 fnt1
+3419 8241(Representation)m 4537(of)s 4740(the)s 5001(v)s 4(ariables)k
+5681(of)s 5884(interest)s gsave
 2583 6249 translate
 220 fnt1 3899 1528 0 1315 220 264 55 LoutGraphic
 gsave
@@ -9193,7 +9349,8 @@ ldiagnodebegin [ ldiagbox ] 0.2 ft
 {} ldiagnodeend
 (IN) ldiagpushtagdict
 grestore
-200 fnt5 132 164(main.py)m ldiagpopuptagdict
+200 fnt5 132 164(main.py)m
+ldiagpopuptagdict
 grestore
 ldiagpopuptagdict
 grestore
@@ -9210,8 +9367,7 @@ ldiagnodebegin [ ldiagbox ] 0.2 ft
 {} ldiagnodeend
 (IN) ldiagpushtagdict
 grestore
-200 fnt5
-132 164(phys.py)m ldiagpopuptagdict
+200 fnt5 132 164(phys.py)m ldiagpopuptagdict
 grestore
 ldiagpopuptagdict
 grestore
@@ -9228,7 +9384,8 @@ ldiagnodebegin [ ldiagbox ] 0.2 ft
 {} ldiagnodeend
 (IN) ldiagpushtagdict
 grestore
-132 135(Con)m 8(v)k 3(ection)k ldiagpopuptagdict
+132 135(Con)m 8(v)k 3(ection)k
+ldiagpopuptagdict
 grestore
 ldiagpopuptagdict
 grestore
@@ -9256,8 +9413,7 @@ ldiagnodebegin [ ldiagbox ] 0.2 ft
 {} ldiagnodeend
 (IN) ldiagpushtagdict
 grestore
-132 134(Dif)m 5(fusion)k
-ldiagpopuptagdict
+132 134(Dif)m 5(fusion)k ldiagpopuptagdict
 grestore
 ldiagpopuptagdict
 grestore
@@ -9313,7 +9469,8 @@ ldiagnodebegin [ ldiagbox ] 0.2 ft
 {} ldiagnodeend
 (IN) ldiagpushtagdict
 grestore
-132 180(Halo)m 607(update)s ldiagpopuptagdict
+132 180(Halo)m
+607(update)s ldiagpopuptagdict
 grestore
 ldiagpopuptagdict
 grestore
@@ -9344,21 +9501,86 @@ ldiagend
 grestore
 
 [ /Dest /LOUTstructure /DEST pdfmark
-180 fnt2
-3259 5701(Figura)m 3820(3.)s 180 fnt1 4038 5702(Structure)m 4736(of)s
-4939(the)s 5200(program)s gsave
-440 4954 translate
-220 fnt1 1130 284 66 118 220 264 55 LoutGraphic
-gsave
-LoutCurveBox  stroke
+180 fnt2 3266 5701(Figur)m 3(e)k 3812(3.)s
+180 fnt1 4030 5702(Structure)m 4728(of)s 4931(the)s 5192(program)s
+220 fnt1 440 5089(Because)m 1236(this)s 1616(solv)s 3(er)k
+2221(is)s 2430(deemed)s 3182(to)s 3419(be)s 3694(a)s
+3863(demonstration)s 5187(tool,)s 5644(reading)s 6368(data)s 6805(from)s
+7303(\207les)s 7731(is)s 7940(not)s 8293(a)s 8462(feature)s
+0 4825(re)m 3(g)k 1(arded)k 825(as)s 1061(useful.)s
+1701(The)s 2101(solv)s 3(er)k 2697(will)s 3098(use)s
+3449(matrices)s 4246(containing)s 5230(data)s 5658(generated)s 6573(from)s
+7063(user)s 4(-de\207ned)k 8206(functions,)s 0 4561(in)m 223(a)s
+375(manner)s 1088(similar)s 1752(to)s 1972(the)s 2291(e)s 3(xplained)k
+3195(abo)s 3(v)k 3(e.)k 440 4218(Assuming)m 1390(that)s
+1786(the)s 2116(domain)s 2839(is)s 3042(discretized)s 4057(with)s
+4512(the)s 4842(same)s 5355(number)s 6092(of)s 6353(points)s
+6948(in)s 220 fnt3 7182 4219(x)m 220 fnt1 7346 4218(and)m
+220 fnt3 7728 4219(y)m 220 fnt1 7889 4218(directions,)m 220 fnt3
+8864 4219(N)m 220 fnt1 9023 4218(,)m 0 3954(the)m 324(range)s
+868(used)s 1330(by)s 1605(both)s 220 fnt3 2055 3955(i)m
+220 fnt1 2174 3954(and)m 220 fnt3 2551 3955(j)m 220 fnt1
+2672 3954(iterators\212these)m 4117(are)s 4441(the)s 4766(inde)s 3(x)k 3(es)k
+5481(used)s 5943(to)s 6169(access)s 6779(the)s 7103(elements)s
+7934(in)s 8163(arrays)s 8750(and)s 0 3690(matrices\212is)m 1169(from)s
+1667(1)s 1825(to)s 220 fnt3 2061 3691(N)m 220 fnt4
+2286 3684(+)m 2470(1)s 220 fnt1 2556 3690(,)m 2670(both)s
+3130(included)s 3955(in)s 4194(the)s 4529(range)s 140 fnt1
+5012 3771(1)m 220 fnt1 5068 3690(.)m 220 fnt3 5179 3691(N)m
+220 fnt1 5409 3690(is)m 5617(the)s 5951(number)s 6693(of)s
+6958(se)s 3(gments)k 7833(in)s 8072(which)s 8677(both)s
+0 3426(sides)m 220 fnt3 495 3427(L)m 154 fnt3 617 3376(x)m
+220 fnt1 751 3426(and)m 220 fnt3 1133 3427(L)m 154 fnt3
+1255 3376(y)m 220 fnt1 1388 3426(of)m 1648(the)s 1978(rectangular)s
+3031(domain)s 3753(will)s 4156(be)s 4426(di)s 5(vided.)k
+5186(In)s 5432(\207gure)s 6007(4)s 6177(a)s 6340(discretization)s
+7585(of)s 7845(the)s 8175(domain)s 8898(in)s 0 3162(the)m
+220 fnt3 326 3163(x)m 220 fnt1 485 3162(direction)m 1324(is)s
+1523(presented.)s 2465(In)s 2707(bold)s 3160(plus)s 3579(italics)s
+4155(is)s 4354(the)s 4680(numbering)s 5688(for)s 6007(the)s
+6333(se)s 3(gments,)k 7251(while)s 7796(in)s 8026(italics)s
+8602(is)s 8802(the)s 0 2898(numbering)m 999(for)s 1307(the)s
+1624(ends)s 2069(of)s 2316(the)s 2632(se)s 3(gments.)k
+3538(The)s 3927(subindices)s 4896(of)s 220 fnt3 5143 2899(sx)m
+220 fnt1 5377 2898(and)m 220 fnt3 5746 2899(cx)m 220 fnt1
+5992 2898(are)m 6308(the)s 6624(positions)s 7461(of)s 7707(the)s
+8023(array\212here)s 0 2634(it)m 177(is)s 369(assumed)s 1178(that)s
+1562(the)s 1881(v)s 5(alues)k 2482(of)s 220 fnt3
+2731 2635(sx)m 220 fnt1 2968 2634(and)m 220 fnt3 3339 2635(cx)m
+220 fnt1 3588 2634(are)m 3906(stored)s 4496(in)s 4719(an)s
+4978(array\212at)s 5861(which)s 6450(the)s 6769(elements)s 7594(are)s
+7912(accessed.)s 440 2291(There)m 998(are)s 220 fnt3 1311 2292(N)m
+220 fnt1 1520 2291(indi)m 5(vidual)k 2452(se)s 3(gments,)k
+3358(so)s 3597(arrays)s 4173(lik)s 2(e)k 220 fnt3
+4546 2292(cx)m 220 fnt1 4790 2291(contain)m 220 fnt3 5483 2292(N)m
+220 fnt1 5692 2291(elements,)m 6564(whereas)s 7322(arrays)s 7898(such)s
+8348(as)s 220 fnt3 8571 2292(sx)m 220 fnt1 8803 2291(are)m
+0 2027(of)m 249(length)s 220 fnt3 851 2028(N)m 220 fnt4
+1076 2021(+)m 1260(1)s 220 fnt1 1346 2027(.)m 1441(In)s
+1676(\207gure)s 2239(4,)s 2447(se)s 3(gments)k 3306(are)s
+3624(numbered)s 4556(from)s 5038(1)s 5180(to)s 220 fnt3
+5400 2028(N)m 220 fnt4 5625 2021(+)m 5809(1)s 220 fnt1
+5950 2027(and)m 6321(their)s 6778(ends)s 7226(from)s 7708(0)s
+7868(to)s 220 fnt3 8088 2028(N)m 220 fnt4 8313 2021(+)m
+8497(1)s 220 fnt1 8583 2027(.)m 220 fnt2 0 1300(Refer)m 3(ences)k
+
+[ /Dest /LOUT26_385_main_1 /DEST pdfmark
+
+[ /Dest /LOUTsoria2017navierstokes /DEST pdfmark
+220 fnt1 0 884([1])m 440(Soria,)s 1071(M..)s 1542(Fundamentals)s
+2889(of)s 3209(\207nite)s 3782(control)s 4525(v)s 4(olume)k
+5302(spectroconsistent)s 6937(CFD)s 7355(.)s 7576(PDF)s 7976(,)s
+8145(TU)s 8(AREG)k 9023(,)s 440 620(ESEIAA)m 24(T)k
+1326(,)s 1424(Carrer)s 2038(de)s 2296(Colom,)s 2992(11,)s
+3310(08222)s 3910(T)s 15(errassa,)k 4734(Barcelona)s 5622(,)s
+5720(July)s 6136(2017)s 6565(.)s 1134 0 0 0 220 264 55 0 290 LoutGr2
+0 0 moveto xsize 0 lineto stroke
 grestore
-66 69(Con)m 8(v)k 3(ection)k
 
 grestore
-220 fnt1 1644 5023(The)m 2055(program)s 2873(supports)s 3682(con)s 8(v)k 3(ection)k
-4705(in)s 4947(both)s 220 fnt3 5411 5024(x)m 220 fnt1
-5582 5023(and)m 220 fnt3 5972 5024(y)m 220 fnt1 6140 5023(directions.)m
-7119(By)s 7444(applying)s 8281(the)s 8620(same)s 
+112 fnt1 0 102(1)m
+176 fnt1 53 38(Note)m 435(that)s 741(Python)s 1280(inde)s 2(x)k 2(es)k
+1849(arrays)s 2314(from)s 2698(0.)s 
 grestore
 0 0 0 0 220 264 55 1417 -15423 LoutGr2
 1 LoutMargSet
@@ -9378,19 +9600,11 @@ showpage
 %%Page: 10 11
 %%BeginPageSetup
 %%PageResources: font Times-Roman
-%%+ font Times-Italic
-%%+ font Courier
 %%+ font Times-Bold
 /pgsave save def
 %%IncludeResource: font Times-Roman
 /Times-Romanfnt1 vec2 /Times-Roman LoutRecode
 /fnt1 { /Times-Romanfnt1 LoutFont } def
-%%IncludeResource: font Times-Italic
-/Times-Italicfnt3 vec2 /Times-Italic LoutRecode
-/fnt3 { /Times-Italicfnt3 LoutFont } def
-%%IncludeResource: font Courier
-/Courierfnt5 vec2 /Courier LoutRecode
-/fnt5 { /Courierfnt5 LoutFont } def
 %%IncludeResource: font Times-Bold
 /Times-Boldfnt2 vec2 /Times-Bold LoutRecode
 /fnt2 { /Times-Boldfnt2 LoutFont } def
@@ -9412,30 +9626,979 @@ gsave
 0 16840 translate
 0.0000 rotate
 0.0 0.0 0.0 LoutSetRGBColor
-5724 -1565(-)m 5842(10)s 6112(-)s 9066 13430 0 13330 220 264 55 1417 -15423 LoutGr2
+5724 -1565(-)m 5842(10)s 6112(-)s 7300 13430 0 13430 220 264 55 1417 -15423 LoutGr2
 0 LoutMargSet
 grestore
-0 13281(reasoning)m -751(used)s
--1948(in)s -3378(con)s 8(v)k 3(ection)k -4027(in)s
-220 fnt3 -5457 13282(x)m 220 fnt1 -6958 13281(direction)m -7779(to)s
--9212(the)s 220 fnt3 -10546 13282(y)m 220 fnt1 -12050 13281(direction.)m
-200 fnt5 -12774 13288(@E { u sub n = { u sub { i, j + 1 } + u sub { i, j } } over 2 })m -12774 13024(@E { u sub e = { u sub { i + 1, j } + u sub { i, j } } over 2 })m -12774 12760(@E { u sub s = { u sub { i, j - 1 } + u sub { i, j } } over 2 })m -12774 12496(@E { u sub w = { u sub { i - 1, j } + u sub { i, j } } over 2 })m
--12774 11968(@E { F sub n = { v sub { i, j } Delta x sup - + v sub { i + 1, j } Delta x sup + } over 2 })m -12774 11704(@E { F sub e = { u sub { i, j } Delta y + u sub { i + 1, j } Delta y } over 2 })m -12774 11440(@E { F sub s = { v sub { i, j - 1} Delta x sup - + v sub { i + 1, j - 1 } Delta x sup + } over 2 })m -12774 11176(@E { F sub w = { u sub { i - 1, j } Delta y + u sub { i, j } Delta y } over 2 })m -12774 10648(@E { v sub n = { v sub { i, j + 1 } + v sub { i, j } } over 2 })m
--12774 10384(@E { v sub e = { v sub { i + 1, j } + v sub { i, j } } over 2 })m -12774 10120(@E { v sub s = { v sub { i, j - 1 } + v sub { i, j } } over 2 })m -12774 9856(@E { v sub w = { v sub { i - 1, j } + v sub { i, j } } over 2 })m -12774 9328(@E { F sub n = { v sub { i, j } Delta x + v sub { i, j + 1 } Delta x } over 2 })m -12774 9064(@E { F sub e = { u sub { i, j } Delta y sup - + u sub { i + 1, j } Delta y } over 2 })m
--12774 8800(@E { F sub s = { v sub { i, j - 1} Delta x + v sub { i + 1, j - 1 } Delta x } over 2 })m -12774 8536(@E { F sub w = { u sub { i - 1, j } Delta y + u sub { i, j } Delta y } over 2 })m -12774 7744(convection_x[i, j] = uFn*un + uFe*ue - uFs*us - uFw*uw / ?_x)m -12774 7480(convection_y[i, j] = vFn*vn + vFe*ve - vFs*vs - vFw*vw / ?_y)m -12774 6952(@VeryWideTaggedList)m
--12774 6688(  @TagItem { @Sym arrowup mass flow rates } {  })m -12774 6424(  @TagItem { @Sym arrowright mass flow rates } {  })m -12774 6160(  @TagItem {Element dims.} { @E { Delta x sup - = sx sub i - sx sub { i - 1 } }, @E { Delta x sup + = sx sub { i + 1 } - sx sub i } and @E { Delta y = sy sub j - sy sub { j - 1 } } })m -12774 5896(@EndList)m 220 fnt2
-0 4990(Refer)m 3(\350ncies)k 
-[ /Dest /LOUT10_385_main_1 /DEST pdfmark
+LoutStartEPSF
+0 12110 translate
+20.0000 20.0000 scale
+0 1 translate
+%%BeginDocument: contents/figs/divisionside.eps
+%!PS-Adobe-3.0 EPSF-3.0
+%%Creator: cairo 1.14.6 (http://cairographics.org)
+%%CreationDate: Wed Sep  6 15:20:07 2017
+%%Pages: 1
+%%DocumentData: Clean7Bit
+%%LanguageLevel: 2
+%%BoundingBox: 0 -1 365 65
+%%EndComments
+%%BeginProlog
+save
+50 dict begin
+/q { gsave } bind def
+/Q { grestore } bind def
+/cm { 6 array astore concat } bind def
+/w { setlinewidth } bind def
+/J { setlinecap } bind def
+/j { setlinejoin } bind def
+/M { setmiterlimit } bind def
+/d { setdash } bind def
+/m { moveto } bind def
+/l { lineto } bind def
+/c { curveto } bind def
+/h { closepath } bind def
+/re { exch dup neg 3 1 roll 5 3 roll moveto 0 rlineto
+      0 exch rlineto 0 rlineto closepath } bind def
+/S { stroke } bind def
+/f { fill } bind def
+/f* { eofill } bind def
+/n { newpath } bind def
+/W { clip } bind def
+/W* { eoclip } bind def
+/BT { } bind def
+/ET { } bind def
+/pdfmark where { pop globaldict /?pdfmark /exec load put }
+    { globaldict begin /?pdfmark /pop load def /pdfmark
+    /cleartomark load def end } ifelse
+/BDC { mark 3 1 roll /BDC pdfmark } bind def
+/EMC { mark /EMC pdfmark } bind def
+/cairo_store_point { /cairo_point_y exch def /cairo_point_x exch def } def
+/Tj { show currentpoint cairo_store_point } bind def
+/TJ {
+  {
+    dup
+    type /stringtype eq
+    { show } { -0.001 mul 0 cairo_font_matrix dtransform rmoveto } ifelse
+  } forall
+  currentpoint cairo_store_point
+} bind def
+/cairo_selectfont { cairo_font_matrix aload pop pop pop 0 0 6 array astore
+    cairo_font exch selectfont cairo_point_x cairo_point_y moveto } bind def
+/Tf { pop /cairo_font exch def /cairo_font_matrix where
+      { pop cairo_selectfont } if } bind def
+/Td { matrix translate cairo_font_matrix matrix concatmatrix dup
+      /cairo_font_matrix exch def dup 4 get exch 5 get cairo_store_point
+      /cairo_font where { pop cairo_selectfont } if } bind def
+/Tm { 2 copy 8 2 roll 6 array astore /cairo_font_matrix exch def
+      cairo_store_point /cairo_font where { pop cairo_selectfont } if } bind def
+/g { setgray } bind def
+/rg { setrgbcolor } bind def
+/d1 { setcachedevice } bind def
+%%EndProlog
+%%BeginSetup
+%%BeginResource: font TimesNewRomanPS-ItalicMT
+11 dict begin
+/FontType 42 def
+/FontName /TimesNewRomanPS-ItalicMT def
+/PaintType 0 def
+/FontMatrix [ 1 0 0 1 0 0 ] def
+/FontBBox [ 0 0 0 0 ] def
+/Encoding 256 array def
+0 1 255 { Encoding exch /.notdef put } for
+Encoding 43 /plus put
+Encoding 45 /hyphen put
+Encoding 46 /period put
+Encoding 48 /zero put
+Encoding 49 /one put
+Encoding 76 /L put
+Encoding 78 /N put
+Encoding 99 /c put
+Encoding 105 /i put
+Encoding 115 /s put
+Encoding 120 /x put
+/CharStrings 12 dict dup begin
+/.notdef 0 def
+/c 1 def
+/x 2 def
+/i 3 def
+/plus 4 def
+/one 5 def
+/s 6 def
+/hyphen 7 def
+/L 8 def
+/period 9 def
+/zero 10 def
+/N 11 def
+end readonly def
+/sfnts [
+<00010000000900800003001063767420ff44a29700000de8000007786670676db851b1c00000
+15600000053d676c7966f52377fd0000009c00000d4c68656164c488885b00001aa000000036
+686865610c7d03d200001ad800000024686d74782e86030600001afc000000306c6f63610000
+567400001b2c000000346d61787005240c4d00001b6000000020707265708273be6900001b80
+00000ac00002010000000500050000030007003fb40201f80607b802664013000504f803000a
+0704f8010019080605f80203b8014ab309a2dc182b10f63cfd3c4e10f43c4dfd3c003f3cfd3c
+10fc3cfd3c3130211121112521112101000400fc2003c0fc400500fb002004c00001003cffe8
+036c03890028010d40460040170e3f2840170e3f2e002c012b272e283e003e013a053e273e28
+8c028b218927ab02a424b51fb324101f001a021a0419051a271f28068526017a278a27a62103
+1605012ab8ffc0b211352ab8ffc0b216352ab8ffc0400e23359f28af2802280000280d1911b8
+0104b41d240a0725b8ffdeb31b103f25b8ffdc40221e392527030b00c9147019270d8053352f
+0d3f0d4f0d5f0d040f0d1f0d020d1a2a22b80381401e068053353f064f065f066f06048006a0
+06b006c006d006050619292b56182b4e10f45d712b4de94e10fe5d712b4dedede4003fed2b2b
+3feded011112393910c95d3130012b2b2b715d004bb021534bb02e515a58bb001fffe8001eff
+e8383859007101715d2b2b250606232226353412243332161514070623222635343e02353427
+26232206070615141633323637031b68d4768e9fab01218b6d6c261c291f290f2f0a131d3562
+c0445274644d975eda7d75a087990128b95b423e2c22281e13202d140b150e148a7f9a9a6677
+4d650001ffbcffe8038403890046010840630d40120b3f0700072a003d013e14001601240023
+014a1b56018919a301a919aa2aa83daf3f1048401035101763217321c919cb210509230c2a52
+230304191a1a022a2a2b3e403e3c40282122021a1a1f2840142828403e2a1904041135428a46
+c60011b80395401f153a0a0a000735c639272e2e260b042a193e218a9f22cf220222c90d02e4
+45ba014700400124b21a8228b8019f401d19e43e403b4b343e401d353e3e47200d400d8f0daf
+0d040d1a48321947b80114b1de182b4e10e410e65d12392f2b2b4dedf4edf4e6ed10f45ded11
+123939003f3c10fde43f3c10fde410f4ed11121739870e2e2b0e7d10c40110c90708103c083c
+870e10c4c43130005d5d012b5d2b011617161737363637363332161514070623222726232207
+0607131616333237363717060706232227260302070623222726353436333217163332373636
+37262726262322073501673119122958236426181d2b330f1c2415182f1018213e5652131a0d
+151c3727233f613726382115429c5e3d392821182c2020241a0e0c132fa2193e05174a48171e
+038934342499843057100a2e21260e1909101c3495fea84f1f172e4a12764e2c3f270129fef1
+4e321d1625212c20171026fc38f30e4136022400000000020058ffe8022e0516000b00290124
+4027176e3a3516763a35122b4012352b40191b34590c0119230116172945215a282830294d0c
+007006b8039c401a0c07280c0f0c290f1f1e21141e1e211b0b1e2a28211e10178a16b80143b4
+0f0970030cb80147b203600fb80123b7296c121e401b351eb8ffc0b33a3b341eb8ffc0b32a34
+341eb8ffc040092324341e401f20341eb8ffc04013131634301e8f1e021e192a1e171e2a0a77
+86182b2b103c2b4e10f45d2b2b2b2b2b2b435c58400b1e401c113f1e400d113f1eb8ffc0b316
+0d3f1eb8ffc0b117392b2b2b2b594de4fde4e610ed10f6ed2b103c2b10c0003f870e2e2b087d
+10c42b183f00f6ed10f5ed2bfc01f510c9313001715d2b2b435c58b517400c143f0db8ffdeb6
+1339172213390db8ffdeb50f3917400f392b2b2b2b2b59012b2b013216151406232226353436
+13030615141633323736371706070623222635343713363534262322073501ca2a3a3b29293b
+3a37c614130d0f15393a23445c443e29341982201f1b164505163a2a293b3b292a3afe73fd43
+470e1014102d53176847353125255601c06e1c161c0b270000010025008d045b04c3000b0043
+402606d7075d0ad70b0b00082909d70005d7045d01d70008d7060b290500d77f020102190c9f
+f6182b4e10f45d4df43cfd3ce4002ff4fde410f4ed103c10f4fde43130251121352111331121
+1521110216fe0f01f15201f3fe0d8d01f35201f1fe0f52fe0d000001007d000003570568001b
+00ca401a071a015602670276027403bd0d05080008101701170f04080f09b80138b308070106
+410b01380007001a01a30010020e002800190138001a01fd401300100f0103000828100f0fe6
+01001401010019ba01f4001a030d40091b1b000508070c0001bb03280010001a020bb31f0f01
+0fb80327400b10011c2800100117011c0aba022801e300182b2b103c2b2b3c2b10c0012bf65d
+e43cf53c003f3c3f3c10f4ed870e2e2b7d10c42b11121739180010f5ed2bfc01f50010ed0110
+c00010ed0110c03130015d5d0071010106151416170721373637363736371336373635342623
+220727250357febe1c335e0afdfd0e521a2a152122e815020326211a370d01510568fb9f632c
+2527072525020b121e2e770325490b141323280c245e0001ffedffe802e70389003000b74024
+32010117221b103f080b040f180b150f3a2705280b230f9903032f013f014f015f010401b801
+04400a2ec60030070524290719b801b5403415c618170b1d24110b028a00c60140120b3f5001
+0101c90e3ad020e020f020037f208f209f20c0200420a0083a26951a8a19c618b8ffc0401334
+35184030351840212234a018c01802187c31ba0144016400182b10f55d2b2b2bf4edf4edf45d
+5dfdf45d2be4ed003fed3f3ce4ed3fed3f3ce4ed5d3130015d5d2b005d010323262623220615
+14161716161514062322272623220723133316163332363534272e0235343633321716163332
+3702e73d2505684d3e491d31824cad84485e21122d17253d250672634c59101cb3338d6f201a
+0e67112b1d0389fecd867a4430213c368e904068a1220c2e0144987e553e28223cd46a356186
+0503272f00010036017a026501ff0003001cb300830201b80311b6050219046d8e182b4e10e4
+4d10e4002ffd313001072137026529fdfa2901ff85850001ffbe0000042f054c002801094033
+09131828021255168f268b278b28a400b700b61b0727280108021d011218131d121109101d11
+1819191e080914080809232028b801064021202e01121102010828272300042a082928090810
+00a90028102820280328c42a19bd030100090345001200080173b62909081708290ab80173b1
+c4182b2b103c2b2b4e10f4435c58b90008ff80b326173f08b8ffc0b328183f08b8ff80b62d17
+3f088018392b2b2b2b59014de4ed4e10f6714de42b103c2b10c001121739003f3f3c10eded11
+39870e2e2b0e7d10c4180010ed0110c00010ed0110c00010ed0110c010c93130015d435c58b5
+244011143e19b8ffe8b2113915b8ffdeb30f133e16b8ffdeb20f133e2b2b2b2b59015d212137
+3637363736371336353426232227372107220607060703061514171633333237363736373733
+03abfc130e501b2a141f23ef1e374c110a0c0229085d4e1a1229eb1b1b113c838f543e341c47
+1a2525020b121d2e7803396630262a01252524291b8dfcd55c2418160f241b361e772d000000
+00010045ffe9011000b3000b001eb900000391b2060b03b80174b509190c6df5182b4e10f44d
+ed003ffd3130373216151406232226353436aa2b3b3c2a2a3b3bb33b2a2a3b3b2a2a3b000000
+0002007affe803f3056800120024008c404e35163b2048064a07491e4f1f4c2054175a206416
+64176e1e6e1f6b20760f731674177e1f7b20821685178d20951691179e20a315a416a117ab1e
+af20b902b415b216b417bd1ebf202413f900051cb80167401a0a0d19ab800d010d192522ab80
+03cf03df03ef03ff0305031a26ba011d011600182b4e10f65d4ded4e10f45d4ded003fed3fed
+3130015d01321615140207060706232226353437123736172206020702151416333237361312
+11342602c480af82765e673c4f82af5867a069833a777f3a4b5a403d2b7352855a0568d6e7c6
+fe649777351ed6e8e5e7010e8c5c345bfee0e3fed7d16867286c010501ab010b6f6900000001
+ffc7ffe10618054c00290153407507131712281436123a2646004512471568027902a4180b54
+137618b418038301010b120c1d0b1d241e1d1d2925281d290a02091d0a1c161b1d1c0001011e
+141514140102141502010123131214130100131225242423161514161615290b0b0a0a00021d
+1c0814130916132a281213151610012f13b8033e40141440371c3f144032193f401470148014
+a0140414b8032db309009924b80173400b1640371c3f164032193f16b8ffc0b2133916b8ffc0
+b3292d3416b8ffc0b31d243416b8ffc040191a353f164f167f168f16af1605167e2a09131716
+1713162a0ab80173b1c4182b2b103c3c2b2b2b10f45d2b2b2b2b2b2b01ede42bf65d2b2b01fe
+e42b103c103c2b10c0c0003f3c3f3c3f3c103c103c870e2e2b0e7d10c487082e182b0e7d10c4
+87082e182b057d10c4180010ed0110c00010ed0110c00010ed0110c00010ed0110c00010ed01
+10c03130005d015d5d0101133635342623222737210726070607060701230103061514161707
+21373637363736370126262737024b01a3e31c34470c0d0b01b40c44212f172021fec124fe3d
+f11b315c0afe560e501b29141d24010d27595e0b054cfbd9031a6236252a012525010f15212f
+75fba20478fcb360332627072525020c121d2c7e03af3c2d0325058e0000054c001f054c001c
+037100180000ffe10000ffe80000ffe8fe4afffc056b0023fe68ffe2033e0000009500000095
+0000000000000000002500a8008e010b007d00820045003200a400ca006b0070005100af003c
+00f001d700470004002500770029004000fd00160161004601370029008e0017ffca0025005b
+ffe902e600020099008100f2007500d6006300c60006009a01330024003800cc003dff670013
+05d8003600860095ffdb0007043400a500d8ffdcfffe004800a200d8013c01530380053e0057
+007a007c008c0117012a0138017c0026003c007800bd00c0021009b5000c004d004e00540058
+006700b4040100020005005000af01d5034300240058008b013501c0ffac002000250026002d
+00410136022bffba001e002a0034003b003f00850094009800d7012e013d033104b900170040
+006100b9010e0116012201bfff9c001f001f004d005c0086008c009600aa00cb00cb011f0154
+022f036005a9fee8000e006f007c007d008b00d500f1010a0157017802b803adfe3fff6affb3
+ffc4001f0037003f0044004a0078007d009700a200a700b600c000c100c600d8011d01500197
+01ee04740532fd81fed1fee0ff16fff1000f002d00550068006e007f00890095009e00c200da
+00e400f801040108011101c2023002da030e049e0517ff00ff8700000020002f004100570078
+00870088008800b900c200c5012001280133017401d6020e020f026c027e02ab02ec038903b1
+03e304e7ff43ffa8ffc3ffdcffe9000700230023002600520077007d0081008f009900ac00ae
+00b500b800c800ea00f000f40135016a018b01b101b501f7021402ad02d504fc05d805f0ff9d
+fffc000b00240025002c0030003000330040004700490057006e009a00bd00c900cd00dc00fa
+00fa011b0139017e0187018a018e0195019601df01f6028602cf02de039603a903b003c80401
+0432046a058b05e006510761fe96fe9aff4bff870013002500340038003e004a0065006b0073
+007a009c00a200b200b700bf00f000f700fb0104011301200124013b01520178017c0181018f
+01a001d90248026a026f02700301031d032303270388041f04ab04d104da057a058bfe26fe59
+ff2e00010002000a003b003b004700580058005f0066006b007a007a008b009900af00bc00c0
+00c700cc00e900f200f500fb00fb0102010a010b01150121012701450145015501570158015e
+01610168017d01a301ab01da01ee021002180222028f029402a302d202e703710393039b03b3
+03d303fe04ff050b05320532054b0559058b05ab05f2065506890742076207a708ccfd2afdc8
+fddefe0cfe15fe27fe53fe84febbff58ff76ff77ffa1ffa7ffadffafffc00000000000030094
+001d001f002000200027002e0048004b004c005e005f006b0071007c008a00900091009100a7
+00af00b300b400c400c600d100d200de00df00df00e600e800ea00eb00f200f500f500fc0102
+01180123013101330137015c016201660170017a017a017a018201980199019b01b001bf01c0
+01ca01d301d701d801e001e001f601f701f802120213022f023702440247024f025202630265
+0270027f0298029b02a602b702ba02c502cf02d602d702e502fe031c031d03450348035d035e
+03710379038103a103b703d403d503d803e103f803fe0404041f042104230425043a04670483
+04e00528054b0564056a059f059f05c2060b066a06af06b306cb06e8070607280748075007a6
+07b207ff009500af00920096000000000000000000000000017e01a80129025b0212020301c3
+02b4019301cd02b204ed020e0159017a0300022d042c00c8004d00e602890325013e0378011b
+00f1018d00490203007c000e029d02470024000000000052004400330038005405d3041501a7
+000002860168005000cf0002004b0024008800ba0025ffd800110091ff6b00b5011700260065
+ff9900490080014b01c000f40167027102ea04fc0310017c01e103d9015501e601ee04340196
+06cb005c022b0099003d009f00160039002700de00790120022e005a00990388009400210019
+002a046c05e8000001f203b200aa0296028902b4ffc9020000ec0005005a0447010004e00000
+052a001f01eb00ae016800ca02d3028901b5040601a1014f014b011c0308005e00c70024029d
+006503750104028002f304d800d90239025a032c01f204310303005002e50283005901eb0108
+00ac019602f8012100950180004400e501eb02e5007400f301ff02fd038f026801c801c70116
+022b0142033000fe02e101620200002400ee05170108023700660006010201e602aa0366019b
+00d305c203dc044d03b6000401be013702fc03200244014d0338ffed002506f8030dfed5ff43
+004402ffff92040bfdef0155017100d9ffc4032d0461044afbb5fbcf02170192036d0558fff2
+fe7d0583023e006605e9073d00790243002500cf00fd00af002a01ef021a0026001f0025003a
+000001170490fbfb0251001d02f001f50078018f005f00240044005400bf00af006701a80026
+00050006003f009800fa02ab00c2004d0375004a00b600c401bf017c006f00130263000c0068
+01520002012e0104001f001f009a000000f1046900790080005000bd056b00ab0080001e05a5
+4040403f3e3d3c3b3a3938373534333231302f2e2d2c2b2a292827262524232221201f1e1d1c
+1b1a191817161514131211100f0e0d0c0b0a090807060504030201002c4523466020b02660b0
+04262348482d2c452346236120b02661b004262348482d2c45234660b0206120b04660b00426
+2348482d2c4523462361b0206020b02661b02061b004262348482d2c45234660b0406120b066
+60b004262348482d2c4523462361b0406020b02661b04061b004262348482d2c0110203c003c
+2d2c20452320b0cd442320b8015a51582320b08d44235920b0ed51582320b04d44235920b090
+51582320b00d44235921212d2c20204518684420b001602045b04676688a4560442d2c01b10b
+0a432343650a2d2c00b10a0b4323430b2d2c00b0172370b101173e01b0172370b10217453ab1
+0200080d2d2c45b01a234445b01923442d2c2045b00325456164b050515845441b2121592d2c
+b00143632362b0002342b00f2b2d2c2045b0004360442d2c01b00643b00743650a2d2c2069b0
+4061b0008b20b12cc08a8cb8100062602b0c642364615c58b00361592d2c45b0112bb0172344
+b0177ae4182d2c45b0112bb01723442d2cb01243588745b0112bb0172344b0177ae41b038a45
+186920b01723448a8a8720b0a05158b0112bb0172344b0177ae41b21b0177ae45959182d2c2d
+2cb0022546608a46b040618c482d2c01182f2d2c20b0032545b019234445b01a234445652345
+20b00325606a20b009234223688a6a606120b01a8ab000527921b21a1a40b9ffe0001a45208a
+54582321b03f1b235961441cb114008a5279b31940201945208a54582321b03f1b235961442d
+2cb110114323430b2d2cb10e0f4323430b2d2cb10c0d4323430b2d2cb10c0d432343650b2d2c
+b10e0f432343650b2d2cb11011432343650b2d2c4b525845441b2121592d2c0120b003252349
+b04060b0206320b000525823b002253823b002256538008a63381b212121212159012d2c4bb0
+6451584569b00943608a103a1b212121592d2c01b005251023208af500b0016023edec2d2c01
+b005251023208af500b0016123edec2d2c01b0062510f500edec2d2c20b001600110203c003c
+2d2c20b001610110203c003c2d2cb02b2bb02a2a2d2c00b00743b006430b2d2c3eb02a2a2d2c
+352d2c76b802ee23701020b802ee4520b0005058b00161593a2f182d2c21210c6423648bb840
+00622d2c21b08051580c6423648bb82000621bb200402f2b59b002602d2c21b0c051580c6423
+648bb81555621bb200802f2b59b002602d2c0c6423648bb84000626023212d2cb40001000000
+15b00826b00826b00826b008260f10161345683ab001162d2cb4000100000015b00826b00826
+b00826b008260f1016134568653ab001162d2c4b53234b515a5820458a60441b2121592d2c4b
+545820458a60441b2121592d2c4b53234b515a58381b2121592d2c4b5458381b2121592d2cb0
+134358031b02592d2cb0134358021b03592d2c4b54b012435c5a58381b2121592d2cb012435c
+580cb00425b00425060c6423646164b807085158b00425b00425012046b01060482046b01060
+48590a21211b2121592d2cb012435c580cb00425b00425060c6423646164b807085158b00425
+b00425012046b8fff060482046b8fff06048590a21211b2121592d2c4b53234b515a58b03a2b
+1b2121592d2c4b53234b515a58b03b2b1b2121592d2c4b53234b515ab012435c5a58381b2121
+592d2c0c8a034b54b00426024b545a8a8a0ab012435c5a58381b2121592d2c462346608a8a46
+2320468a608a61b8ff8062232010238ab903b003b08a70456020b0005058b00161b8ffba8b1b
+b0468c59b0106068013a2d000000000100000002d1ec9515f8545f0f3cf50819080000000000
+a31fb8bd00000000b53db2f7fc05fd8c08f60830000200090001000100000000000100000721
+fe450057086bfc05fcfe08f600180007000000000000000000000000000c0639011c038d0038
+038dffb802390058056600be0400007d031dffed02aa00360473ffbe020000450400007a0556
+ffc70000000000000068000001ec000003c80000056c000005e00000070c0000085000000888
+00000a1400000a6000000b6800000d4c00010000000c00f2003c0068000500020010002f0041
+000004820ac000030002b9ffc003bbb345453240b803bbb32b2e3240b803bbb2282932b9ffc0
+03bbb31a263280411303bb009f03bb00af03bb00cf03bb0004000003bb001f03bb000203bb02
+af0027001fffc003b9b2161b32b9ffc003b8b2424232b9ffc003b8b2363832b9ffc003b8b32a
+2d32df410a03b800ef03b8000203b803b90028001fffc003b9b3282e32f0410b03b900010000
+03b7000103b700030800001f03b60381b23a1f0f411703b3001003b2002003b2005003b20070
+03b200e003b2000600cf03b300df03b300ef03b300ff03b30004001203a8b2e2891fbe039f01
+6b019a001f039800930801400c1f7f047f05027f027f03025fbb02b00001ffc00117b2196632
+b8ffc0b3651a6632b9ff800173b2196632bd038401170800001fffc002afb2313340b802afb2
+2e3340b802afb328293240b802afb326273240b802afb321253240b802afb31c203240b802af
+b2233340b802afb21933a0bc02af00b002af00e002afb5034003212932b8fff2b33a263d32bc
+038203820382003a0800b51f40255c331eb80381b25c6432b8ffeeb3252e3314b80381b32b2e
+3269be03810001008a03810001000e0381b32b2f3210b80381b3515b320cb80381b34e513222
+b80381b3474d320eb80381b246330ab80381400926473212254358320cb80381b2323310b803
+81b22a3312b80381b3373d3212bb0381003d0033fff44015253d331825355b32102526343206
+252a330c252e33b8fffe4024252d330c3a2f33329925aa25ba25c92504052536330c25323832
+193a293a383a03182517b80381b42825382504bc0381038103810025080040101f0f1f2b2e32
+691f781f020b1f303332b8fff1b31f263d32bc038003800380001f080040151f375f07af0702
+5f06af060222ac2b2e3209ac2f33b8ffdc400aac1f223222232b52320eb8037fb229330eb803
+7fb2223314b8037fb21e2032b8ffe7b71e2b33321e2b2f32b9ffc0037fb64c4f3232262c3341
+0affee037f00390033fff8037f002b0033ffea037fb23a3320b8037fb33f46321eb8037fb32f
+3a3212b8037fb22e331eb8037fb32a2d320eb8037fb2263304b8037fb3494a3404b8037fb246
+3304b8037fb2213318b8037f400c1d3322263032322226333832b8fff8400a262b2f3209261b
+21328abe037f0001037f037f037f00260800402e1f371f062f063f06039f02af02bf02cf0204
+9f03af03bf03cf03046f037f038f03031f032f033f034f035f03050f413502ed0001005f02ed
+009f02ed00df02ed0003002f02ed003f02ed006f02ed000300af02af0001004f02af009f02af
+0002002f02af003f02af0002003f02b00001004f02af005f02af0002002f02af003f02af0002
+007003b2000103b203b202ed02ed02b002b002af02af401a3701003001400102010100090102
+000800171700000012110840410b027b02230034000d013d0034000d01370034000d011b401a
+340d8f340d84340d68340d59340d54340d48340d2c340d28340d411002350020000d021b0020
+000d01fc0020000d01c30020000d01500020000d012c401a200df0200dbe200d94200d79200d
+6a200d61200d5f200d44200d410d013e0138000d003d0138000d00300138000d001d0138000d
+01fdb40f4d0f0009bf01fd004d000d03b1037f0015001f0215b226341fb80214b2263f1fb802
+08b21ebb1f41190206001e0801001f0205001f02ab001f0204001f02ab001f0203001f040100
+1f02010031019a001f01fb00230156001f01aeb2262a1fb801adb2262a1fb801abb226341f41
+1501a8002602ab001f01a5001e0125001f01a400ab02ab001f01a2003102ab001f01a1003102
+ab001f019db2236c1fb8019cb2236c1f4109019b00230401001f019a0033019a001f0176b226
+2e1fb8016cb231721f4111016b0023019a001f016800240401001f014500260801001f013f00
+230401001f0123b21e9e1fbc0121001e0201001f0100b426791ffd1fb80125b21ffa33b80801
+b21ff924b802abb21fe826b80101b21fe51fb8019ab21fe431b80101400b1fe331e41fe23189
+1fd226b80201b61fd026cd1fcd25b80401b21fb731b8019ab21fae26b80801b21fac1eb80401
+400b1f9e315e1f97269e1f9333b80801b21f8a24b8019ab21f831fb802ab40131f82236c1f75
+23e41f7026cd1f6423721f5e25b80401b21f5d23b802abb21f55e6b80401b21f5324b80201b2
+1f4f33b802abb21f4e26b8040140131f4731671f4626ab1f4331cd1f3e235e1f3a1fb80401b6
+1f3924e41f3723b80801b21f2e23b80401b21f2a1eb80125400b1f2923ab1f2731ab1f5537bc
+01c60007018a0007012b402e077f077107690766074b074007380736072d0722072107140812
+0810080e080c080a080808060804080208000814b8ffe0402b00000100140610000001000604
+000001000410000001001002000001000200000001000002010802004a00b013034b024b5342
+b0372b4bb807ff52b0382b4bb009505b58b101018e59014bb0c063004b6220b0f65323b8010a
+515ab005234201b0124b004b544218b0382bb00288b801005458b801ffb101018e851bb01243
+58b900010140858d1bb900010159858d59590016763f183f123e113946443e113946443e1139
+46443e113946443e11394660443e11394660442b2b2b2b2b2b2b2b2b2b2b182b2b2b2b2b2b2b
+2b2b2b2b2b2b2b2b181db0964b5358b0aa1d59b0324b5358b0ff1d594bb04753205c58b9027d
+027b4544b9027c027b45445958b90146027d455258b9027d01464459594bb04753205c58b900
+1e027c4544b90026027c45445958b9017f001e455258b9001e017f4459594bb05e53205c58b9
+001f027d4544b90025027d45445958b901a8001f455258b9001f01a84459594bb8010153205c
+58b1ab1f4544b11f1f45445958b9047000ab455258b900ab04704459594bb8012553205c58b1
+e61f4544b11f1f45445958b9051000e6455258b900e605104459594bb01753205c58b1242445
+44b1312445445958b12224455258b124224459594bb05153205c58b124244544b12324454459
+58b17d24455258b1247d4459594bb06e53205c58b124244544b1332445445958b1aa24455258
+b124aa4459592b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b
+2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b
+2b2b65422b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b4569
+5342014b5058b108004259435c58b1080042591610703eb0124358b911b53d801bba011c03d9
+000b2b59b00a2342b00b2342003f3f182b103c012f5d060cb0062342b0072342b0124358b93b
+21187e1bba040001a8000b2b59b00c2342b00d2342b0124358b92d412d411bba04000400000b
+2b59b00e2342b00f2342b0124358b9187e3b211bba01a80400000b2b59b0102342b011234200
+2b4bb02e5358b8016b45b02a60b8016b23445900184569444569441845694445694473737373
+75757573737475757575752b4bb026534bb03d515a58b1262645b0196044592b45186944742b
+2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b004bb02a534bb03f515a58b1
+070745b04060445973732b2b451869442b2b752b2b4518694475752b2b752b2b2b2b2b2b2b2b
+2b2b2b2b2b2b2b2b2b2b74752b2b2b2b2b451869442b002b732b2b2b2b2b2b2b2b2b012b2b2b
+007373732b2b2b01435c58b8ffdeb31e1c3318b8037fb52b3318262b33b9fff00381b112332b
+2b2b2b590173742b002b73752b2b732b2b2b2b2b73752b2b2b2b00>
+] def
+/f-0-0 currentdict end definefont pop
+%%EndResource
+%%BeginResource: font TimesNewRomanPSMT
+11 dict begin
+/FontType 42 def
+/FontName /TimesNewRomanPSMT def
+/PaintType 0 def
+/FontMatrix [ 1 0 0 1 0 0 ] def
+/FontBBox [ 0 0 0 0 ] def
+/Encoding 256 array def
+0 1 255 { Encoding exch /.notdef put } for
+Encoding 1 /uni0394 put
+/CharStrings 2 dict dup begin
+/.notdef 0 def
+/uni0394 1 def
+end readonly def
+/sfnts [
+<00010000000900800003001063767420f34dda810000022c000007c46670676d3775a72f0000
+09f000000573676c7966812a4a9b0000009c0000019068656164cafced4700000f6400000036
+6868656113290c9a00000f9c00000024686d74780b5e014e00000fc0000000086c6f63610000
+020800000fc80000000c6d617870066510ac00000fd40000002070726570d2662bf400000ff4
+00000f180002010000000500050000030007004db10201bb02be0006000702bfb2000504b802
+beb403000a0704b802beb5010019080605bf02be0002000301290009016b015e00182b10f63c
+fd3c4e10f43c4dfd3c003f3cfd3c10fc3cfd3c3130211121112521112101000400fc2003c0fc
+400500fb002004c0000000020032000004f2056b0003000600ec404348057a058a0599050405
+181012340218101234032c0b1134042c091134250379068806f706040c021b02020a011a017a
+018a01f801050b051b05580503050504010000b802c940160605140606050504050604220302
+1403030204060306b802c9b2000805b80205401502010302010003a7200470048004030f0440
+040204b801b2400f0500901f062f066f067f068f060506b802ec40151f05014f05af05df05ef
+05048005af050205050807191112392f5d7172f45d18ed1910f45d5d18ed113939003f3ced3f
+ed3c103c87052e2b087d10c487052e182b87087dc43130015d5d5d5d2b2b2b2b005d33013301
+27010132026022023eeffe6bfe4a056bfa955503e4fc1c00058e0000054c001f054c001c0394
+001b0000ffe10000ffe40000ffe8fe4afffc056b0023fe6affe00313000000ad000000ad0000
+000000250096009f002400f0013100c200c0004a00a6004100500094004700cf00af000e0079
+01cb00040023004400a80025011f0002004600170105009900d9005c007200e500e00028004b
+00de011200240045007000160039ffe90016004b0088ffb900d9000a004300ae00ba016c0153
+002f00430048022c012b0025008fffc000170028ffcdffd80025009d00e50124ffb10048009d
+00e600110027007f00910012006a00cafffc00000024006200a7017c01e900210060008b0434
+048aff6b003b00b500d5014bff6b004d007905d809b5006c009100a3011701c0ffdfffe700be
+04010065007f00820088009900b200c0022e034305a000200026003d004e00610065007b00d9
+011301310340ff27ff42ff99004e00a700f2022b02c603070011002b0049005f008d00a100af
+00d600e400f5010b0135019d01ab01ab01d101ee05d80000004b0075007a0080009d00a600a7
+00ac00b9013101310217021700020017002900550080008f00a500b200b300d0014b015901c0
+01c103a50530fe3fff14ff15ffe7ffff002a00580099009f00c100e400f40130015901ab01ab
+03220374041e04740532fd81004d0064009c00d000d100d600de00e500f500f8012a012a01e1
+027e027fff57ffa8ffe500000008001f00380051005a006f0076007700a200c000c200c400f1
+01fb0209027e02cf04c5057a05f0ff92001200260042004b004f005100530064008b00ae00b2
+00b800b800d600f50111012001310138014e01520167018f019601b801d901d9020602210271
+02ea03b003cb03dc04360505ff3a00120016001e001f002300570068006c007e0088009200a5
+00a800c500c901150126012d013001d601d901f6023b0244024402a302cf02de0385038f04fc
+0586fee0feebfefbff8a0007004400470058007500aa00e400ef011601200129016a017301e3
+027e029002b4030e0310032303350341035403590388039403c803ce047204ab04da05490561
+05ab0761fe6efed1ff4bff84000000010006001e0027002c0034003700620066006a006b006c
+007000700072007c0081008a008e0091009200a000ab00b800bf00c900d500dd00ec00f40100
+012101300169016a016d017c0185018e018e019901ac01c101c501c901e101f601f601f60222
+022202280236023f02430246026702850285029402d002d602e8031c0363037f03800380039e
+03b603d90400040404ff053205320548058b05a706cb07280748076208ccfcedfd2afd59fdde
+fe00fe1afe5bfe96fec1fee7ff56ff7900010025002d002e007c00870091009900a100a500a5
+00aa00af00b600c600cc00d700dd00ec00f201020105011701180123012a012c0131013f0147
+01490149014d01510151015501550157015a015a0161016201680168017f0180018201830184
+018d0195019501950198019901a501a901b601b601b701ba01ba01d501df01e601ea01f20200
+02000203021702250227022f0239024302430247024f025202520267026f026f027002720276
+027e02a702b302b902d603130325032d03610371039903ae03c203d403f90402042c042f043c
+04560467048304cf04d104d804fb051f05450568059e05c2061b06340655066a069806af06e8
+06fc070607500762077c07d407ff082500ad00c700aa00b5000000000000000000000000002f
+06cf01730514047802df009c0018037005870155002500060254036c038e03d2056601f00320
+01da018a0369036bffa3034602f8036f015602bf0122031f053a0366008c00ff01ab02e102f4
+02e70415015402e90128049101b7026f034302060000000005d30415048305e8000002d7003a
+027d01c002c503830383ffbd003a059e01df059e02d1002004e0021300df01c0018702970000
+00ce0269028b0058043405fb0069015a01a905780182013e0288012a03d4049e00e5032302f3
+01f00196007a00cd014a0424025e023901ab00cf00fd011e00ed017100700195004001bb01dd
+01b8000101a803a7014c020c018d01b0020d0137010000cd032101d4030a0059000000000126
+0215015002f0025503bc06d00335010100d000d2007a01030130007c000000000000000000fe
+006e006600940227002b0045004d00d3013200180097004100f4febcffe9001605d8058b0091
+00a1032c00520030005d02cb003a009200e500e500580086003200ba0099008800300298007c
+ff8001640028004d0065000200b8016a002f010b001100170100007f00040016022200a6005f
+000000f8000a00ca0043004b01ee0077012000f401c00028045f0000008c044500c20060007b
+008b008b0064005d00c2009c009206b505d3004f011700000420fe9e00cc00dc005e004600e3
+0032001a003c0091005a00a1042c0041002000490071009c009cfe4800400040008600cb0102
+007d003a003e006a0050044800290096ff6a0097006900e0004c001b00c90069ff970043ffbd
+0052ff83ff8b005fffa1ff5c00670053ffa8002a0076ffb20036008705590256052b043400de
+00c901c4004800db018b00b3004800da01160125011800ea00ea00ae0046003e05bb008a04d7
+0053003fff8cffd500150028002200990062004a00e4006d00ee00e5004803c00033fe4e02b1
+ff460370007905df0051ffa7ff1f010a0068ff6c004f00bc00a5070500ab0080001e05a54040
+403f3e3d3c3b3a393837363534333231302f2e2d2c2b2a292827262524232221201f1e1d1c1b
+1a1918171614131211100f0e0d0c0b0a090807060504030201002c4523466020b02660b00426
+2348482d2c452346236120b02661b004262348482d2c45234660b0206120b04660b004262348
+482d2c4523462361b0206020b02661b02061b004262348482d2c45234660b0406120b06660b0
+04262348482d2c4523462361b0406020b02661b04061b004262348482d2c0110203c003c2d2c
+20452320b0cd442320b8015a51582320b08d44235920b0ed51582320b04d44235920b0905158
+2320b00d44235921212d2c20204518684420b001602045b04676688a4560442d2c01b10b0a43
+2343650a2d2c00b10a0b4323430b2d2c00b0172370b101173e01b0172370b10217453ab10200
+080d2d2c45b01a234445b01923442d2c2045b00325456164b050515845441b2121592d2cb001
+43632362b0002342b00f2b2d2c2045b0004360442d2c01b00643b00743650a2d2c2069b04061
+b0008b20b12cc08a8cb8100062602b0c642364615c58b00361592d2c45b0112bb0172344b017
+7ae4182d2c45b0112bb01723442d2cb01243588745b0112bb0172344b0177ae41b038a451869
+20b01723448a8a8720b0a05158b0112bb0172344b0177ae41b21b0177ae45959182d2cb00225
+46608a46b040618c482d2c4b53205c58b002855958b00185592d2c20b0032545b019234445b0
+1a23444565234520b00325606a20b009234223688a6a606120b01a8ab000527921b21a1a40b9
+ffe0001a45208a54582321b03f1b235961441cb114008a5279b31940201945208a54582321b0
+3f1b235961442d2cb110114323430b2d2cb10e0f4323430b2d2cb10c0d4323430b2d2cb10c0d
+432343650b2d2cb10e0f432343650b2d2cb11011432343650b2d2c4b525845441b2121592d2c
+0120b003252349b04060b0206320b000525823b002253823b002256538008a63381b21212121
+2159012d2c4bb06451584569b00943608a103a1b212110592d2c01b005251023208af500b001
+6023edec2d2c01b005251023208af500b0016123edec2d2c01b0062510f500edec2d2c20b001
+600110203c003c2d2c20b001610110203c003c2d2cb02b2bb02a2a2d2c00b00743b006430b2d
+2c3eb02a2a2d2c352d2c76b802b023701020b802b04520b0005058b00161593a2f182d2c2121
+0c6423648bb84000622d2c21b08051580c6423648bb82000621bb200402f2b59b002602d2c21
+b0c051580c6423648bb81555621bb200802f2b59b002602d2c0c6423648bb84000626023212d
+2cb4000100000015b00826b00826b00826b008260f10161345683ab001162d2cb40001000000
+15b00826b00826b00826b008260f1016134568653ab001162d2c4b53234b515a5820458a6044
+1b2121592d2c4b545820458a60441b2121592d2c4b53234b515a58381b2121592d2c4b545838
+1b2121592d2c014b53234b515ab00225b00425b006254923451869525a58b00225b00225b005
+25462345696048592121212d2cb0134358031b02592d2cb0134358021b03592d2c4b54b01243
+5c5a58381b2121592d2cb012435c580cb00425b00425060c6423646164b807085158b00425b0
+0425012046b01060482046b0106048590a21211b2121592d2cb012435c580cb00425b0042506
+0c6423646164b807085158b00425b00425012046b8fff060482046b8fff06048590a21211b21
+21592d2c4b53234b515a58b03a2b1b2121592d2c4b53234b515a58b03b2b1b2121592d2c4b53
+234b515ab012435c5a58381b2121592d2c0c8a034b54b00426024b545a8a8a0ab012435c5a58
+381b2121592d2c462346608a8a462320468a608a61b8ff8062232010238ab9035803588a7045
+6020b0005058b00161b8ffba8b1bb0468c59b0106068013a2d00000100000002d1ec20574800
+5f0f3cf50819080000000000a2e31dc200000000b53db300fb74fd8c103a080e000000090001
+000100000000000100000721fe4500571000fb74fe52103a0001000000000000000000000000
+000000020639011c0525003200000000000000780000019000010000000200f2003c006f0005
+00020010002f0041000005cd0f1800030002b9ffc003e1b345453240b803e1b32b2e3240b803
+e1b2282932b9ffc003e1b21a1c32bd03e102ac0027001fffc003dfb2161b32b9ffc003deb242
+4232b9ffc003deb2363832b9ffc003deb32a2d32df410a03de00ef03de000203de03df002800
+1fffc003dfb3282e32f0410d03df0001037e000f0101001f00a003dd00b003dd0002004003da
+b32426329fbf03cc000103ca03c90064001fffc003c9b20d1132410a03c703b70012001f03b6
+03b50064001fffc003b5b30e1132004173038d000100c0038d00d0038d00e0038d00f0038d00
+04006f03a7007f03a7008f03a700af03a70004000f03a7001f03a7002f03a7004f03a7000403
+ab03ab00ef03a50001000f03a5002f03a5006f03a5008f03a50004005403aa0001006b03aa00
+0103a8036a0022001f038c03940015001f038b03930015001f03a40393001a001f03a2039400
+1e001f03a10393001e001f039f0394001e001f039b0394001a001f039a0393001e001f039903
+940016001f039803940016001f03970393001b001f03960394001b001f03950393001b001f03
+760375001a001f03740375001a001f03a00373b21e1f10411e03930020039300300393000300
+200394003003940040039400030000039400010383036c001e001f03b1036c0032001f036d03
+6c0032001fffc0037db2212332b9ffc0037db3171932a0410a037d00b0037d00c0037d00d003
+7d0004ffc0037cb2212332b9ffc0037cb3171932a0412d037c00b0037c00c0037c00d0037c00
+0400300373004003730002000003730010037300200373000300e0037300f00373000200b003
+7300c0037300d003730003008403730090037300a0037300030377036a0029001f0389036ab2
+281f40b80367b33940323fbb0366000100400366b3191d328fbb0366000100400366b3090a32
+40b80366b3090e3240b80366b3090f323fbb0365000100400365b3090c3240b80365b31a1d32
+40b80365b3090e326b410e0363007b0363000200140363002403630034036300440363000403
+63b2242f1fba034e006d0800400e1f7f027f037f047f050430440112bf033200500800001f00
+12032d003c080040291f5f3c01376009700980090310092009300940095009056f037f038f03
+031f032f033f034f035f0305b8ffc0b2073a33b8ffc04047063a33900ba00bb00bc00bd00b05
+b006c006d006e006f0060520063006400650066006700680069006a006099006900702600b70
+0b800b03100b200b300b400b500b051f0701a041850362000100000362001003620070036200
+900362000400f0035f00010020035e0020035f0030035f0040035e00040000035e0000035f00
+10035f00d0035e00e0035f00050010030f0020030f0030030f00d0030f00e0030f0005000003
+0f0010030f0050030f0060030f0070030f00d0030f00060000030f0010030f0020030f003003
+0f00e0030f00f0030f0006030f00270000030e0030030e000200e0030e00f0030e0002030e00
+4a00e0030d00f0030d0002030d002700d002fc0001001002fc002002fc005002fc000300d002
+fc00e002fc0002000002fc001002fc002002fc003002fc005002fc006002fc000600e002fc00
+f002fc0002002002fc003002fc004002fc000302fc406127c02901b02901a02901902901403c
+3f413240223f41321212125f235f255f285fa5046f236f256f286fa5044f234f254f284fa504
+3f233f253f283fa5042f232f252f282fa5041f231f251f281fa5048f4caf4cbf4ccf4c045f4c
+6f4c7f4c0337b8ffc0b3b22b3032b8ffc0b3b2222532b8ffc0b5b2191a32370f413d02af0001
+005f02af009f02af00df02af0003000f02af001f02af002f02af003f02af006f02af000502af
+02af001f02ad002f02ad003f02ad004f02ad005f02ad000500df02ad0001000f02ad001f02ad
+003f02ad005f02ad009f02ad0005005f02ad00df02ad0002000f02ad001f02ad003f02ad0003
+004002acb23a334f414c02ac005f02ac009f02ac0003002f02ac003f02ac0002000f02ac003f
+02ac00af02ac000300b002ac00e002ac0002004f02ac005f02ac00a002ac0003000f02ac001f
+02ac002f02ac003f02ac0004000f035a0001000f035a001f035a003f035a005f035a0070035a
+000500cf035700df03570002000f0357001f03570070035700af03570004035a035a03570357
+02ad02ad02ac02ac032c400d31151f001616000000121108104110020c004a000d01a8004a00
+0d0198004a000d0189004a000d013f004a000d0124400e4a0df64a0dbe4a0d864a0d274a0dbe
+02280041000d01940041000d0121400b410db4410d4f410d29410d411002170021000d021500
+21000d02060021000d01eb0021000d014e0021000d012c4014210df9210df3210df1210d9d21
+0d71210d3d210d4110021c001f000d0214001f000d020b001f000d0196001f000d014a001f00
+0d0126400b1f0dc61f0d571f0d371f0d410d019e0141000d00420141000d001e0141000d001b
+0141000d01f2b40f440f0009bb01f20044000d0201b23c291fb80200b23c291fb801ffb23c41
+1fb801feb23c471fb801fdb23c9e1fb801fab23c931fbc01f9010f0101001f01f6b224e41f41
+1501f401490401001f01f301490401001f01f1014900ab001f01f001490067001f01a6003c01
+25001f01a4b23c811f411501a3010f019a001f01a200220801001f01a100500401001f019f01
+49019a001f019d01490067001f019cb22c621fb8019bb22c791fbc019a002c0101001f0197b2
+2ce41fb80193b22c891fb80192b22c6c1fb8018fb2259e1fb8016ab23c2a1f41110167002402
+01001f0163002502ab001f014c010f019a001f01480149006c001f0147b22c891fb80145b22c
+9e1fb80144b22c791fb80143b223311fb80127b23c811fbc012300500101001f011fb223e41f
+4115011d0023019a001f011c00230801001f011b00250801001f010e010f0401001f010d0022
+0401001f0108b223811fb80106b425e41ff73cbb0125001f00f5010fb29e1fe3bc0149015600
+1f00e20149b2ab1fd1b901490401b21fcf2cb80125b61fce23bb1fc524b80156b21fc02cb808
+01b21fbf2cb80201b51fb124e41fb0b901490201b61faf2c671fad23b80801b21fa523b80201
+400b1f9f3c2d1f9b235a1f9925b80201b21f812cbc0401001f006d010f0156400b1f592c3e1f
+4c3cab1f4625b80101b21f403cb80125400a1f3a23721f393cab1f38b80149b3ab1f3124b804
+01b21f3025b802abb61f2a24e41f2623b80156b21f5537ba023500070175402c077407620756
+0751073b0733072d0720071d071c071408120810080e080c080a080808060804080208000814
+b8ffe0402b000001001406100000010006040000010004100000010010020000010002000000
+01000002010802004a00b013034b024b534201b0124b004b5442b0372b4bb807ff52b0382b4b
+b008505b58b101018e59b0382bb00288b801005458b801ffb101018e851bb0124358b9000101
+2f858d1bb90001017c858d5959014bb0c063004b6220b0f65323b8010a515ab0052342180016
+763f183f123e113946443e113946443e113946443e113946443e11394660443e11394660442b
+2b2b2b2b2b2b2b2b2b2b182b2b2b2b2b2b2b2b2b2b2b2b2b181db0964b5358b0aa1d59b0324b
+5358b0ff1d594bb04753205c58b90271026f4544b90270026f45445958b9017a0271455258b9
+0271017a4459594bb04753205c58b9002202704544b9003c027045445958b901b30022455258
+b9002201b34459594bb04c53205c58b9014900224544b1222245445958b901c20149455258b9
+014901c24459594bb06753205c58b9002402714544b90050027145445958b9021e0024455258
+b90024021e4459594bb8020153205c58b9010f00224544b1222245445958b90c00010f455258
+b9010f0c004459594bb01c53205c58b125254544b12c2545445958b13725455258b125374459
+594bb0ab53205c58b125254544b1232545445958b901590025455258b9002501594459594bb8
+010153205c58b125254544b1282545445958b902080025455258b9002502084459592b2b2b2b
+2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b
+2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b65422b
+2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b
+2b2b2b2b01b361dc6463456523456023456560234560b08b766818b080622020b164dc456523
+4520b003266062636820b003266165b0dc236544b064234420b161634565234520b003266062
+636820b003266165b063236544b0612344b10063455458b163406544b26140614523614459b3
+a67f434b456523456023456560234560b089766818b080622020b1437f4565234520b0032660
+62636820b003266165b07f236544b043234420b1a64b4565234520b003266062636820b00326
+6165b04b236544b0a62344b1004b455458b14b406544b2a640a645236144594b5242014b5058
+b108004259435c58b108004259b3020b0a124358601b2159421610703eb0124358b93b21187e
+1bba040001a8000b2b59b00c2342b00d2342b0124358b92d412d411bba04000400000b2b59b0
+0e2342b00f2342b0124358b9187e3b211bba01a80400000b2b59b0102342b0112342002b0018
+456944456944456944456944737373747373737475752b7373747475184569447373742b4bb0
+21534bb046515a58b03cb03c45b040604459012b2b2b2b757575757575757543584010bf3ccf
+3c026f3c7f3c8f3c9f3caf3c0575755943584012bf22cf22025f226f227f228f229f22af2206
+757559435c58b6403c9f22ef220375592b2b0174747474454473737474757545447345447374
+4544737475737373737300757575737575752b2b757575752b752b435841220063032d000100
+03032d0013032d0023032d0033032d0053032d000500c3032d00d3032d00e3032d00f3032d00
+040083032d0093032d00a3032d00b3032d0004032d032d4518694474747575592b4358b90018
+0332b330353238b80332b361663238b80332b3535a3238b80332b3454e3238b80332b33c4132
+18b80332b23f330a410f0332000100ba033200ca033200da033200ea033200fa033200050332
+03324518694474752b2b2b2b2b2b597300732b012b7575002b2b2b74002b2b2b732b74012b00
+2b2b017373737474732b2b00732b2b002b2b2b017374732b012b2b012b2b2b2b2b2b2b2b2b2b
+2b2b2b2b00017375007373004569440073730173742b2b2b2b2b732b00732b752b2b732b2b2b
+2b2b2b2b2b2b00>
+] def
+/f-1-1 currentdict end definefont pop
+%%EndResource
+%%BeginResource: font TimesNewRomanPS-BoldItalicMT
+11 dict begin
+/FontType 42 def
+/FontName /TimesNewRomanPS-BoldItalicMT def
+/PaintType 0 def
+/FontMatrix [ 1 0 0 1 0 0 ] def
+/FontBBox [ 0 0 0 0 ] def
+/Encoding 256 array def
+0 1 255 { Encoding exch /.notdef put } for
+Encoding 43 /plus put
+Encoding 49 /one put
+Encoding 78 /N put
+Encoding 105 /i put
+/CharStrings 5 dict dup begin
+/.notdef 0 def
+/one 1 def
+/N 2 def
+/plus 3 def
+/i 4 def
+end readonly def
+/sfnts [
+<00010000000900800003001063767420fe47d1eb000005c8000007846670676dc431aec00000
+0d4c0000053d676c796601429e060000009c0000052c68656164c4d38c420000128c00000036
+686865610cc70462000012c400000024686d747816c90183000012e8000000146c6f63610000
+0e60000012fc000000186d61787004df0b7c00001314000000207072657096cd958200001334
+000009ed0002010000000500050000030007004db10201bb010f000600070272b2000504b801
+0fb403000a0704b8010fb5010019080605bf010f00020003014400090120012b00182b10f63c
+fd3c4e10f43c4dfd3c003f3cfd3c10fc3cfd3c3130211121112521112101000400fc2003c0fc
+400500fb002004c00000000100300000038f0568001a00ad401e1a20090c3448004601022619
+b719020f130e090e0afb09080107fb084019bb0160001800180220400b1360130e0103092800
+0101b80140b60e13140e0e1318ba020800190168401b1a1a00052809080c0e1b2813101f0e2f
+0e8f0eaf0e040e170e1b0aba039601f300182b2b103c2b5d2b3c2b10c0003f3c2b3f003c10f4
+ed870e2e2b057d10c42b111739011a7a10fa182fe41a0010ed0110c00010ed0110c0870e7dc4
+3130005d015d2b01010615141616170721373e0237133637363534262322072725038ffeb51a
+252b6c0bfd550b66503320c42d02063733194a0801fd0568fb8e591818330f062525021e446d
+02a49a091a172d3508257b000001ffbefff1067d054c0023015c40520f015601024410012a0f
+2f222f2339003c023b053a0d3611361e3b1f3c223c2349044711471e4d22100f0109043f0103
+1f00170a23502222d71f60090d0a1d09181e191d180802071d081711161d17020101b8036640
+1c0e0d140d40140c3f0e01000e0d0001011f0f10140f01020f101f1e1eb80366400c11101410
+40140c3f11111022b8039d401b23230009080800021817080f0e08110e24280d0e1011100f47
+0e00bb02f90011000101104009400e014f0e5f0e020eb802cdb4a02501251eb8039f401a2f11
+3f114f117f118f110511c524090e1711170e11240a389c182b2b103c3c2b2b2b10f45d01ed10
+5df65d710119e41810e410ed2b103c103c2b10c0c0003f3c3f3c3f3c103c103c10ed870e2e01
+2b2b0e7d10c487082e182b057d10c487082e012b182b0e7d10c4180010ed0110c00010ed0110
+c00010ed0110c00010ed0110c01a7a10f8182fe42b1112393130015d5d00715d010113363534
+26273721070606070123010106151416330721373237363637012626273702da01a8bf0f3f4d
+0b01ae0a526b25feb526fde0fef90d474e09fe460939182a5019011f3548480b054cfc780290
+362a323c05252505527cfb9d0484fc7b2f25364125250a105b5603d93b220125000100280088
+046d04c8000b0047b10302b80124b2010104bb039b0007000a0124b2090605b80124b40308c0
+0209b80124400a0b1f000100190c6232182b4e10f45d3c4df43cfd3cf43c002ff43cfd3c10f4
+3c31301321113311211521112311212801e18301e1fe1f83fe1f02e801e0fe2084fe2401dc00
+0002002dffe40263056b000b002800d4b40c0a11390db8fff6403510113e0317131723173f2a
+471f771f7f2a980caa0ca016a017af2ab61ffa1e0e17120f16190a03dc90090109090f1c17d3
+90160116b8034040310f272a262674210f0c0c2b211c142140140c3f21211c06dc00400f39af
+0001000026d3277e28163f1640169016a0160416b8022b4015190b280c071c29282110501c01
+1c171c290a2368182b2b103c2b712b3c2b10c0003f3c3f7ae95d182f10f4ed3f5d2bed87052e
+012b2b0e7d10c4017a10fa182fe410f65ded1112392f5ded2b1112390039393130015d012b2b
+0132161514062322263534361303061514163332373637170223222635343713363534262322
+07372501d03e55563d3c56557bcd11120a11112d3f2297aa414d118b1426210f150d0153056b
+563d3d56563d3d56fe34fd393d130b130f256114fef94938253901de4523162201283700058e
+0000054c001f054c001c0394001b0000ffe10000ffe40000ffe8fe4afffc056b0023fe6affe0
+0313000000fc000000fc0000000000000000002500f30120005f005500ea0032007400cf0055
+004b00af013f000900f5010800260080001701540002001600b800d3005000f00023ffbe00dd
+00f70035ffe9001102b6004900a901490158002e003b008601080023003f0039003a004e00e3
+013f003d010a000900710108feff004c0082009c00c700d80015003a006d035105d800280028
+009f05b800500064001500da015b017cffc2ffd8fff40099ffff001d002d00d9011c01740446
+004e007200be00dd09b50038004b006d009d0118001b003c005c0069007a00a800c60122fff2
+000d008600e3022b055200300047009100f4040104c9ffafffc1ffd5002c003b003b003e004b
+006b009900a500b801c002210343ff8c0041004b005f009a00a600be010a01dc031e0390ff67
+00250031005d006e00b600c000d000d3010a015001bc0274027b02d7000900360048004c005c
+006f00840093009500a600a800ac00b000b700bc00c00104013601370145019403b6fd81fe3f
+00070019003a003b005b00b800c500e100f801160127012c013401470149015d01bc03ed0474
+0532053eff00ff970008000f005c006d007000820089008b00a700c100f600f80129017aff72
+ff88000000000025003e0059006d007100720081008100bc00dd00de011401150150019c01d6
+027e0404041cff7b002000390046004c004d005a0068006c00720080008300a300ce00d100e2
+00ed0107011f0126013f016a01e0035e03a303a703cc05d805f0fed8ff78ffaeffe1ffe70019
+00240041005500580071008200860088009000b000bb00c200c400d000ed00f700f801150118
+011f012c015e017c019801a201cc01d201fa022b026d02cf02cf02df0333039103e304ab04fc
+04fe058805e706bffed1ff4a000000010003000400170024003c004d0056005c0067007700a8
+00b000b800c300c600c800e900eb00f500f8010a010c0127013501350139013f0149014d0197
+019801c701ee023d02500258026d026f029402b30300031a032a0361039603a1043304400479
+04da04e804fb057b058c05ab0761fe60fe99ff00ff13ff2fff47ffed00180031003f004c006b
+00740078007c00840094009700b000b600b700d800da00e200e400e500eb00ee00ef00f600fa
+0106010c011101110114013b013e01450149014d015b0164016f0184019101b301b901d101e1
+01e501ef0205020602220236023b023e024102600276029a029a029d02c402ee03130327032b
+0373038c03ba03c203d2040f0485051505320532054905610595069906a80727074807620810
+08ccfd2afddefe23fe44fe67fe96feacff24ff41ff5cff61ff9effa3ffb7ffc2ffc5ffcaffdd
+fff0000000000003000800100018001c0023002b0030003e0046004b0052005e005e006e007a
+007b00830085008a00910092009800a800af00b600cc00ce00cf00d200e700f100f200fa0101
+0108010b0112012601270127012e013601370138013b013e0140015b016a0170017401790182
+01840188018d0192019b01a001a001a001ab01b801bc01c001cc01da01dc01e001e002010210
+0214021d022902300230024302460269027a0284029502a302b402c102c202cf02dd02e102ec
+02f00310033a03450388039903ad03bd03d403d503e303ea03f304260426046e04d104e00513
+054b057605a305b705c205f8063b065b06b806e80706071a0724075007a907d407ff082700f6
+012600f100df000000000000000000000000038402af02f301b80205017a04910491049e019f
+0425049e019f049e019f027a005101ac02610319033b021c033b01ee01880278020a01ee033b
+029f002400240261019e015e0171004401490284009902840099028400250041004502980205
+01c9024904440188044400000000023005d30415035d01810023016e003504c9005b05960491
+0025026202dd01d00434030a0319031e03c1049e05e8035c00000282ffef040d03ce0209010c
+01f6025303a202df02d0000a00d6008200000032010901a201af01770204027a019e02eb019b
+01ec024e0326045b03ee03c3042600b703620031004f0027ffee01240096036700d703750291
+032603260041004501d7007402ff02a50216029f017a0100031c005000b7012b016800f90031
+01a8013a00a801cc00f3012502020021007301c70603021b0142010501e1012403350272018c
+044301e50282010f02fe01ee034a02c50210024e022a02a501cf005f00b1026603b203580115
+008e015d02a500d1fee201b0010b015a0395005900f70783031b008b045d00a1014401000094
+00b4febf03c600e803ce017303e6012e0222049500390023033b01b8000003f00140015303b4
+01a805ee061801c6007d00cd00d1037c008500bd00ccfc47fcb1008402a7fccb046402ba0167
+032b00700136000001320068030c0155001bfe6fffc60249013102f1fe79feb4fcf2ff4203ad
+fc0efc61032a00c3009100a10077004c0002015e008400860023005d004b010a01b80086ffc5
+00a80072008800590028009901350015003d0056007a00f801d600090007000f00e2001700bc
+016a00ed0274005b0136000000ab0080005005a500904040403f3e3d3c3b3a39383735343332
+31302f2e2d2c2b2a292827262524232221201f1e1d1c1b1a191817161514131211100f0e0d0c
+0b0a090807060504030201002c4523466020b02660b004262348482d2c452346236120b02661
+b004262348482d2c45234660b0206120b04660b004262348482d2c4523462361b0206020b026
+61b02061b004262348482d2c45234660b0406120b06660b004262348482d2c4523462361b040
+6020b02661b04061b004262348482d2c0110203c003c2d2c20452320b0cd442320b8015a5158
+2320b08d44235920b0ed51582320b04d44235920b09051582320b00d44235921212d2c202045
+18684420b001602045b04676688a4560442d2c01b10b0a432343650a2d2c00b10a0b4323430b
+2d2c00b0172370b101173e01b0172370b10217453ab10200080d2d2c45b01a234445b0192344
+2d2c2045b00325456164b050515845441b2121592d2cb00143632362b0002342b00f2b2d2c20
+45b0004360442d2c01b00643b00743650a2d2c2069b04061b0008b20b12cc08a8cb810006260
+2b0c642364615c58b00361592d2c45b0112bb0172344b0177ae4182d2c45b0112bb01723442d
+2cb01243588745b0112bb0172344b0177ae41b038a45186920b01723448a8a8720b0a05158b0
+112bb0172344b0177ae41b21b0177ae45959182d2c2d2cb0022546608a46b040618c482d2c01
+182f2d2c20b0032545b019234445b01a23444565234520b00325606a20b009234223688a6a60
+6120b01a8ab000527921b21a1a40b9ffe0001a45208a54582321b03f1b235961441cb114008a
+5279b31940201945208a54582321b03f1b235961442d2cb110114323430b2d2cb10e0f432343
+0b2d2cb10c0d4323430b2d2cb10c0d432343650b2d2cb10e0f432343650b2d2cb11011432343
+650b2d2c4b525845441b2121592d2c0120b003252349b04060b0206320b000525823b0022538
+23b002256538008a63381b212121212159012d2c4bb06451584569b00943608a103a1b212110
+592d2c01b005251023208af500b0016023edec2d2c01b005251023208af500b0016123edec2d
+2c01b0062510f500edec2d2c20b001600110203c003c2d2c20b001610110203c003c2d2cb02b
+2bb02a2a2d2c00b00743b006430b2d2c3eb02a2a2d2c352d2c76b802df23701020b802df4520
+b0005058b00161593a2f182d2c21210c6423648bb84000622d2c21b08051580c6423648bb820
+00621bb200402f2b59b002602d2c21b0c051580c6423648bb81555621bb200802f2b59b00260
+2d2c0c6423648bb84000626023212d2cb4000100000015b00826b00826b00826b008260f1016
+1345683ab001162d2cb4000100000015b00826b00826b00826b008260f1016134568653ab001
+162d2c4b53234b515a5820458a60441b2121592d2c4b545820458a60441b2121592d2c4b5323
+4b515a58381b2121592d2c4b5458381b2121592d2cb0134358031b02592d2cb0134358021b03
+592d2c4b54b012435c5a58381b2121592d2cb012435c580cb00425b00425060c6423646164b8
+07085158b00425b00425012046b01060482046b0106048590a21211b2121592d2cb012435c58
+0cb00425b00425060c6423646164b807085158b00425b00425012046b8fff060482046b8fff0
+6048590a21211b2121592d2c4b53234b515a58b03a2b1b2121592d2c4b53234b515a58b03b2b
+1b2121592d2c4b53234b515ab012435c5a58381b2121592d2c0c8a034b54b00426024b545a8a
+8a0ab012435c5a58381b2121592d2c462346608a8a462320468a608a61b8ff8062232010238a
+b903bc03bc8a70456020b0005058b00161b8ffba8b1bb0468c59b0106068013a2d0000000001
+00000002d1ec6d387ba15f0f3cf50819080000000000a31fbca400000000b53db2e5fb9ffd8c
+09a60842000300090001000100000000000100000721fe4500570902fb9ffcfe09a600180007
+00000000000000000000000000050639011c0400003005c7ffbe048f00500239002900000000
+000000780000018400000360000003d80000052c00010000000500f2003c006a000500020010
+002f00410000044409ed00030002410b008003c0009f03c000af03c000cf03c00004ffc003c0
+b345453240b803c0b32b2e3240b803c0b2282932b9ffc003c0b21a2632bd03c002c80027001f
+ffc003beb2161b32b9ffc003bdb2424232b9ffc003bdb2363832b9ffc003bdb32a2d32df410a
+03bd00ef03bd000203bd03be0028001fffc003beb3282e32f0b803beb5019006900702b9ff80
+02c8b2313340b802c8b31c333210411b02c8006002c8007002c80003000f02c800af02c80002
+00b002c800e002c80002005f02c800a002c80002002f02c8003f02c8004f02c840a803010000
+0340cd383b32404d383b32a41fb41fc01fd01fe41f05501f641f741f841f04041f141f241f34
+1f441f05e41ff41f02ab1fbb1fcb1f03cfcddbcd028bcd9bcdafcdbfcd04cdcdcd4ddb4d028b
+4d9b4dad4dbd4d044d4d377f047f05027f027f03020f0301cf03df03ef03ff03048f039f03af
+03bf03044f035f036f037f03049f02af02bf02cf02049f03af03bf03cf03045f036f037f038f
+03041f032f033f034f03047f411e03660001006f03660001005f03660001004f03660001003f
+03660001002f03660001001f03660001000f0366000100ff0366000100ef036600010366b221
+370f412402dd0001005f02dd009f02dd00df02dd0003002f02dd003f02dd006f02dd0003009f
+02c900df02c90002000f02c9001f02c9003f02c9005f02c9000402dd02dd02c902c902c802c8
+4014010001010009010200080017170000001211084041110286019e003f000d013d003f000d
+0116003f000d026f0083000d02170083000d0174b7830df3830d76830d410d02350024000d02
+180024000d02030024000d01610024000d01134017240da6240d95240d82240d6f240d5b240d
+46240d22240d410d0249001e000d020e001e000d01c1001e000d01a3001e000d0178401d1e0d
+f61e0df11e0de21e0ddd1e0dce1e0d751e0d701e0d651e0d521e0dbb02140037000d01a0400b
+370dfb370d2d370d1d370db80215b40f440f0009bb02150044000d023cb24d1d1fb8023ab24d
+1f1fb80237b24d2a1fbc0232004d0201001f022eb21f931f4109022c001f0125001f022b001f
+0156001f022ab21f931f410d022801400079001f021f016d0156001f021e00330401001f021d
+b233e41fb8021bb233411fb80216b2212d1fb801c3b24d1e1fb801bfb24d931fb801beb24dcd
+1fbc01bb004d0201001f01b7b21f671f410d01b601400089001f01b200360401001f01b10036
+019a001f01b0b236bb1fb801afb236ab1f410901ad016d0067001f01ac016d0072001f01a6b2
+212c1fb801a5b221351fb801a4b2213b1fb801a2b2215e1fbc01a100350201001f017bb24d93
+1fbc0179004d0401001f0176b24dcd1f41150175001f0125001f01730140006c001f01700036
+019a001f016f00360125001f016b00330401001f0169b233811f4109016600210125001f0163
+003b0125001f0147b24d221f410d0143001f0101001f013b003302ab001f013a00330101001f
+0139b233341fb80136b2212e1fbc013300210401001f0132b23bab1fbc011f01400081001f01
+19b2212d1fb80117b221471fb80111b235cd1fb80108b24d791fb80106b21fab1fb80105b236
+721fb80100b721471ff51fe41ff4b90140080140131fef332c1fee212e1fed214c1fe04dcd1f
+df4db80101b21fdc1fb80125b51fdb1fcd1fdab901400801b61fd936891fd621b80156b21fd5
+3bb80156b21fcd4db80156b21fcc4dbb0101001f00ca0140b29e1fc9b9016d0156b21fc733b8
+0801400b1fc2333b1fc133381fbe21b80125b21fbb3bbb0801001f00b3016db29e1fa7b80140
+b76c1fa321cd1fa235b8019a400f1fa13bab1f99215e1f8c35e41f841fb80401b61f8121381f
+7f21b80125b61f7b334c1f7935b8019ab61f714d271f6e3bb80101400f1f664d4a1f6321891f
+6033521f5a3bbb019a001f0058016db2721f57b9016d0801b51f55212e1f4fb80140b76c1f4c
+369e1f4b35b80401b21f493bb80201400b1f483bcd1f45212a1f433bb8012540161f424d521f
+414dcd1f4033891f39366c1f2e21301f2cb80140b2791f2bb901400401b61f2833e41f2735b8
+019ab21f5537bc0257000701d600070187402e07de07a8079e0756073e073407300729072607
+250720071408120810080e080c080a080808060804080208000814b8ffe0402c000001001406
+10000001000604000001000410000001001002000001000200000001000002010802004a009f
+bd028600af028600bf02860003b013034b024b5342b0372b4bb807ff52b0382b4bb007505b58
+b101018e59014bb0c063004b6220b0f65323b8010a515ab005234201b0124b004b544218b038
+2bb00288b801005458b801ffb101018e851bb0124358b900010139858d1bb90001013c858d59
+5901b0372b730016763f183f123e113946443e113946443e113946443e113946443e11394660
+443e11394660442b2b2b2b2b2b2b2b2b2b2b182b2b2b2b2b2b2b2b2b2b2b2b2b2b182b1db096
+4b5358b0aa1d59b0324b5358b0ff1d594bb02753205c58b9028802864544b902870286454459
+58b901240288455258b9028801244459594bb03053205c58b9016d02884544b9028802884544
+5958b90162016d455258b9016d01624459594bb04353205c58b9001f02874544b9004d028745
+445958b9025e001f455258b9001f025e4459594bb8012553205c58b9003602884544b9003a02
+8845445958b908970036455258b9003608974459594bb8040153205c58b90140003a4544b13a
+3a45445958b91ee00140455258b901401ee04459594bb00c53205c58b13b3b4544b1333b4544
+5958b1123b455258b13b124459594bb03153205c58b13b3b4544b1213b45445958b1503b4552
+58b13b504459594bb03953205c58b13b3b4544b1353b45445958b15d3b455258b13b5d445959
+2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b
+2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b
+2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b
+2b2b2b2b65422b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b
+2b2b2b2b2b2b2b2b2b45695342014b5058b108004259435c58b1080042591610703eb0124358
+b911a63d851bba011b03d9000b2b59b00a2342b00b2342003f3f182b103c012f4bb00d5458b9
+0001ffb038594bb00c5458b90001ffb03859060cb0062342b0072342b0124358b93b21187e1b
+ba040001a8000b2b59b00c2342b00d2342b0124358b92d412d411bba04000400000b2b59b00e
+2342b00f2342b0124358b9187e3b211bba01a80400000b2b59b0102342b01123420018456944
+4569441845694473737373742b45447474757575757575757500757575757474747573732b45
+186944747445186944747474747575752b2b0000454445447373737475002b2b73752b2b732b
+2b2b2b2b2b2b2b2b7500000000>
+] def
+/f-2-0 currentdict end definefont pop
+%%EndResource
+%%EndSetup
+%%Page: 1 1
+%%BeginPageSetup
+%%PageBoundingBox: 0 -1 365 65
+%%EndPageSetup
+q 0 -1 365 66 rectclip q
+0.827451 g
+146.367 52.536 m 146.367 36.536 l 210.367 36.536 l 210.367 52.536 l f*
+0.282353 g
+0.4 w
+0 J
+0 j
+[] 0.0 d
+4 M q 1 0 0 -1 0 64.356453 cm
+146.367 11.82 m 146.367 27.82 l 210.367 27.82 l 210.367 11.82 l S Q
+0 g
+0.3752 w
+[ 2.2512 2.2512] 0 d
+q 1 0 0 -1 0 64.356453 cm
+98.367 27.984 m 258.367 27.984 l S Q
+[ 2.2512 2.2512] 0 d
+q 1 0 0 -1 0 64.356453 cm
+114.367 11.82 m 114.367 27.82 l S Q
+[ 2.2512 2.2512] 0 d
+q 1 0 0 -1 0 64.356453 cm
+178.367 11.82 m 178.367 27.82 l S Q
+[ 2.2512 2.2512] 0 d
+q 1 0 0 -1 0 64.356453 cm
+242.367 11.82 m 242.367 27.82 l S Q
+[ 2.2512 2.2512] 0 d
+q 1 0 0 -1 0 64.356453 cm
+2.367 11.82 m 2.367 27.82 l S Q
+[ 2.2512 2.2512] 0 d
+q 1 0 0 -1 0 64.356453 cm
+66.367 11.82 m 66.367 27.82 l S Q
+[ 2.2512 2.2512] 0 d
+q 1 0 0 -1 0 64.356453 cm
+74.367 27.82 m 2.367 27.82 l S Q
+[ 2.2512 2.2512] 0 d
+q 1 0 0 -1 0 64.356453 cm
+290.367 11.82 m 290.367 27.82 l S Q
+[ 2.2512 2.2512] 0 d
+q 1 0 0 -1 0 64.356453 cm
+354.367 11.82 m 354.367 27.82 l S Q
+[ 2.2512 2.2512] 0 d
+q 1 0 0 -1 0 64.356453 cm
+354.367 27.82 m 282.367 27.82 l S Q
+BT
+10 0 0 10 139.40437 26.953816 Tm
+/f-0-0 1 Tf
+(cx)Tj
+6.5 0 0 6.5 148.271558 24.953816 Tm
+(i)Tj
+10 0 0 10 201.707678 26.953816 Tm
+(cx)Tj
+6.5 0 0 6.5 210.574866 24.953816 Tm
+(i+1)Tj
+10 0 0 10 173.164832 26.953816 Tm
+(sx)Tj
+6.5 0 0 6.5 181.485144 24.953816 Tm
+(i)Tj
+10 0 0 10 235.404382 26.953816 Tm
+(sx)Tj
+6.5 0 0 6.5 243.724695 24.953816 Tm
+(i+1)Tj
+10 0 0 10 107.404382 26.953816 Tm
+(sx)Tj
+6.5 0 0 6.5 115.724695 24.953816 Tm
+(i-1)Tj
+10 0 0 10 204.047546 9.93409 Tm
+/f-1-1 1 Tf
+<01>Tj
+/f-0-0 1 Tf
+(x)Tj
+6.5 0 0 6.5 214.906921 13.93409 Tm
+(+)Tj
+10 0 0 10 139.596655 9.93409 Tm
+/f-1-1 1 Tf
+<01>Tj
+/f-0-0 1 Tf
+(x)Tj
+6.5 0 0 6.5 150.45603 13.93409 Tm
+(-)Tj
+ET
+0.39598 w
+[] 0.0 d
+3.9 M q 1 0 0 -1 0 64.356453 cm
+114.824 59.555 m 177.543 59.555 l S Q
+118.781 4.802 m 120.367 6.384 l 114.824 4.802 l 120.367 3.216 l h
+118.781 4.802 m f*
+4 M q 1 0 0 -1 0 64.356453 cm
+118.781 59.555 m 120.367 57.973 l 114.824 59.555 l 120.367 61.141 l h
+118.781 59.555 m S Q
+173.582 4.802 m 172 3.216 l 177.543 4.802 l 172 6.384 l h
+173.582 4.802 m f*
+q -1 0 0 1 0 64.356453 cm
+-173.582 -59.555 m -172 -61.141 l -177.543 -59.555 l -172 -57.973 l h
+-173.582 -59.555 m S Q
+3.9 M q 1 0 0 -1 0 64.356453 cm
+178.824 59.555 m 241.543 59.555 l S Q
+182.781 4.802 m 184.367 6.384 l 178.824 4.802 l 184.367 3.216 l h
+182.781 4.802 m f*
+4 M q 1 0 0 -1 0 64.356453 cm
+182.781 59.555 m 184.367 57.973 l 178.824 59.555 l 184.367 61.141 l h
+182.781 59.555 m S Q
+237.582 4.802 m 236 3.216 l 241.543 4.802 l 236 6.384 l h
+237.582 4.802 m f*
+q -1 0 0 1 0 64.356453 cm
+-237.582 -59.555 m -236 -61.141 l -241.543 -59.555 l -236 -57.973 l h
+-237.582 -59.555 m S Q
+0.3307 w
+3.9 M q 1 0 0 -1 0 64.356453 cm
+114.184 64.355 m 114.184 39.75 l S Q
+q 1 0 0 -1 0 64.356453 cm
+178.184 64.355 m 178.184 39.75 l S Q
+q 1 0 0 -1 0 64.356453 cm
+242.184 64.355 m 242.184 39.75 l S Q
+BT
+10 0 0 10 349.552039 26.953816 Tm
+/f-0-0 1 Tf
+(L)Tj
+6.5 0 0 6.5 355.118445 24.953816 Tm
+(x)Tj
+10 0 0 10 83.156885 36.162654 Tm
+(...)Tj
+18.388212 0 Td
+(...)Tj
+-26.76347 -0.920884 Td
+(0)Tj
+/f-2-0 1 Tf
+3.136795 3.063018 Td
+(1)Tj
+28.399661 0 Td
+(N+1)Tj
+-16.960364 0 Td
+[(i)-5597(i+1)]TJ
+9.6 0 0 9.6 0.424084 56.553816 Tm
+/f-0-0 1 Tf
+[(0)-6151(1)]TJ
+11.55463 0 Td
+(i-1)Tj
+24.6432 0 Td
+[(N+1)7996(N)]TJ
+-11.320831 0 Td
+[(i+1)7965(i)]TJ
+ET
+Q Q
+showpage
+end restore
 
-[ /Dest /LOUTsoria2017navierstokes /DEST pdfmark
-220 fnt1 0 4574([1])m 440(Soria,)s
-1071(M..)s 1542(Fundamentals)s 2889(of)s 3209(\207nite)s 3782(control)s
-4525(v)s 4(olume)k 5302(spectroconsistent)s 6937(CFD)s 7355(.)s
-7576(PDF)s 7976(,)s 8145(TU)s 8(AREG)k 9023(,)s
-440 4310(ESEIAA)m 24(T)k 1326(,)s 1424(Carrer)s 2038(de)s
-2296(Colom,)s 2992(11,)s 3310(08222)s 3910(T)s 15(errassa,)k
-4734(Barcelona)s 5622(,)s 5720(July)s 6136(2017)s 6565(.)s
 
+%%EndDocument
+LoutEPSFCleanUp
+
+[ /Dest /LOUTdivisionside /DEST pdfmark
+180 fnt2 1532 11562(Figur)m 3(e)k 2078(4.)s 180 fnt1
+2296 11563(Nomenclature)m 3352(for)s 3605(one)s 3906(of)s 4109(the)s
+4370(sides)s 4767(of)s 4970(the)s 5231(domain)s 
 grestore
 0 0 0 0 220 264 55 1417 -15423 LoutGr2
 0 LoutMargSet
@@ -9459,10 +10622,10 @@ showpage
 %%+ font Symbol
 %%+ font Courier
 %%DocumentSuppliedResources: procset LoutStartUp
-%%+  procset LoutBasicSetup
 %%+  procset LoutDiagPrependGraphic
 %%+  procset LoutGraphPrependGraphic
 %%+  procset LoutPiePrependGraphic
+%%+  procset LoutBasicSetup
 %%+ encoding vec2
 %%Pages: 11
 %%EOF

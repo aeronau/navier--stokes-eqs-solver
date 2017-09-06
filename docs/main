@@ -3,15 +3,13 @@
 
 # Includeres
 
-@Include { "files/customreport" }
 @SysInclude { xrgb }
 @SysInclude { eq }
 @SysInclude { tbl }
 @SysInclude { diag }
 @SysInclude { graph }
 @SysInclude { pie }
-
-@Include { mydefs }
+@Include { "files/customreport" } # Needs to be at the bottom of includeres
 
 @Report
 	@Title { Notes on creating a solver for the Navier--Stokes equations }

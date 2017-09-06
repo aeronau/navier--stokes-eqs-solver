@@ -1,10 +1,8 @@
 def @TeX
-{ @OneCol { T &0.4fo {-0.2f @VShift E} &0.45fo X }
-}
+{ @OneCol { T &0.4fo {-0.2f @VShift E} &0.45fo X } }
 
 def @LaTeX
-{ @OneCol { L &0.3fo { +0.1f @VShift 0.8f @Font A } &0.4fo @TeX }
-}
+{ @OneCol { L &0.3fo { +0.1f @VShift 0.8f @Font A } &0.4fo @TeX } }
 
 import @BasicSetup
 def @Re
@@ -31,4 +29,4 @@ def @NOTE
 import @BasicSetup
 def @MARK
   right x
-{ @CurveBox x }
+{ @CD @Heading { x } }

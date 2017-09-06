@@ -85,8 +85,9 @@ By applying the divergence theorem @FootNote { The divergence theorem states tha
 
 Notice that the normal derivatives of @E { phi } at the faces are needed. The simplest way to compute the equation @NumberOf { INTGenNSMomHypMOD2 } is by using a staggered mesh as shown in figure @NumberOf { FEMDiag } and the following for the convection and diffusion terms.
 
-@PP
-@MARK { Convection in @E { x } direction } The convection term @FootNote { In order to easen the work, the density @E { rho } has not been typed. } can be rewritten as in @NumberOf { ConvNotApprox }.
+@CD @Heading { Convection in @E { x } direction }
+
+The convection term @FootNote { In order to easen the work, the density @E { rho } has not been typed. } can be rewritten as in @NumberOf { ConvNotApprox }.
 
 @CenteredNumberedDisplay
   @Tag { ConvNotApprox }
@@ -96,10 +97,12 @@ Assuming @E { phi = u }, it is fair to assume the following expressions for each
 
 @VeryWideTaggedList
   @TagItem  { Velocities at faces } { @E { u sub n = { u sub { i, j + 1 } + u sub { i, j } } over 2 }, @E { u sub e = { u sub { i + 1, j } + u sub { i, j } } over 2 }, @E { u sub s = { u sub { i, j - 1 } + u sub { i, j } } over 2 } and @E { u sub w = { u sub { i - 1, j } + u sub { i, j } } over 2 } }
-  @TagItem { @Sym arrowup mass flow rates } { @E { F sub n = { v sub { i, j } Delta x sup - + v sub { i + 1, j } Delta x sup + } over 2 }, @E { F sub s = { v sub { i, j - 1} Delta x sup - + v sub { i + 1, j - 1 } Delta x sup + } over 2 } }
-  @TagItem { @Sym arrowright mass flow rates } { @E { F sub w = { u sub { i - 1, j } Delta y + u sub { i, j } Delta y } over 2 }, @E { F sub e = { u sub { i, j } Delta y + u sub { i + 1, j } Delta y } over 2 } }
+  @TagItem { @Sym arrowup vol. flow rates } { @E { F sub n = { v sub { i, j } Delta x sup - + v sub { i + 1, j } Delta x sup + } over 2 }, @E { F sub s = { v sub { i, j - 1} Delta x sup - + v sub { i + 1, j - 1 } Delta x sup + } over 2 } }
+  @TagItem { @Sym arrowright vol. flow rates } { @E { F sub w = { u sub { i - 1, j } Delta y + u sub { i, j } Delta y } over 2 }, @E { F sub e = { u sub { i, j } Delta y + u sub { i + 1, j } Delta y } over 2 } }
   @TagItem {Element dims.} { @E { Delta x sup - = sx sub i - sx sub { i - 1 } }, @E { Delta x sup + = sx sub { i + 1 } - sx sub i } and @E { Delta y = sy sub j - sy sub { j - 1 } } }
 @EndList
+
+Notice that in order to compute either velocities at the faces or boundaries of the cell or the volumetric flow rates, both the horizontal and vertical velocities at the points that make up the domain are needed. Furthermore, the latter also require that the coordinates of these are known.
 
 @Figure
   @Tag { FEMDiag }
@@ -109,8 +112,9 @@ Assuming @E { phi = u }, it is fair to assume the following expressions for each
 @IncludeGraphic "contents/figs/element.eps"
 @End @Figure
 
-@PP
-@MARK { Diffusion in @E { x } direction } The diffusion term has been analytically found by means of expression @NumberOf { DiffNotApprox }, where @E { Delta x } and @E { Delta y } come from the same expressions used before.
+@CD @Heading { Diffusion in @E { x } direction }
+
+The diffusion term has been analytically found by means of expression @NumberOf { DiffNotApprox }, where @E { Delta x } and @E { Delta y } come from the same expressions used before.
 
 @CenteredNumberedDisplay
   @Tag { DiffNotApprox }

@@ -1,0 +1,5 @@
+import @BasicSetup
+def @ITE
+  left x
+  right y
+{ @B iterate @E { x } over @E { y } }

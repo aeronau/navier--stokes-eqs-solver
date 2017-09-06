@@ -1,0 +1,9 @@
+@E { v sub n = { v sub { i, j + 1 } + v sub { i, j } } over 2 }
+@E { v sub e = { v sub { i + 1, j } + v sub { i, j } } over 2 }
+@E { v sub s = { v sub { i, j - 1 } + v sub { i, j } } over 2 }
+@E { v sub w = { v sub { i - 1, j } + v sub { i, j } } over 2 }
+
+@E { F sub n = { v sub { i, j } Delta x + v sub { i, j + 1 } Delta x } over 2 }
+@E { F sub e = { u sub { i + 1, j } Delta y sup - + u sub { i + 1, j + 1 } Delta y sup + } over 2 }
+@E { F sub s = { v sub { i, j - 1} Delta x + v sub { i , j } Delta x } over 2 }
+@E { F sub w = { u sub { i, j } Delta y sup - + u sub { i, j + 1 } Delta y sup + } over 2 }

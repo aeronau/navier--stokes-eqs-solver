@@ -32,6 +32,7 @@
 ###############################################################################
 
     @Include { "files/defs" }
+    @Include { "files/pseudo-code-defs" }
 
 ###############################################################################
 #                                                                             #
@@ -47,7 +48,7 @@
   # @InitialBreak	{{adjust 1.2fx hyphen} @OrIfPlain {ragged 1fx nohyphen}}
   # @InitialOutdent	{ 2f @OrIfPlain 4s	} # initial outdent
   # @InitialSpace	{ lout			} # initial space style
-    @InitialLanguage	{ Catalan		} # initial language
+    @InitialLanguage	{ English		} # initial language
   # @InitialColour	{ black			} # initial colour
   # @InitialBackgroundColour { white		} # initial background colour
     @OptimizePages	{ Yes			} # optimize page breaks?
