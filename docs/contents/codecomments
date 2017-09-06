@@ -6,7 +6,7 @@
 The language chosen to write the solver prototype is Python, as it is straightforward for an average programmer and comes with solid libraries to perform most of the math operations required in this project. Its syntax makes porting mathematical reasoning to code fast without losing code readability. This characteristic is advantageous in large projects, in which mock-ups---functional or not---are often developed as guides. Python is a good choice for mock-ups and prototypes, but it is often not chosen in the core of high performance software @FootNote { Python offers tools to optimize code for compute-intensive applications, but stepping up the code usually comes with complexity and a loss of readability. }.
 
 @PP
-The code will be structured as in figure @NumberOf { structure }. The project will be developed around @F main.py in which variables will be initialized and functions will be called. The functions will be grouped according to its use, so the functions which compute convection and diffusion will be defined in @F { phys.py }, as they are related to physics phenomena. The halo update, needed to gather the already computed results on cell move, will be defined in @F { tool.py }, in which general purpose operations will be found.
+The code will be structured as in figure @NumberOf { structure }. The project will be developed around @F main.py in which variables will be initialized and functions will be called. The functions will be grouped according to its use, so the functions which compute convection and diffusion will be defined in @F { phys.py }, as they are related to physics phenomena. The halo update, needed to gather the already computed results on cell move, will be defined in @F { tool.py }, in which general purpose operations will be found. It is assumed that the NumPy module will be used throughout the program.
 
 @Figure
   @Tag { structure }
@@ -22,19 +22,11 @@ The program is based on Soria's transparencies @Cite { $soria2017navierstokes },
 
 The first step towards developing a program supporting convection and diffusion in both @E { x } and @E { y } directions is to implement the expressions already demonstrated above, as they are.
 
-# @Include { "contents/code/convection-x" }
-
 @PP
 It was seen that for the horizontal velocities at the boundaries and for the volumetric flow rates through the faces, the velocities at every point of the domain are needed. These velocities are not needed per se, but its projections to the coordinate axes. Moreover, because the volumetric flow rates depend on the dimensions of the cell, the coordinates of the points are also needed.
 
 @PP
 This means that maps @FootNote { The reader should imagine a matrix a with information encoded so that every piece of it can be assigned to a point or group of points according to its position in the matrix. } of horizontal velocities @E { u } and vertical velocities @E { v }, and maps with the @E { x } and @E { y } coordinates of the points are needed to compute the horizontal velocities at the faces of the cell, as well as @E { Delta x sup - }, @E { Delta x sup + } and @E { Delta y }, which are ultimately used to find the volumetric flow rates.
-
-@PP
-While working with big data matrices is very convenient, if the data follows a pattern which is characterized as a mathematical function dependent on the coordinates, @I {lucky you!}. Its less compute-intensive to somehow grab the data from a call to the function by passing a pair of coordinates @E {x, y} or points @E {i, j}, than to store full matrices in the computer memory @FootNote { One could use advanced data manipulation to reduce the memory used to store these matrices or to be more compute-efficient. }. However, raw data is often discrete and rarely a function, so probably the strategy above will not be used to compute but to generate the data matrices for testing purposes. Storing the data in files and reading it piece-by-piece is the most realistic and time-efficient solution.
-
-@PP
-Because this solver is deemed to be a demonstration tool, reading data from files is not a feature regarded as useful. The solver will use matrices containing data generated from user-defined functions, in a manner similar to the explained above.
 
 @PP
 Assuming that the domain is discretized with the same number of points in @E { x } and @E { y } directions, @E { N }, the range used by both @E { i } and @E { j } iterators---these are the indexes used to access the elements in arrays and matrices---is from 1 to @E { N + 1 }, both included in the range @FootNote { Note that Python indexes arrays from 0. }. @E { N } is the number of segments in which both sides @E { L sub x } and @E { L sub y } of the rectangular domain will be divided. In figure @NumberOf { divisionside } a discretization of the domain in the @E { x } direction is presented. In bold plus italics is the numbering for the segments, while in italics is the numbering for the ends of the segments. The subindices of @E { sx } and @E { cx } are the positions of the array---here it is assumed that the values of @E { sx } and @E { cx } are stored in an array---at which the elements are accessed.
@@ -47,7 +39,50 @@ Assuming that the domain is discretized with the same number of points in @E { x
 @End @Figure
 
 @PP
-There are @E { N } individual segments, so arrays related to segments like @E { cx } contain @E { N } elements, whereas arrays related to segment stops such as @E { sx } are of length @E { N + 1 }. In figure @NumberOf { divisionside }, segments are numbered from 1 to @E { N + 1 } and their ends from 0 to @E { N + 1 }. 
+There are @E { N } individual segments, so arrays related to segments like @E { cx } contain @E { N } elements, whereas arrays related to segment ends such as @E { sx } are of length @E { N + 1 }. In figure @NumberOf { divisionside }, segments are numbered from 1 to @E { N + 1 } and their ends from 0 to @E { N + 1 }.
+
+@PP
+Therefore, the convection function is defined as follows:
+
+@DP @Box {
+@List
+  @ListItem { Define the convection function: }
+  @ListInterruptItem @F @RawVerbatim {
+  def convection(u, v, sx, sy, cx, cy, N): }
+  @ListItem{ Initialize the array of size @E { N + 1 } which will hold the volumetric flow rates computed for convection: }
+  @ListInterruptItem @F @RawVerbatim {
+      conv = np.zeros((N + 1, N + 1)) }
+  @ListItem{ Define iterators: }
+  @ListInterruptItem @F @RawVerbatim {
+      for i in range(1, N)
+          for j in range(1, N) }
+  @ListItem{ For element @E { i, j } find @E { Delta x sup - }---@F Dxm, @E { Delta x sup + }---@F Dxp, and @E { Delta y }---@F { Dy } from the arrays passed: }
+  @ListInterruptItem @F @RawVerbatim {
+              Dxm = sx[i] - sx[i - 1]
+              Dxp = sx[i + 1] - sx[i]
+              Dy = sy[j] - sy[j - 1] }
+  @ListItem{ Define element's area (FCV method): }
+  @ListInterruptItem @F @RawVerbatim {
+              A = (cx[i + 1] - cx[i]) * (sy[j] - sy[j - 1]) }
+  @ListItem{ Compute the values by means of the formulae aforementioned: }
+  @ListInterruptItem @F @RawVerbatim {
+              un = ( u[i, j + 1] + u[i, j] ) / 2
+              ue = ( u[i + 1, j] + u[i, j] ) / 2
+              us = ( u[i, j - 1] + u[i, j] ) / 2
+              uw = ( u[i - 1, j] + u[i, j] ) / 2
+
+              uFn = ( v[i, j] * Dxm + v[i + 1, j] * Dxp ) / 2
+              uFe = ( u[i, j] * Dy + u[i + 1, j] * Dy ) / 2
+              uFs = ( v[i, j - 1] * Dxm + v[i + 1, j - 1] * Dxp ) / 2
+              uFw = ( u[i - 1, j] * Dy + u[i, j] * Dy ) / 2 }
+
+  @ListItem{ Store results in the @F conv array: }
+  @ListInterruptItem @F @RawVerbatim {
+              conv[i, j] = ( uFn*un + uFe*ue - uFs*us - uFw*uw ) / A }
+@EndList
+}
+
+# @Include { "contents/code/convection-x" }
 
 # @PP
 # @CD @Heading { Convection } The program supports convection in both @E { x } and @E { y } directions. By applying the same reasoning used in convection in @E { x } direction to the @E { y } direction.
