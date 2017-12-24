@@ -10,4 +10,4 @@ The aim of this project is to create a solver for the Navier--Stokes equations a
 
 - [ ] Update project structure
 - [ ] Program the solver
-- [ ] Write about the program in documentation
+- [ ] Write about the program in the documentation
